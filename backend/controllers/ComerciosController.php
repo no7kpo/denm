@@ -1,9 +1,9 @@
 <?php
 
-namespace app\controllers;
+namespace backend\controllers;
 
 use Yii;
-use app\models\Comercios;
+use backend\models\Comercios;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
