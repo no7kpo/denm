@@ -4,10 +4,10 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Categorias */
+/* @var $model backend\models\categorias */
 
-$this->title = 'Create Categorias';
-$this->params['breadcrumbs'][] = ['label' => 'Categorias', 'url' => ['index']];
+$this->title = Yii::t('app', 'Create Categorias');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Categorias'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="categorias-create">
