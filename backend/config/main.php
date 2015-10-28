@@ -13,7 +13,9 @@ return [
     'bootstrap' => ['log'],
     'modules' => [
         'user' => [
-            'class' => 'dektrium\user\Module',
+            // following line will restrict access to admin page
+            //'as backend' => 'dektrium\user\filters\BackendFilter',
+            'admins' => ['admin'],
         ],
     ],
     'components' => [
@@ -21,6 +23,9 @@ return [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
         ],*/
+        'user' => [
+            'identityClass' => 'dektrium\user\models\User',
+        ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -39,6 +44,14 @@ return [
         'showScriptName' => false,
         // Disable r= routes
         'enablePrettyUrl' => true,
+        ],
+        'view' => [
+         'theme' => [
+             'pathMap' => [
+                '@dektrium/user/views' => '@app/views/user'
+                //'@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app'
+                ],
+            ],
         ],
     ],
     'params' => $params,

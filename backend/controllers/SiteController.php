@@ -24,9 +24,10 @@ class SiteController extends Controller
                     [
                         'actions' => ['login', 'error'],
                         'allow' => true,
+                        'roles' => ['?']
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        //'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -58,7 +59,7 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
-    public function actionLogin()
+    /*public function actionLogin()
     {
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
@@ -72,7 +73,7 @@ class SiteController extends Controller
                 'model' => $model,
             ]);
         }
-    }
+    }*/
 
     public function actionLogout()
     {
