@@ -89,3 +89,60 @@ a.desc:after {
     padding: 10px 20px;
     margin: 0 0 15px 0;
 }
+
+#indx-welcome {
+    background-color: #286090;
+    border-radius: 5px;
+    padding: 15px;
+    height: auto;
+    background-image: url(http://fondopantalla.com.es/file/421/1400x1050/crop/fondo-de-pantalla-degradado-azul.jpg);
+}
+
+#indx-welcome p {
+    color: #eff7f9;
+    font-weight: bold;
+}
+
+#indx-welcome img {
+    max-height: 100px;
+}
+
+.right {
+    float: right;
+    text-align: right;
+}
+
+#delivery-table tr td a {
+    text-decoration: none;
+}
+
+.info {
+    margin-top: -2px;
+    height: 16px;
+    width: 16px;
+}
+
+#datepicker-btn {
+    border: 1px solid #DDDDDD;
+    margin-top: -8px;
+}
+
+.datepicker-inline {
+    margin-top: 20px;
+}
+
+.datepicker-inline * {
+    display: inline;
+}
+
+.inline {
+    display: inline;
+}
+
+#map_logo {
+    border-radius: 3px;
+}
+
+#item_map_btn {
+    margin-left: -5px;
+}
