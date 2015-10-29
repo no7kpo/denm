@@ -91,7 +91,9 @@ a.desc:after {
 }
 
 #indx-welcome {
-    background-color: #286090; border-radius: 5px; padding: 15px;
+    background-color: #286090;
+    border-radius: 5px;
+    padding: 15px;
     height: auto;
     background-image: url(http://fondopantalla.com.es/file/421/1400x1050/crop/fondo-de-pantalla-degradado-azul.jpg);
 }
@@ -122,6 +124,7 @@ a.desc:after {
 
 #datepicker-btn {
     border: 1px solid #DDDDDD;
+    margin-top: -8px;
 }
 
 .datepicker-inline {
@@ -134,4 +137,12 @@ a.desc:after {
 
 .inline {
     display: inline;
+}
+
+#map_logo {
+    border-radius: 3px;
+}
+
+#item_map_btn {
+    margin-left: -5px;
 }

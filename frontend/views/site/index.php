@@ -18,7 +18,7 @@ if(!Yii::$app->user->getIsGuest()){
         </div>
 
         <div class="col-md-8 right">
-            <img class="img-responsive right" src="http://gamers-on.com/wp-content/uploads/2015/02/google-maps_infografia.jpg">
+            <img class="img-responsive right" id="map_logo" src="http://gamers-on.com/wp-content/uploads/2015/02/google-maps_infografia.jpg">
         </div>
     </div>
 
@@ -28,7 +28,7 @@ if(!Yii::$app->user->getIsGuest()){
                 <h3>Your best route for today</h3>
                 <img class="img-responsive" src="http://i.imgur.com/us91yIY.png">
                 <br>
-                <p class="inline"><a class="btn btn-default btn-primary btn-sm" href="#">Restore routes&raquo;</a></p>
+                <p class="inline"><a class="btn btn-default btn-primary btn-sm" href="#">Restore routes </a></p>
                 <p class="inline"><a class="btn btn-default btn-primary btn-sm" href="#">Check our stock</a></p>
             </div>
             <div class="col-lg-7">
@@ -51,42 +51,49 @@ if(!Yii::$app->user->getIsGuest()){
                             <th>Delivery point</th>
                             <th>Day</th>
                             <th>Map</th>
+                            <th>Delivered</th>
                         </tr>
                         <tr>
                             <td>1</td>
                             <td><a class="btn-default" href="#"><img class="info" src="https://cdn4.iconfinder.com/data/icons/Primo_Icons/PNG/128x128/info_blue.png"> Devoto San Martin</a></td>
                             <td>10-11-2015</td>
-                            <td><a class="btn btn-xs btn-default" href="#">Show</a></td>
+                            <td><a class="btn btn-xs btn-default" id="item_map_btn" href="#">Show</a></td>
+                            <td>Yes</td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td><a class="btn-default" href="#"><img class="info" src="https://cdn4.iconfinder.com/data/icons/Primo_Icons/PNG/128x128/info_blue.png"> Tienda Inglesa Propios</a></td>
                             <td>10-11-2015</td>
-                            <td><a class="btn btn-xs btn-default" href="#">Show</a></td>
+                            <td><a class="btn btn-xs btn-default" id="item_map_btn" href="#">Show</a></td>
+                            <td>Yes</td>
                         </tr>
                         <tr>
                             <td>3</td>
                             <td><a class="btn-default" href="#"><img class="info" src="https://cdn4.iconfinder.com/data/icons/Primo_Icons/PNG/128x128/info_blue.png"> Cobadonga Hogar </a></td>
                             <td>10-11-2015</td>
-                            <td><a class="btn btn-xs btn-default" href="#">Show</a></td>
+                            <td><a class="btn btn-xs btn-default" id="item_map_btn" href="#">Show</a></td>
+                            <td>No</td>
                         </tr>
                         <tr>
                             <td>3</td>
                             <td><a class="btn-default" href="#"><img class="info" src="https://cdn4.iconfinder.com/data/icons/Primo_Icons/PNG/128x128/info_blue.png"> Cobadonga Hogar </a></td>
                             <td>10-11-2015</td>
-                            <td><a class="btn btn-xs btn-default" href="#">Show</a></td>
+                            <td><a class="btn btn-xs btn-default" id="item_map_btn" href="#">Show</a></td>
+                            <td>No</td>
                         </tr>
                         <tr>
                             <td>3</td>
                             <td><a class="btn-default" href="#"><img class="info" src="https://cdn4.iconfinder.com/data/icons/Primo_Icons/PNG/128x128/info_blue.png"> Cobadonga Hogar </a></td>
                             <td>10-11-2015</td>
-                            <td><a class="btn btn-xs btn-default" href="#">Show</a></td>
+                            <td><a class="btn btn-xs btn-default" id="item_map_btn" href="#">Show</a></td>
+                            <td>No</td>
                         </tr>
                         <tr>
                             <td>3</td>
                             <td><a class="btn-default" href="#"><img class="info" src="https://cdn4.iconfinder.com/data/icons/Primo_Icons/PNG/128x128/info_blue.png"> Cobadonga Hogar </a></td>
                             <td>10-11-2015</td>
-                            <td><a class="btn btn-xs btn-default" href="#">Show</a></td>
+                            <td><a class="btn btn-xs btn-default" id="item_map_btn" href="#">Show</a></td>
+                            <td>No</td>
                         </tr>
                     </table>
                 </div>
