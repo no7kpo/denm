@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'Nombre')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'idcategoria')->textInput(['maxlength' => true]) ?>
+    <?=   $form->field($model, 'categoria')->dropDownList( ArrayHelper::map(Categorias::find()->All(), 'id', 'nombre')) ?>
 
     <?= $form->field($model, 'Imagen')->textInput(['maxlength' => true]) ?>
 

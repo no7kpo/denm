@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model backend\models\Producto */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Productos'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Products'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="producto-view">
@@ -30,7 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'Nombre',
-            'idcategoria',
+            ['attribute'=>'idcategoria',
+            'value' => Categorias::findOne($model->categoria)->nombre,
+                ],
             'Imagen',
         ],
     ]) ?>
