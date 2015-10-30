@@ -50,13 +50,13 @@ class Comercios extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'nombre' => 'Nombre',
-            'latitud' => 'Latitud',
-            'longitud' => 'Longitud',
-            'prioridad' => 'Prioridad',
-            'hora_apertura' => 'Hora Apertura',
-            'hora_cierre' => 'Hora Cierre',
+            'id' => Yii::t('app', 'ID'),
+            'nombre' => Yii::t('app', 'Name'),
+            'latitud' => Yii::t('app', 'Latitud'),
+            'longitud' => Yii::t('app', 'Longitud'),
+            'prioridad' => Yii::t('app', 'Priority'),
+            'hora_apertura' => Yii::t('app', 'Open hour'),
+            'hora_cierre' => Yii::t('app', 'Closing hour'),
         ];
     }
 

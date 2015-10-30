@@ -4,9 +4,11 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\Producto;
+use backend\models\UploadForm;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 use yii\filters\VerbFilter;
 
 /**
@@ -61,12 +63,25 @@ class ProductoController extends Controller
     public function actionCreate()
     {
         $model = new Producto();
-
+        $foto = new UploadForm();
+        
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            
+
+            $foto->imageFile = UploadedFile::getInstance($foto, 'Imagen');
+            
+            if ($foto->upload($model->id)) {
+                // file is uploaded successfully
+                return;
+            }
+            
+            
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+            $img_model = new UploadForm();
             return $this->render('create', [
-                'model' => $model,
+                'model' => $model, 'img_model' =>$img_model
             ]);
         }
     }

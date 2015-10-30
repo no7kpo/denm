@@ -2,12 +2,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use backend\models\Categorias;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Producto */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Productos'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Products'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="producto-view">
@@ -30,8 +31,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'Nombre',
-            'idcategoria',
-            'Imagen',
+            ['attribute'=>'idcategoria',
+            'value' => Categorias::findOne($model->idcategoria)->nombre,
+                ],
+            
         ],
     ]) ?>
 
