@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "23d8ab347880dc685c626701f80149ac",
+    "hash": "de308d2424e53133862c972d2744b4a0",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
-            "version": "v2.3.0",
+            "version": "v2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/almasaeed2010/AdminLTE.git",
-                "reference": "81aa879d3a4489213888e24975b073c7478f0447"
+                "reference": "1ee281b3b99e8d8cccdc72fb8437c6888149cb46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/almasaeed2010/AdminLTE/zipball/81aa879d3a4489213888e24975b073c7478f0447",
-                "reference": "81aa879d3a4489213888e24975b073c7478f0447",
+                "url": "https://api.github.com/repos/almasaeed2010/AdminLTE/zipball/1ee281b3b99e8d8cccdc72fb8437c6888149cb46",
+                "reference": "1ee281b3b99e8d8cccdc72fb8437c6888149cb46",
                 "shasum": ""
             },
             "type": "library",
@@ -44,7 +44,7 @@
                 "theme",
                 "web"
             ],
-            "time": "2015-08-17 01:49:41"
+            "time": "2015-10-23 14:50:49"
         },
         {
             "name": "bower-asset/bootstrap",
@@ -418,6 +418,56 @@
             "time": "2013-12-10 17:49:58"
         },
         {
+            "name": "dektrium/yii2-rbac",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dektrium/yii2-rbac.git",
+                "reference": "0c7ab2575d2856aa3e7b140432ec65c8a50216cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dektrium/yii2-rbac/zipball/0c7ab2575d2856aa3e7b140432ec65c8a50216cb",
+                "reference": "0c7ab2575d2856aa3e7b140432ec65c8a50216cb",
+                "shasum": ""
+            },
+            "require": {
+                "kartik-v/yii2-widget-select2": "*",
+                "yiisoft/yii2": "2.0.*"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "bootstrap": "dektrium\\rbac\\Bootstrap"
+            },
+            "autoload": {
+                "psr-4": {
+                    "dektrium\\rbac\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dmitry Erofeev",
+                    "email": "dmeroff@gmail.com",
+                    "homepage": "http://dmeroff.ru"
+                }
+            ],
+            "description": "RBAC management module for Yii2",
+            "keywords": [
+                "dektrium",
+                "rbac gui",
+                "rbac management",
+                "rbac module",
+                "yii rbac",
+                "yii2",
+                "yii2-rbac"
+            ],
+            "time": "2015-10-03 18:34:36"
+        },
+        {
             "name": "dektrium/yii2-user",
             "version": "v0.9.5",
             "source": {
@@ -577,6 +627,100 @@
                 "html"
             ],
             "time": "2013-11-30 08:25:19"
+        },
+        {
+            "name": "kartik-v/yii2-krajee-base",
+            "version": "v1.7.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-krajee-base.git",
+                "reference": "c0adff9d9762f4fd3bf0e7cd0000fcab0bf00f19"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-krajee-base/zipball/c0adff9d9762f4fd3bf0e7cd0000fcab0bf00f19",
+                "reference": "c0adff9d9762f4fd3bf0e7cd0000fcab0bf00f19",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2-bootstrap": "@dev"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "kartik\\base\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "Base library and foundation components for all Yii2 Krajee extensions.",
+            "homepage": "https://github.com/kartik-v/yii2-krajee-base",
+            "keywords": [
+                "base",
+                "extension",
+                "foundation",
+                "krajee",
+                "widget",
+                "yii2"
+            ],
+            "time": "2015-06-16 05:19:57"
+        },
+        {
+            "name": "kartik-v/yii2-widget-select2",
+            "version": "v2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-widget-select2.git",
+                "reference": "e72880e7e8dfc845c112ed7df275bf1c929be6db"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-select2/zipball/e72880e7e8dfc845c112ed7df275bf1c929be6db",
+                "reference": "e72880e7e8dfc845c112ed7df275bf1c929be6db",
+                "shasum": ""
+            },
+            "require": {
+                "kartik-v/yii2-krajee-base": "~1.7"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "kartik\\select2\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "Enhanced Yii2 wrapper for the Select2 jQuery plugin (sub repo split from yii2-widgets).",
+            "homepage": "https://github.com/kartik-v/yii2-widget-select2",
+            "keywords": [
+                "dropdown",
+                "extension",
+                "form",
+                "jquery",
+                "plugin",
+                "select2",
+                "widget",
+                "yii2"
+            ],
+            "time": "2015-09-12 19:56:48"
         },
         {
             "name": "rmrevin/yii2-fontawesome",
@@ -1327,7 +1471,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "dektrium/yii2-user": 20
+        "dektrium/yii2-user": 20,
+        "dektrium/yii2-rbac": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

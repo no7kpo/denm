@@ -23,7 +23,7 @@ class ComerciosController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['admin'],
                     ],
                 ],
             ],

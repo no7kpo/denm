@@ -16,6 +16,9 @@ return [
             // following line will restrict access to admin page
             'as frontend' => 'dektrium\user\filters\FrontendFilter',
         ],
+        'rbac' => [
+            'class' => 'dektrium\rbac\Module',
+        ],
     ],
     'components' => [
         /*'user' => [

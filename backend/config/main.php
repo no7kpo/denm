@@ -16,6 +16,12 @@ return [
             // following line will restrict access to admin page
             //'as backend' => 'dektrium\user\filters\BackendFilter',
             'admins' => ['admin'],
+            'controllerMap' => [
+                'registration' => 'backend\controllers\RegistrationController'
+            ],
+        ],
+        'rbac' => [
+            'class' => 'dektrium\rbac\Module',
         ],
     ],
     'components' => [

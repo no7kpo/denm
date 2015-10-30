@@ -11,6 +11,11 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'console\controllers',
+    'modules' => [
+        'rbac' => [
+            'class' => 'dektrium\rbac\Module',
+        ],
+    ],
     'components' => [
         'log' => [
             'targets' => [

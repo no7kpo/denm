@@ -23,7 +23,7 @@ class ProductoController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['admin'],
                     ],
                 ],
             ],
