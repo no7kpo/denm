@@ -18,11 +18,17 @@ class UploadForm extends Model
         ];
     }
     
-    public function upload()
+    public function upload($id)
     {
+        var_dump($this->validate());
+        
         if ($this->validate()) {
-            $this->imageFile->saveAs('uploads/' . $this->imageFile->baseName . '.' . $this->imageFile->extension);
-            
+
+            $this->imageFile->saveAs('assets/imgOfertas/' . $this->imageFile->baseName . '.' . $this->imageFile->extension);
+            $foto = new Foto();
+                $foto->idproducto = $id;
+                $foto->url = $file_name;
+                $foto->save();
             return true;
         } else {
             

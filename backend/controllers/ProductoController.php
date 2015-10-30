@@ -64,16 +64,19 @@ class ProductoController extends Controller
     {
         $model = new Producto();
         $foto = new UploadForm();
-        if (Yii::$app->request->ispost) {
-            $model->load(Yii::$app->request->post());
+        
+        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            
 
             $foto->imageFile = UploadedFile::getInstance($foto, 'Imagen');
-            if ($foto->upload()) {
+            
+            if ($foto->upload($model->id)) {
                 // file is uploaded successfully
                 return;
             }
-            $model->Imagen=$foto->imageFile;
-            $model->save();
+            
+            
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             $img_model = new UploadForm();

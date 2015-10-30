@@ -18,7 +18,7 @@ use backend\models\Categorias;
 
     <?=   $form->field($model, 'idcategoria')->dropDownList( ArrayHelper::map(Categorias::find()->All(), 'id', 'nombre')) ?>
 
-    <?= $form->field($img_model, 'imageFile')->fileInput(['multiple' => false, 'accept' => 'image/*']) ?>
+    <?= $form->field($img_model, 'imageFile')->fileInput(['multiple' => false, 'accept' => 'image/*']) ?> 
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

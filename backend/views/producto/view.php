@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['attribute'=>'idcategoria',
             'value' => Categorias::findOne($model->idcategoria)->nombre,
                 ],
-            'Imagen',
+            
         ],
     ]) ?>
 

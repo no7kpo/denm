@@ -90,6 +90,13 @@ class CategoriasController extends Controller
         }
     }
 
+        public function addProductos($id,$list)
+    {
+        $model = $this->findModel($id);
+
+        
+    }
+
     /**
      * Deletes an existing Categorias model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

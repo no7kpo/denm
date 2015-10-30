@@ -10,7 +10,6 @@ use Yii;
  * @property string $id
  * @property string $Nombre
  * @property string $idcategoria
- * @property string $Imagen
  *
  * @property ProductoTienda[] $productoTiendas
  * @property Comercios[] $idcomercios
@@ -32,9 +31,9 @@ class Producto extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['Nombre', 'idcategoria', 'Imagen'], 'required'],
+            [['Nombre', 'idcategoria'], 'required'],
             [['idcategoria'], 'integer'],
-            [['Nombre', 'Imagen'], 'string', 'max' => 100]
+            [['Nombre'], 'string', 'max' => 100]
         ];
     }
 
@@ -47,7 +46,7 @@ class Producto extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'Nombre' => Yii::t('app', 'Name'),
             'idcategoria' => Yii::t('app', 'Category'),
-            'Imagen' => Yii::t('app', 'Image'),
+            
         ];
     }
 
@@ -73,5 +72,10 @@ class Producto extends \yii\db\ActiveRecord
     public function getIdcategoria0()
     {
         return $this->hasOne(Categorias::className(), ['id' => 'idcategoria']);
+    }
+
+        public function getFotos()
+    {
+        return $this->hasOne(Foto::className(), ['idProducto' => 'id']);
     }
 }
