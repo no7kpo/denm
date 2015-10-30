@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use kartik\time\TimePicker;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -27,9 +28,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'prioridad')->textInput() ?>
 
-    <?= $form->field($model, 'hora_apertura')->textInput() ?>
+    
+    <?= $form->field($model,'hora_apertura')->widget(TimePicker::classname(), []); ?>
 
-    <?= $form->field($model, 'hora_cierre')->textInput() ?>
+    <?= $form->field($model, 'hora_cierre')->widget(TimePicker::classname(), []) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

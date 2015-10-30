@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use backend\models\Categorias;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Producto */
@@ -31,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'Nombre',
             ['attribute'=>'idcategoria',
-            'value' => Categorias::findOne($model->categoria)->nombre,
+            'value' => Categorias::findOne($model->idcategoria)->nombre,
                 ],
             'Imagen',
         ],
