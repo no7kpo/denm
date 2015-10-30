@@ -37,6 +37,7 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
+        $menuItems[] = ['label' => 'About Us', 'url' => ['/site/about']],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
@@ -55,8 +56,6 @@ AppAsset::register($this);
     NavBar::end();
     ?>
 
-    <link rel="stylesheet" type="text/css" href="../../assets/bootstrap/css/bootstrap.css">
-
     <div class="container">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
@@ -68,16 +67,11 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; Taller Php2 - Aquino, Becco, Laporta, Sabalzagaray -</p>
-
-        <p class="pull-right"><?= date('D M Y') ?>.</p>
+        <p style="display:inline;">&copy; Taller Php2 <span style="display:inline; float:right;"><?= date('D M Y') ?></span></p>
     </div>
 </footer>
 
 <?php $this->endBody() ?>
-
-
-<script src="../../assets/bootstrap/js/bootstrap.js"></script>
 
 </body>
 </html>

@@ -92,7 +92,7 @@ a.desc:after {
 
 #indx-welcome {
     background-color: #286090;
-    border-radius: 5px;
+    border-radius: 3px;
     padding: 15px;
     height: auto;
     background-image: url(http://fondopantalla.com.es/file/421/1400x1050/crop/fondo-de-pantalla-degradado-azul.jpg);
@@ -109,7 +109,6 @@ a.desc:after {
 
 .right {
     float: right;
-    text-align: right;
 }
 
 #delivery-table tr td a {
@@ -143,6 +142,45 @@ a.desc:after {
     border-radius: 3px;
 }
 
-#item_map_btn {
-    margin-left: -5px;
+.info {
+    color: #337AB7;
+}
+
+.delivered {
+    color: #32b53f;
+}
+
+.not-delivered {
+    color: #b53232;
+}
+
+.item {
+    width: auto;
+    height: auto;
+    max-width: 50px;
+    max-height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#big-btn {
+    min-width: 250px;
+}
+
+#med-btn {
+    min-width: 150px;
+}
+
+#new-order {
+    background-color: #dcebf7;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 390px;
+    padding: 5px;
+    border-radius: 2px;
+}
+
+.map-center {
+    margin-left: auto;
+    margin-right: auto;
 }
