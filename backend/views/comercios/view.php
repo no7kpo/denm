@@ -29,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a(Yii::t('app','Add products'), ['addproducts', 'id' => $model->id],['class' => 'btn btn-primary']) ?>
     </p>
 
     <?= DetailView::widget([
@@ -48,6 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <input type='hidden' value= id='longitud' />
 
 </div>
+
 
 <script>
 function initialize() {
