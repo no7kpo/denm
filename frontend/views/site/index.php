@@ -5,7 +5,7 @@
 $this->title = 'Relevadores';
 $count = 1;
 
-//Data de ejemplo
+//Data de ejemplo - Lista de pedidos y nombre de comercio
 $data = array();
 $data[] = array(
     'id' => 1,
@@ -102,7 +102,7 @@ if(!Yii::$app->user->getIsGuest()){
                 <br>
                 <div class="text-center" id="new-order">
                     <h3 class="text-center">Take new orders!</h3>
-                    <p class="text-center"><a class="btn btn-default btn-primary btn-sm" id="med-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/createorder"';?>>New order</a></p>
+                    <p class="text-center"><a class="btn btn-default btn-primary btn-sm" id="med-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/neworder"';?>>New order</a></p>
                 </div>
             </div>
 
