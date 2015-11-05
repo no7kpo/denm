@@ -100,6 +100,19 @@ class ComerciosController extends Controller
         }
     }
 
+        public function actionAddproducts($id)
+    {
+        $model = $this->findModel($id);
+        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('addProducts', [
+                'model' => $model,
+            ]);
+        }
+    }
+
     /**
      * Deletes an existing Comercios model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

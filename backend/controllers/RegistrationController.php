@@ -58,18 +58,21 @@ class RegistrationController extends BaseRegistrationController
                 $UserSearch = Yii::createObject(UserSearch::className());
                 $users = $UserSearch->search(['username', 'admin'])->getModels();
                 $user = $users[0];
-                /*print_r($user);
-                die;*/
+                
+                //buscar el codigo del token por consulta
                 $query = Yii::$app->db
                         ->createCommand('SELECT code FROM token WHERE user_id = ' . $user->id)
                         ->queryOne();
                 $code = $query['code'];
-                return $this->confirm($user->id, $code); //buscar el codigo del token por consulta
+                return $this->confirm($user->id, $code); 
             } else{
-                return $this->render('/message', [
+                /*return $this->render('/message', [
                     'title'  => Yii::t('user', 'Your account has been created'),
                     'module' => $this->module,
-                ]);    
+                ]);*/
+                Yii::$app->session->setFlash('type-message', 'text-success');
+                Yii::$app->session->setFlash('message', Yii::t('user', 'Your account has been created'));
+                return $this->redirect(["/user/login"]);    
             }
         }
 
@@ -99,9 +102,6 @@ class RegistrationController extends BaseRegistrationController
 
         $user->attemptConfirmation($code);
 
-        return $this->render('/message', [
-            'title'  => Yii::t('user', 'Account confirmation'),
-            'module' => $this->module,
-        ]);
+        return $this->redirect(["/user/login"]);
     }
 }

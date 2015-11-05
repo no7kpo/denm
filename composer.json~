@@ -19,16 +19,7 @@
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
         "dektrium/yii2-user": "0.9.*@dev",
-<<<<<<< HEAD
-        "dmstr/yii2-adminlte-asset": "2.*",
-		"dektrium/yii2-rbac": "dev-master"
-=======
-        "almasaeed2010/adminlte": "~2.0",
-        "dmstr/yii2-adminlte-asset": "2.*",
-        "yiisoft/yii2-jui": "^2.0",
-        "kartik-v/yii2-widget-timepicker": "*"
-        
->>>>>>> 3e4903a5775d6c654fa5a51f3503454bdb38eb03
+        "dmstr/yii2-adminlte-asset": "2.*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

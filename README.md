@@ -53,3 +53,11 @@ tests                    contains various tests for the advanced application
     codeception/         contains tests developed with Codeception PHP Testing Framework
 ```
 # denm
+
+
+Para inicializar el proyecto
+init.bat
+sguido por composer install
+Tambien composer global require "fxp/composer-asset-plugin:~1.0.3"
+
+

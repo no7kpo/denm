@@ -4,9 +4,78 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "hash": "de308d2424e53133862c972d2744b4a0",
     "packages": [
         {
+=======
+    "hash": "8899db2a6e7e9dc13a320563f523ab83",
+    "content-hash": "053b4936ce740ba65b5141e840496fb1",
+    "packages": [
+        {
+            "name": "2amigos/yii2-date-time-picker-widget",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/2amigos/yii2-date-time-picker-widget.git",
+                "reference": "1248491c959d7080ab45c5284429e3d9222ed282"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/2amigos/yii2-date-time-picker-widget/zipball/1248491c959d7080ab45c5284429e3d9222ed282",
+                "reference": "1248491c959d7080ab45c5284429e3d9222ed282",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/smalot-bootstrap-datetimepicker": "2.3.1",
+                "yiisoft/yii2": "~2.0",
+                "yiisoft/yii2-bootstrap": "~2.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*",
+                "scrutinizer/ocular": "~1.1"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                },
+                "asset-installer-paths": {
+                    "bower-asset-library": "vendor/bower"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "dosamigos\\datetimepicker\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "2amigOS! Consulting Group",
+                    "email": "hola@2amigos.us",
+                    "homepage": "http://2amigos.us",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Bootstrap DateTimePicker widget for Yii2.",
+            "homepage": "http://yiiwheels.com/extension/bootstrap-datetimepicker",
+            "keywords": [
+                "2amigos",
+                "DateTimePicker",
+                "extension",
+                "widget",
+                "yii",
+                "yii 2",
+                "yii2"
+            ],
+            "time": "2015-04-02 10:59:30"
+        },
+        {
+>>>>>>> 3e4903a5775d6c654fa5a51f3503454bdb38eb03
             "name": "almasaeed2010/adminlte",
             "version": "v2.3.2",
             "source": {
@@ -282,6 +351,39 @@
             }
         },
         {
+            "name": "bower-asset/smalot-bootstrap-datetimepicker",
+            "version": "2.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/smalot/bootstrap-datetimepicker.git",
+                "reference": "c893c91872d273bcea1bd806d03eb624c91a4cac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smalot/bootstrap-datetimepicker/zipball/c893c91872d273bcea1bd806d03eb624c91a4cac",
+                "reference": "c893c91872d273bcea1bd806d03eb624c91a4cac",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "js/bootstrap-datetimepicker.min.js",
+                    "css/bootstrap-datetimepicker.min.css"
+                ],
+                "bower-asset-ignore": [
+                    "build",
+                    "sample in bootstrap v2",
+                    "sample in bootstrap v3",
+                    "screenshot",
+                    "tests",
+                    ".gitattributes",
+                    ".gitignore",
+                    ".travis.yml",
+                    "minify.sh"
+                ]
+            }
+        },
+        {
             "name": "bower-asset/yii2-pjax",
             "version": "v2.0.4",
             "source": {
@@ -418,6 +520,7 @@
             "time": "2013-12-10 17:49:58"
         },
         {
+<<<<<<< HEAD
             "name": "dektrium/yii2-rbac",
             "version": "dev-master",
             "source": {
@@ -468,6 +571,8 @@
             "time": "2015-10-03 18:34:36"
         },
         {
+=======
+>>>>>>> 3e4903a5775d6c654fa5a51f3503454bdb38eb03
             "name": "dektrium/yii2-user",
             "version": "v0.9.5",
             "source": {
@@ -675,6 +780,7 @@
             "time": "2015-06-16 05:19:57"
         },
         {
+<<<<<<< HEAD
             "name": "kartik-v/yii2-widget-select2",
             "version": "v2.0.3",
             "source": {
@@ -690,16 +796,41 @@
             },
             "require": {
                 "kartik-v/yii2-krajee-base": "~1.7"
+=======
+            "name": "kartik-v/yii2-widget-timepicker",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-widget-timepicker.git",
+                "reference": "432a8e166f89c2172fd5b86f6badcd943dbd3bc2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-timepicker/zipball/432a8e166f89c2172fd5b86f6badcd943dbd3bc2",
+                "reference": "432a8e166f89c2172fd5b86f6badcd943dbd3bc2",
+                "shasum": ""
+            },
+            "require": {
+                "kartik-v/yii2-krajee-base": "*"
+>>>>>>> 3e4903a5775d6c654fa5a51f3503454bdb38eb03
             },
             "type": "yii2-extension",
             "autoload": {
                 "psr-4": {
+<<<<<<< HEAD
                     "kartik\\select2\\": ""
+=======
+                    "kartik\\time\\": ""
+>>>>>>> 3e4903a5775d6c654fa5a51f3503454bdb38eb03
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
+<<<<<<< HEAD
                 "BSD-3-Clause"
+=======
+                "BSD 3-Clause"
+>>>>>>> 3e4903a5775d6c654fa5a51f3503454bdb38eb03
             ],
             "authors": [
                 {
@@ -708,6 +839,7 @@
                     "homepage": "http://www.krajee.com/"
                 }
             ],
+<<<<<<< HEAD
             "description": "Enhanced Yii2 wrapper for the Select2 jQuery plugin (sub repo split from yii2-widgets).",
             "homepage": "https://github.com/kartik-v/yii2-widget-select2",
             "keywords": [
@@ -721,6 +853,22 @@
                 "yii2"
             ],
             "time": "2015-09-12 19:56:48"
+=======
+            "description": "Enhanced Yii2 wrapper for the bootstrap timepicker plugin (sub repo split from yii2-widgets)",
+            "homepage": "https://github.com/kartik-v/yii2-widget-timepicker",
+            "keywords": [
+                "bootstrap",
+                "extension",
+                "form",
+                "jquery",
+                "picker",
+                "plugin",
+                "time",
+                "widget",
+                "yii2"
+            ],
+            "time": "2014-11-08 20:01:29"
+>>>>>>> 3e4903a5775d6c654fa5a51f3503454bdb38eb03
         },
         {
             "name": "rmrevin/yii2-fontawesome",

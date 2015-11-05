@@ -209,4 +209,19 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
+
+    public function actionStock($id = 0){
+        return $this->render('stock');
+    }
+
+
+    public function actionOrder($id = 0){
+        return $this->render('order');
+    }
+
+
+    public function actionCreateorder($id = 0){
+        return $this->render('new_order');
+    }
 }

@@ -27,7 +27,9 @@ $fieldOptions2 = [
     <!-- /.login-logo -->
     <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
-
+        <p class="login-box-msg <?=Yii::$app->session->getFlash("type-message"); ?>">
+            <?= Yii::$app->session->getFlash('message'); ?>
+        </p>
         <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => false]); ?>
 
         <?= $form
