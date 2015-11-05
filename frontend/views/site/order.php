@@ -6,7 +6,12 @@ use yii\helpers\Html;
 $this->title = 'Order';
 $id = $_GET['id'];
 
-//Data de ejemplo
+//Datos de ejemplo - Informacion del comercio
+$local_name = 'Devoto San Martin';
+$local_dir = 'San Martin 1243';
+$local_hour = '09:00 - 21:00';
+
+//Data de ejemplo - Lista de productos del pedido $id
 $data = array();
 $data[] = array(
     'id' => 385,
@@ -36,8 +41,17 @@ if(!Yii::$app->user->getIsGuest()){
     <div class="row" id="indx-welcome">
         <div class="col-md-10">
             <div>
-                <h2><p><?= Html::encode($this->title)?> Nº <?php echo $id; ?> - Devoto San Martin</p></h2>
-                <p> San Martin 1243 - 09:00 - 21:00</p>
+            <?php if(count($data) > 0){ ?>
+
+                <h2><p><?= Html::encode($this->title)?> Nº <?php echo $id.' - '.$local_name;?></p></h2>
+                <p> <?php echo $local_dir.' | '.$local_hour; ?></p>
+            
+            <?php } else{ ?>
+
+            	<h2><p><?= Html::encode($this->title)?> Nº <?php echo $id; ?>?</p></h2>
+            	<p> It looks like the order doesnt exist.</p>
+            
+            <?php } ?>
             </div>
         </div>
 
@@ -48,7 +62,8 @@ if(!Yii::$app->user->getIsGuest()){
 
     <br>
     <div class="body-content">
-
+    
+    <?php if(count($data) > 0){ ?>
     	<div class="col-md-4">
 
         	<div class="row text-center">
@@ -78,15 +93,15 @@ if(!Yii::$app->user->getIsGuest()){
 	                            <th class="text-center">Stock</th>
 	                        </tr>
 
-	                        <?php if(count($data) > 0){ foreach($data as $item){ ?>
+	                        <?php foreach($data as $item){ ?>
 	                        <tr>
 	                        	<td><?php echo $item['id']; ?></td>
 	                            <td><?php echo $item['name']; ?></td>
 	                            <td class="text-center"><?php echo $item['amount']; ?></td>
 	                            <td class="text-center"><span><img class="item img-responsive" src=<?php if($item['image'] == ''){ echo "/assets/images/wrong.png"; } else{ echo $item['image']; } ?>></span></td>
-	                           	<td class="text-center">?</td>
+	                           	<td class="text-center">NUMBER INPUT</td>
 	                        </tr>
-	                        <?php }}?>
+	                        <?php } ?>
 	                    </table>
 	                </div>
 
@@ -94,14 +109,22 @@ if(!Yii::$app->user->getIsGuest()){
 		        </form>
 		    </div>
         </div>
-
+    
+    <?php }else{ ?>
+    	<div class="col-md-12">
+        	<div class="row text-center">
+        		<h2><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/index'?>>Please go back</a></h2>
+        		<h3>Theres no data to show.</h3>
+        	</div>
+        </div>
+    <?php } ?>
     </div>
 
 </div>
 
 <?php } else{ ?>
 
-<div class="site-index">
+<div class="site-order">
 
     <div class="row" id="indx-welcome">
         <div class="col-md-4">
