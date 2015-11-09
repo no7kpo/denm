@@ -15,6 +15,9 @@ return [
         'user' => [
             // following line will restrict access to admin page
             'as frontend' => 'dektrium\user\filters\FrontendFilter',
+            'controllerMap' => [
+                'registration' => 'frontend\controllers\RegistrationController'
+            ],
         ],
         'rbac' => [
             'class' => 'dektrium\rbac\Module',
@@ -45,7 +48,15 @@ return [
         'showScriptName' => false,
         // Disable r= routes
         'enablePrettyUrl' => true,
-        ]
+        ],
+        'view' => [
+         'theme' => [
+             'pathMap' => [
+                '@dektrium/user/views' => '@app/views/user'
+                //'@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app'
+                ],
+            ],
+        ],
     ],
     'params' => $params,
 ];

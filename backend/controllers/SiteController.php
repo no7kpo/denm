@@ -42,7 +42,7 @@ class SiteController extends Controller
                         else{
                             Yii::$app->user->logout();
                             Yii::$app->session->setFlash('type-message', 'text-danger');
-                            Yii::$app->session->setFlash('message', 'You don\'t have admin permission');    
+                            Yii::$app->session->setFlash('message', Yii::t('user','You don\'t have admin permission'));    
                         }
                         
                     }

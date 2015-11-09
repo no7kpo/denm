@@ -38,6 +38,14 @@ class SiteController extends Controller
                         'roles' => ['relevador'],
                     ],
                 ],
+                'denyCallback'  => function ($rule, $action){
+                    if(!\Yii::$app->user->isGuest){
+                        Yii::$app->user->logout();
+                        Yii::$app->session->setFlash('type-message', 'text-danger');
+                        Yii::$app->session->setFlash('message', Yii::t('user','You don\'t have permission'));
+                    }
+                    return $this->redirect(["user/login"]);
+                }
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),
