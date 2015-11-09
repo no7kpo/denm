@@ -3,7 +3,7 @@
 /* @var $this yii\web\View */
 use yii\helpers\Html;
 
-$this->title = 'New Order';
+$this->title = Yii::t('app', 'New Order');
 $shopId = ''; //actualizar variable segun id de dropdown - jquery?
 
 //Data de ejemplo - Lista de Ids, Nombres de Comercios
@@ -35,7 +35,7 @@ if(!Yii::$app->user->getIsGuest()){
     	
     	<div class="col-md-12">
     		<div class="text-center" id="new-order-sel">
-                <h1 class="text-center">New Order</h1>
+                <h1 class="text-center"><?= Html::encode($this->title)?></h1>
 
                 <?php if(count($data) > 0){ ?>
                 
@@ -50,13 +50,13 @@ if(!Yii::$app->user->getIsGuest()){
                 </div>
 
                 <br><br>
-                <p class="text-center"><a class="btn btn-default btn-primary btn-sm" id="med-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/createorder?id='.$shopId.'"';?>>Select Shop</a></p>
+                <p class="text-center"><a class="btn btn-default btn-primary btn-sm med-btn" onclick="newOrder()" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/createorder?id='.$shopId.'"';?>><?= Yii::t('app','Select Shop');?></a></p>
 
                 <?php } else{ ?>
 
-                	<h4>Oh, oh! No shops are available.</h4>
+                	<h4><?= Yii::t('app','Oh, oh! No shops are available');?>.</h4>
                 	<br><br>
-                <p class="text-center"><a class="btn btn-default btn-primary btn-sm" id="med-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/index"';?>>Go back</a></p>
+                <p class="text-center"><a class="btn btn-default btn-primary btn-sm med-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/index"';?>><?= Yii::t('app','Go back');?></a></p>
 
                 <?php } ?>
             </div>
@@ -65,28 +65,33 @@ if(!Yii::$app->user->getIsGuest()){
     </div>
 </div>
 
+<script>
+    function newOrder(){
+        alert('Coseguir ID selected y asignarlo al href del btn');
+    }
+</script>
 
 <?php } else{ ?>
 
 <div class="site-neworder">
 
     <div class="row" id="indx-welcome">
-        <div class="col-md-4">
+        <div class="col-md-10">
             <div>
-                <h2><p>Welcome back .. guest?</p></h2>
-                <p> - It's nice see you!</p>
+                <h2><p><?= Yii::t('app','Welcome back .. guest?');?></p></h2>
+                <p> - <?= Yii::t('app',"It's nice see you!");?></p>
             </div>
         </div>
 
-        <div class="col-md-8 right">
-            <img class="img-responsive right" src="http://gamers-on.com/wp-content/uploads/2015/02/google-maps_infografia.jpg">
+        <div class="col-md-2 right">
+            <img class="img-responsive right" src="/assets/images/items.png">
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-6">
             <br><br>
-            <h1>Please <a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/login'?>> login</a> or <a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/signup'?>>signup</a>.</h1>
+            <h1><?= Yii::t('app','Please');?> <a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/login'?>> <?= Yii::t('app','login');?></a> <?= Yii::t('app','or');?> <a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/signup'?>><?= Yii::t('app','signup');?></a>.</h1>
         </div>
     </div>
 
