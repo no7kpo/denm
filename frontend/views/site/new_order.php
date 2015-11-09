@@ -39,24 +39,24 @@ if(!Yii::$app->user->getIsGuest()){
 
                 <?php if(count($data) > 0){ ?>
                 
-                <div class="dropdown datepicker-inline">
+                <div id="shop_select" class="dropdown datepicker-inline">
                     <select class="btn btn-sm dropdown-toggle" id="shop-dropdown">
                     
                     <?php foreach($data as $shop){ ?>
-                      <option value=<?php echo $shop['id'];?> onclick="<?php echo "setShopId('".$shop['id']."')";?>"><?php echo $shop['name'];?></option>
+                      <option value=<?php echo $shop['id'];?>><?php echo $shop['name'];?></option>
                     <?php } ?>
                     
                     </select>
                 </div>
 
                 <br><br>
-                <p class="text-center"><a class="btn btn-default btn-primary btn-sm med-btn" onclick="newOrder()" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/createorder?id='.$shopId.'"';?>><?= Yii::t('app','Select Shop');?></a></p>
+                <p class="text-center"><a class="btn btn-default btn-primary btn-sm med-btn" onclick="newOrder()"><?= Yii::t('app','Select Shop');?></a></p>
 
                 <?php } else{ ?>
 
                 	<h4><?= Yii::t('app','Oh, oh! No shops are available');?>.</h4>
                 	<br><br>
-                <p class="text-center"><a class="btn btn-default btn-primary btn-sm med-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/index"';?>><?= Yii::t('app','Go back');?></a></p>
+                <p class="text-center"><a id="newOrderBtn" class="btn btn-default btn-primary btn-sm med-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/index"';?>><?= Yii::t('app','Go back');?></a></p>
 
                 <?php } ?>
             </div>
@@ -67,7 +67,9 @@ if(!Yii::$app->user->getIsGuest()){
 
 <script>
     function newOrder(){
-        alert('Coseguir ID selected y asignarlo al href del btn');
+        var id = $("#shop_select option:selected").val();
+        url = "http://relevadores.front.com/site/createorder?id="+id;
+        window.location = url;
     }
 </script>
 
