@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'Relevadores';
+$this->title = Yii::t('app', 'Relays');
 $count = 1;
 
 //Data de ejemplo - Lista de pedidos y nombre de comercio
@@ -79,8 +79,8 @@ if(!Yii::$app->user->getIsGuest()){
     <div class="row" id="indx-welcome">
         <div class="col-md-10">
             <div>
-                <h2><p>Welcome back <?php print_r(Yii::$app->user->identity->username); ?>!</p></h2>
-                <p> - It's nice see you again</p>
+                <h2><p><?= Yii::t('app','Welcome back');?> <?php print_r(Yii::$app->user->identity->username); ?>!</p></h2>
+                <p> - <?= Yii::t('app',"It's nice see you again");?></p>
             </div>
         </div>
 
@@ -96,13 +96,13 @@ if(!Yii::$app->user->getIsGuest()){
 
             <div class="row text-center">
                 <div>
-                    <h3>Your best route for today</h3>
+                    <h3><?= Yii::t('app',"Your best route for today");?></h3>
                     <img class="img-responsive map-center" src="http://i.imgur.com/us91yIY.png">
                 </div>
                 <br>
                 <div class="text-center" id="new-order">
-                    <h3 class="text-center">Take new orders!</h3>
-                    <p class="text-center"><a class="btn btn-default btn-primary btn-sm" id="med-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/neworder"';?>>New order</a></p>
+                    <h3 class="text-center"><?= Yii::t('app',"Take new orders!");?></h3>
+                    <p class="text-center"><a class="btn btn-default btn-primary btn-sm" id="med-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/neworder"';?>><?= Yii::t('app',"New order");?></a></p>
                 </div>
             </div>
 
@@ -114,12 +114,12 @@ if(!Yii::$app->user->getIsGuest()){
 
             <div class="row">
                 <div class="dropdown datepicker-inline">
-                    <h2>Deliveries</h2>
+                    <h2><?= Yii::t('app',"Deliveries");?></h2>
                     <select class="btn btn-sm dropdown-toggle" id="datepicker-btn">
-                      <option value="today" selected onclick="getReport('today')">Today</option>
-                      <option value="tomorrow" onclick="getReport('tomorrow')">Tomorrow</option>
-                      <option value="t_week" onclick="getReport('t_week')">This week</option>
-                      <option value="n_week" onclick="getReport('n_week')">Next week</option>
+                      <option value="today" selected onclick="getReport('today')"><?= Yii::t('app',"Today");?></option>
+                      <option value="tomorrow" onclick="getReport('tomorrow')"><?= Yii::t('app',"Tomorrow");?></option>
+                      <option value="t_week" onclick="getReport('t_week')"><?= Yii::t('app',"This week");?></option>
+                      <option value="n_week" onclick="getReport('n_week')"><?= Yii::t('app',"Next week");?></option>
                     </select>
                 </div>
 
@@ -128,10 +128,10 @@ if(!Yii::$app->user->getIsGuest()){
                     <table class="table table-hover" id="delivery-table">
                         <tr>
                             <th>#</th>
-                            <th>Shop</th>
-                            <th class="text-center">Day</th>
-                            <th class="text-center">Hours</th>
-                            <th class="text-center">Delivered</th>
+                            <th><?= Yii::t('app',"Shop");?></th>
+                            <th class="text-center"><?= Yii::t('app',"Day");?></th>
+                            <th class="text-center"><?= Yii::t('app',"Hours");?></th>
+                            <th class="text-center"><?= Yii::t('app',"Delivered");?></th>
                         </tr>
 
                         <?php if(count($data) > 0){ foreach($data as $order){ ?>
@@ -157,22 +157,22 @@ if(!Yii::$app->user->getIsGuest()){
 <div class="site-index">
 
     <div class="row" id="indx-welcome">
-        <div class="col-md-4">
+        <div class="col-md-10">
             <div>
-                <h2><p>Welcome back .. guest?</p></h2>
-                <p> - It's nice see you!</p>
+                <h2><p><?= Yii::t('app',"Welcome back .. guest?");?></p></h2>
+                <p> - <?= Yii::t('app',"It's nice see you!");?></p>
             </div>
         </div>
 
-        <div class="col-md-8 right">
-            <img class="img-responsive right" src="http://gamers-on.com/wp-content/uploads/2015/02/google-maps_infografia.jpg">
+        <div class="col-md-2 right">
+            <img class="img-responsive right" src="/assets/images/map.jpg">
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-6">
             <br><br>
-            <h1>Please <a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/login'?>> login</a> or <a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/signup'?>>signup</a>.</h1>
+            <h1><?= Yii::t('app',"Please");?> <a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/login'?>> <?= Yii::t('app',"login");?></a> <?= Yii::t('app',"or");?> <a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/signup'?>><?= Yii::t('app',"signup");?></a>.</h1>
         </div>
     </div>
 

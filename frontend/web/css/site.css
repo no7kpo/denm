@@ -168,11 +168,11 @@ a.desc:after {
     margin-right: auto;
 }
 
-#big-btn {
-    min-width: 250px;
+.big-btn {
+    min-width: 120px;
 }
 
-#med-btn {
+.med-btn {
     min-width: 150px;
 }
 
