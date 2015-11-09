@@ -11,7 +11,7 @@ $this->title = 'Sign In';
 
 $fieldOptions1 = [
     'options' => ['class' => 'form-group has-feedback'],
-    'inputTemplate' => "{input}<span class='glyphicon glyphicon-envelope form-control-feedback'></span>"
+    'inputTemplate' => "{input}<span class='glyphicon glyphicon-user form-control-feedback'></span>"
 ];
 
 $fieldOptions2 = [
