@@ -9,7 +9,10 @@ return [
             // you will configure your module inside this file
 	        // or if need different configuration for frontend and backend you may
 	        // configure in needed configs
-            'admins' => ['admin']
+            'admins' => ['admin'],
+            'modelMap' => [
+                'LoginForm' => 'common\models\LoginForm',
+            ],
         ],
     ],
     'components' => [
