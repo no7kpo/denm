@@ -24,6 +24,20 @@ return [
         ],
     ],
     'components' => [
+        'authClientCollection' => [
+                'class' => 'yii\authclient\Collection',
+                'clients' => [
+                      'google' => [
+                          'class' => 'yii\authclient\clients\GoogleOpenId'
+                        ],
+                        'twitter' => [
+                                  'class' => 'yii\authclient\clients\Twitter',
+                                  'consumerKey' => 'wXTfoo2TwPmqs6iOrn3SsbPYI',
+                                  'consumerSecret' => 'iEKIl5SZdAahAI0x75JEnPJ5Ijcg2Pye3eRYlebCZTP14EtWoL',
+                              ],
+                    ],
+                ],
+        
         /*'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,*/
