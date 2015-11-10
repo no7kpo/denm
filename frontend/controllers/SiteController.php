@@ -12,6 +12,7 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use frontend\models\CreateorderForm;
 
 /**
  * Site controller
@@ -230,7 +231,18 @@ class SiteController extends Controller
     
 
     public function actionCreateorder($id = 0){
-        return $this->render('create_order');
+        $model = new CreateorderForm();
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->createorderform($id)) {
+                if (Yii::$app->getUser()->login($user)) {
+                    return $this->goHome();
+                }
+            }
+        }
+
+        return $this->render('create_order', [
+            'model' => $model,
+        ]);
     }
 
 }

@@ -207,3 +207,19 @@ a.desc:after {
     margin-left: auto;
     margin-right: auto;
 }
+
+.create-order-date {
+    background-color: #dcebf7;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    max-width: 390px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.create-order-date * {
+    margin-left: auto;
+    margin-right: auto;
+    min-height: 40px;
+}

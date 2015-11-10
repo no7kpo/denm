@@ -68,7 +68,7 @@ if(!Yii::$app->user->getIsGuest()){
 <script>
     function newOrder(){
         var id = $("#shop_select option:selected").val();
-        url = "http://relevadores.front.com/site/createorder?id="+id;
+        url = "http://"+document.domain+"/site/createorder?id="+id;
         window.location = url;
     }
 </script>

@@ -2,6 +2,8 @@
 
 /* @var $this yii\web\View */
 use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+use yii\jui\DatePicker;
 
 $this->title = Yii::t('app', 'Create Order');
 
@@ -23,6 +25,7 @@ if(!Yii::$app->user->getIsGuest()){
 
 ?>
 
+
 <div class="site-createorder">
 
         <div class="row" id="indx-welcome">
@@ -42,53 +45,69 @@ if(!Yii::$app->user->getIsGuest()){
     <div class="body-content">
     
     <?php if(count($data) > 0){ ?>
-        <div class="col-md-4">
 
-            <div class="row text-center">
-                <div>
-                    <h3><?= Yii::t('app','Select delivery day');?></h3>
-                    DATEPICKER
-                </div>
-                <br>
-            </div>
+        <?php $form = ActiveForm::begin(['id' => 'form-createorder']); ?>
+            <div class="col-md-4">
 
-        </div>
+                <div class="row text-left">
+                    <div class="text-center create-order-date">
+                        <h2><?= Yii::t('app','Delivery day');?></h2>
 
-        <div class="col-md-1"></div>
-
-        <div class="col-md-7">
-            <div class="row">
-                <form role="form">        
-                    <h2><?= Yii::t('app','Delivery Items');?></h2>
-
-                    <div class="table-responsive">
-                        <table class="table table-hover" id="delivery-table">
-                            <tr>
-                                <th>Id</th>
-                                <th><?= Yii::t('app','Name');?></th>
-                                <th class="text-center"><?= Yii::t('app','Our stock');?></th>
-                                <th class="text-center"><?= Yii::t('app','Image');?></th>
-                                <th class="text-center"><?= Yii::t('app','Amount');?></th>
-                            </tr>
-
-                            <?php foreach($data as $item){ ?>
-                            <tr>
-                                <td><?php echo $item['id']; ?></td>
-                                <td><?php echo $item['name']; ?></td>
-                                <td class="text-center"><?php echo $item['stock']; ?></td>
-                                <td class="text-center"><span><img class="item img-responsive" src=<?php if($item['image'] == ''){ echo "/assets/images/wrong.png"; } else{ echo $item['image']; } ?>></span></td>
-                                <td class="text-center">NUMBER INPUT</td>
-                            </tr>
-                            <?php } ?>
-                        </table>
+                        <?php echo DatePicker::widget([
+                            'clientOptions' => [
+                                'model' => $model,
+                                'attribute' => 'deliveryDate',
+                                //'dateFormat' => 'dd-MM-yyyy',
+                            ],
+                            'options' => ['class' => 'form-control', 'style' => 'max-width: 260px;']
+                        ]); ?>
+                        
+                        <br>
                     </div>
+                    <br>
+                </div>
 
-                    <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/index"';?>><?= Yii::t('app','Cancel');?></a></p>
-                    <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" id="" href=<?php echo '';?>><?= Yii::t('app','Create');?></a></p>
-                </form>
             </div>
-        </div>
-    
+
+            <div class="col-md-1"></div>
+
+            <div class="col-md-7">
+                <div class="row">
+                    <form role="form">        
+                        <h2><?= Yii::t('app','Delivery Items');?></h2>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="delivery-table">
+                                <tr>
+                                    <th>Id</th>
+                                    <th><?= Yii::t('app','Name');?></th>
+                                    <th class="text-center"><?= Yii::t('app','Our stock');?></th>
+                                    <th class="text-center"><?= Yii::t('app','Image');?></th>
+                                    <th class="text-center"><?= Yii::t('app','Amount');?></th>
+                                </tr>
+
+                                <?php foreach($data as $item){ ?>
+                                <tr>
+                                    <td><?php echo $item['id']; ?></td>
+                                    <td><?php echo $item['name']; ?></td>
+                                    <td class="text-center"><?php echo $item['stock']; ?></td>
+                                    <td class="text-center"><span><img class="item img-responsive" src=<?php if($item['image'] == ''){ echo "/assets/images/wrong.png"; } else{ echo $item['image']; } ?>></span></td>
+                                    <td class="text-center">
+                                        <?= $form->field($model,'amount')->textInput(['maxlength'=>3,'style'=>'width:55px; height: 33px; margin: auto;'])->label(false); ?>
+                                    </td>
+                                </tr>
+                                <?php } ?>
+                            </table>
+                        </div>
+
+                        <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/index"';?>><?= Yii::t('app','Cancel');?></a></p>
+                        <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" id="" href=<?php echo '';?>><?= Yii::t('app','Create');?></a></p>
+                    </form>
+                </div>
+            </div>
+
+        <?php ActiveForm::end(); ?>
+
     <?php }else{ ?>
         <div class="col-md-12">
             <div class="row text-center">
