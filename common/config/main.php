@@ -1,4 +1,6 @@
 <?php
+//Alias para poder mostrar imágenes de productos en toda la aplicación
+Yii::setAlias('@product_pictures','http://localhost/relevando/backend/imagenes/productos');
 return [
 	'language' =>'en-US', 
 
