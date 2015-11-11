@@ -28,3 +28,6 @@ composer.phar
 phpunit.phar
 # local phpunit config
 /phpunit.xml
+
+#Las imagenes subidas por los usuarios
+/backend/imagenes

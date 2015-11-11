@@ -33,7 +33,8 @@ class Producto extends \yii\db\ActiveRecord
         return [
             [['Nombre', 'idcategoria'], 'required'],
             [['idcategoria'], 'integer'],
-            [['Nombre'], 'string', 'max' => 100]
+            [['Nombre', 'Imagen'], 'string', 'max' => 100],
+
         ];
     }
 
@@ -46,7 +47,7 @@ class Producto extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'Nombre' => Yii::t('app', 'Name'),
             'idcategoria' => Yii::t('app', 'Category'),
-            
+            'Imagen' => 'Imagen',
         ];
     }
 
@@ -74,8 +75,8 @@ class Producto extends \yii\db\ActiveRecord
         return $this->hasOne(Categorias::className(), ['id' => 'idcategoria']);
     }
 
-        public function getFotos()
+    /*    public function getFotos()
     {
         return $this->hasOne(Foto::className(), ['idProducto' => 'id']);
-    }
+    }*/
 }

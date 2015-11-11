@@ -7,7 +7,7 @@ use backend\models\Categorias;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Producto */
 
-$this->title = $model->id;
+$this->title = $model->Nombre;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Products'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -17,6 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Change Picture'), ['update_picture', 'id' => $model->id] , ['class' => 'btn btn-success']) ?>
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -33,9 +34,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'Nombre',
             ['attribute'=>'idcategoria',
             'value' => Categorias::findOne($model->idcategoria)->nombre,
-                ],
-            
+                ],            
         ],
     ]) ?>
-
+    <div>
+        <?=Html::img(Yii::getAlias('@product_pictures'). '/' .$model->Imagen,['alt' => Yii::t('app','Product picture')]);?>
+    </div>
 </div>

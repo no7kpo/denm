@@ -73,27 +73,21 @@ class ProductoController extends Controller
     public function actionCreate()
     {
         $model = new Producto();
-        $foto = new UploadForm();
-        
-        
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            
-
-            $foto->imageFile = UploadedFile::getInstance($foto, 'Imagen');
-            
-            if ($foto->upload($model->id)) {
+        if ($model->load(Yii::$app->request->post())) {
+            $foto = new UploadForm();
+            $foto->imageFile = UploadedFile::getInstance($foto, 'imageFile');
+            $upload_result = $foto->upload();
+            if ($upload_result != false) {
                 // file is uploaded successfully
-                return;
+                $model->Imagen = $upload_result;
+                $model->save();
+                return $this->redirect(['view', 'id' => $model->id]);
             }
-            
-            
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+        }   //Si no es post o el producto no se guarda correctamente se devuelve el formulario
             $img_model = new UploadForm();
             return $this->render('create', [
                 'model' => $model, 'img_model' =>$img_model
             ]);
-        }
     }
 
     /**
@@ -105,7 +99,7 @@ class ProductoController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -113,6 +107,28 @@ class ProductoController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+
+    public function actionUpdate_picture($id){
+
+        $model = $this->findModel($id);
+        if($model->load(Yii::$app->request->post())){
+            $foto = new UploadForm();
+            $foto->imageFile = UploadedFile::getInstance($foto, 'imageFile');
+            
+            $upload_result = $foto->upload();
+            if ($upload_result != false){
+                unlink(Yii::getAlias('@backend') . '/imagenes/productos/' . $model->Imagen);
+                $model->Imagen = $upload_result;
+                $model->save();
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+            
+        }   //Método GET o falla subida de imágen
+            $img_model = new UploadForm();
+            return $this->render('update_picture', [
+                'model' => $model, 'img_model' => $img_model,
+            ]);
     }
 
     /**

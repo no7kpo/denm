@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use backend\models\Categorias;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -24,8 +25,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
             
             'Nombre',
-            'idcategoria',
-            
+            ['attribute'=>'idcategoria',
+            'value' => function($producto){
+                    return Categorias::findOne($producto->idcategoria)->nombre;
+                }
+            ],
+            'Imagen',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
