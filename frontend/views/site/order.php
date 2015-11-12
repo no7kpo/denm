@@ -3,7 +3,7 @@
 /* @var $this yii\web\View */
 use yii\helpers\Html;
 
-$this->title = Yii::t('app', 'Order');
+$this->title = Yii::t('app', 'Stock for order');
 $id = $_GET['id'];
 
 //Datos de ejemplo - Informacion del comercio
@@ -16,19 +16,16 @@ $data = array();
 $data[] = array(
     'id' => 385,
     'name' => 'Shampoo de perro',
-    'amount' => 50,
     'image' => 'http://www.caloxvetcentroamerica.com/wp-content/uploads/2012/05/Champu_Antialergico.png'
 );
 $data[] = array(
     'id' => 101,
     'name' => 'Pasta de dientes Colgate',
-    'amount' => 100,
     'image' => 'https://www.perfumeriasif.com/1419-22008-medium/colgate-pasta-proteccion-caries-75-ml.jpg'
 );
 $data[] = array(
     'id' => 95,
     'name' => 'Espuma de afeitar Gillette',
-    'amount' => 20,
     'image' => 'https://www.gillette.com/WebHandlers/JSCSSCompressHandler.ashx?filetype=image&sourcefilename=/Content/es-AR/Images/Nav_preview/Espuma-para-Afeitar-Foamy.png'
 );
 
@@ -69,7 +66,7 @@ if(!Yii::$app->user->getIsGuest()){
         	<div class="row text-center">
         		<div>
 	                <h3><?= Yii::t('app','Best route from your location');?></h3>
-	                <img class="img-responsive map-center" src="http://i.imgur.com/us91yIY.png">
+	                <div id="map-canvas" class="img-responsive map-center google-map"></div>
             	</div>
             	<br>
             </div>
@@ -86,27 +83,25 @@ if(!Yii::$app->user->getIsGuest()){
 	                <div class="table-responsive">
 	                    <table class="table table-hover" id="delivery-table">
 	                        <tr>
-	                        	<th><?= Yii::t('app','Id');?></th>
 	                            <th>Name</th>
-	                            <th class="text-center"><?= Yii::t('app','Amount');?></th>
 	                            <th class="text-center"><?= Yii::t('app','Image');?></th>
 	                            <th class="text-center"><?= Yii::t('app','Stock');?></th>
 	                        </tr>
 
 	                        <?php foreach($data as $item){ ?>
 	                        <tr>
-	                        	<td><?php echo $item['id']; ?></td>
 	                            <td><?php echo $item['name']; ?></td>
-	                            <td class="text-center"><?php echo $item['amount']; ?></td>
 	                            <td class="text-center"><span><img class="item img-responsive" src=<?php if($item['image'] == ''){ echo "/assets/images/wrong.png"; } else{ echo $item['image']; } ?>></span></td>
-	                           	<td class="text-center">NUMBER INPUT</td>
+	                           	<td class="text-center">
+	                           		<input class="input-stock" type="number" id="stock_<?php echo $item['id'];?>" value="0" min="0" max="1000">
+	                           	</td>
 	                        </tr>
 	                        <?php } ?>
 	                    </table>
 	                </div>
 
                     <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/index"';?>><?= Yii::t('app','Cancel');?></a></p>
-                    <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" onclick=<?php echo '"deliveryDone('.$id.')"';?>><?= Yii::t('app','Done');?>!</a></p>
+                    <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" onclick=<?php echo '"deliveryDone('.$id.')"';?>><?= Yii::t('app','Update');?>!</a></p>
                 </form>
 		    </div>
         </div>
@@ -122,6 +117,48 @@ if(!Yii::$app->user->getIsGuest()){
     </div>
 
 </div>
+
+<script>
+    function initialize() {
+        var mapCanvas = document.getElementById('map-canvas');
+        
+        var mapOptions = {
+            center: new google.maps.LatLng(-34.8977714, -56.165),
+            zoom: 13,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+
+        var map = new google.maps.Map(mapCanvas,mapOptions);
+        var markers = [];
+        
+        google.maps.event.addListener(map, 'click', function( event ){
+
+            document.getElementById('comercios-latitud').value=event.latLng.lat();
+            document.getElementById('comercios-longitud').value=event.latLng.lng();
+            var marcador = new google.maps.LatLng(event.latLng.lat(),event.latLng.lng());
+            var marker = new google.maps.Marker({
+                position: marcador,
+                draggable:true,
+                animation: google.maps.Animation.DROP,
+                map: map,
+                title: ''
+            });
+            
+            markers.push(marker);
+            
+            if(markers.length==1){
+                markers[0].setMap(map);
+            }
+            else{
+                markers[0].setMap(null);
+                markers.splice(0,1);
+                marker.setMap(map);    
+            }
+           
+        });    
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
 
 <?php } else{ ?>
 

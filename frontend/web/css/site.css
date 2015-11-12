@@ -208,6 +208,10 @@ a.desc:after {
     margin-right: auto;
 }
 
+.google-map {
+    max-height: 350px;
+}
+
 .create-order-date {
     background-color: #dcebf7;
     margin-left: auto;
@@ -222,4 +226,17 @@ a.desc:after {
     margin-left: auto;
     margin-right: auto;
     min-height: 40px;
+}
+
+.input-stock {
+    width: 50px;
+    height: 30px;
+    padding-left: 10px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }

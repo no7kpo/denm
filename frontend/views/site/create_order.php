@@ -54,6 +54,7 @@ if(!Yii::$app->user->getIsGuest()){
                         <h2><?= Yii::t('app','Delivery day');?></h2>
 
                         <?php echo DatePicker::widget([
+                            'id' => 'delivery_day',
                             'clientOptions' => [
                                 'model' => $model,
                                 'attribute' => 'deliveryDate',
@@ -79,21 +80,19 @@ if(!Yii::$app->user->getIsGuest()){
                         <div class="table-responsive">
                             <table class="table table-hover" id="delivery-table">
                                 <tr>
-                                    <th>Id</th>
                                     <th><?= Yii::t('app','Name');?></th>
-                                    <th class="text-center"><?= Yii::t('app','Our stock');?></th>
+                                    <th class="text-center"><?= Yii::t('app','Shop stock');?></th>
                                     <th class="text-center"><?= Yii::t('app','Image');?></th>
                                     <th class="text-center"><?= Yii::t('app','Amount');?></th>
                                 </tr>
 
                                 <?php foreach($data as $item){ ?>
                                 <tr>
-                                    <td><?php echo $item['id']; ?></td>
                                     <td><?php echo $item['name']; ?></td>
                                     <td class="text-center"><?php echo $item['stock']; ?></td>
                                     <td class="text-center"><span><img class="item img-responsive" src=<?php if($item['image'] == ''){ echo "/assets/images/wrong.png"; } else{ echo $item['image']; } ?>></span></td>
                                     <td class="text-center">
-                                        <?= $form->field($model,'amount')->textInput(['maxlength'=>3,'style'=>'width:55px; height: 33px; margin: auto;'])->label(false); ?>
+                                        <input class="input-stock" type="number" id="stock_<?php echo $item['id'];?>" value="0" min="0" max="<?php echo $item['stock'];?>">
                                     </td>
                                 </tr>
                                 <?php } ?>

@@ -239,7 +239,7 @@ class SiteController extends Controller
                 }
             }
         }
-
+        
         return $this->render('create_order', [
             'model' => $model,
         ]);
