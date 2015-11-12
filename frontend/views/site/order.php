@@ -4,7 +4,7 @@
 use yii\helpers\Html;
 
 $this->title = Yii::t('app', 'Stock for order');
-$id = $_GET['id'];
+$shopId = $_GET['id'];
 
 //Datos de ejemplo - Informacion del comercio
 $local_name = 'Devoto San Martin';
@@ -93,15 +93,20 @@ if(!Yii::$app->user->getIsGuest()){
 	                            <td><?php echo $item['name']; ?></td>
 	                            <td class="text-center"><span><img class="item img-responsive" src=<?php if($item['image'] == ''){ echo "/assets/images/wrong.png"; } else{ echo $item['image']; } ?>></span></td>
 	                           	<td class="text-center">
-	                           		<input class="input-stock" type="number" id="stock_<?php echo $item['id'];?>" value="0" min="0" max="1000">
+	                           		<input class="input-stock" onblur="saveThisItem(<?php echo $shopId;?>,<?php echo $item['id'];?>,this.value)" type="number" id="stock_<?php echo $item['id'];?>" value="0" min="0" max="1000">
 	                           	</td>
 	                        </tr>
 	                        <?php } ?>
 	                    </table>
 	                </div>
+                    <script type="text/javascript">
+                        function saveThisItem(shop,item,value) {
 
+                            console.log(shop,item,value);
+                        }
+                    </script>
                     <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/index"';?>><?= Yii::t('app','Cancel');?></a></p>
-                    <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" onclick=<?php echo '"deliveryDone('.$id.')"';?>><?= Yii::t('app','Update');?>!</a></p>
+                    <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" onclick=<?php echo '"deliveryDone('.$id.')"';?>><?= Yii::t('app','Done');?>!</a></p>
                 </form>
 		    </div>
         </div>

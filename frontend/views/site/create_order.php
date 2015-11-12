@@ -81,9 +81,9 @@ if(!Yii::$app->user->getIsGuest()){
                             <table class="table table-hover" id="delivery-table">
                                 <tr>
                                     <th><?= Yii::t('app','Name');?></th>
-                                    <th class="text-center"><?= Yii::t('app','Shop stock');?></th>
+                                    <th class="text-center"><?= Yii::t('app','Available stock');?></th>
                                     <th class="text-center"><?= Yii::t('app','Image');?></th>
-                                    <th class="text-center"><?= Yii::t('app','Amount');?></th>
+                                    <th class="text-center"><?= Yii::t('app','New delivery stock');?></th>
                                 </tr>
 
                                 <?php foreach($data as $item){ ?>
