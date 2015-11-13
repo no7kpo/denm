@@ -21,14 +21,14 @@ class UploadForm extends Model
     
     public function upload()
     {
-        $directory = Yii::getAlias('@backend') . '/imagenes/productos';
+        $directory = Yii::getAlias('@save_product');
         if (!is_dir($directory)) {
             mkdir($directory, 0777, true);
         }    
             
         if ($this->validate()) {
             $file_name = date('Y-m-d H:i:s') . "_" . $this->imageFile->baseName . '.' . $this->imageFile->extension;
-            $this->imageFile->saveAs($directory . '/' . $file_name);
+            $this->imageFile->saveAs($directory . '\\'.$file_name);
             /*$foto = new Foto();
                 $foto->idproducto = $id;
                 $foto->url = $file_name;
