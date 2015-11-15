@@ -29,8 +29,7 @@ return [
                 ],
             ],
         ],
-    ],
-    'authClientCollection' => [
+            'authClientCollection' => [
             'class'   => \yii\authclient\Collection::className(),
             'clients' => [
                 // here is the list of clients you want to use
@@ -42,4 +41,6 @@ return [
                 ],
             ],
         ],
+    ],
+
 ];
