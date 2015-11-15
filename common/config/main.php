@@ -30,4 +30,16 @@ return [
             ],
         ],
     ],
+    'authClientCollection' => [
+            'class'   => \yii\authclient\Collection::className(),
+            'clients' => [
+                // here is the list of clients you want to use
+                // you can read more in the "Available clients" section
+                'google' => [
+                    'class'        => 'dektrium\user\clients\Google',
+                    'clientId'     => '576934539950-rqhpbetof4bcpviqk0204ba8njv7rdd0.apps.googleusercontent.com',
+                    'clientSecret' => 'UjKbHydPwy0RcLhUuz0prnxH',
+                ],
+            ],
+        ],
 ];
