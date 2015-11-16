@@ -27,7 +27,7 @@ class UploadForm extends Model
         }    
             
         if ($this->validate()) {
-            $file_name = date('Y-m-d H:i:s') . "_" . $this->imageFile->baseName . '.' . $this->imageFile->extension;
+            $file_name = date('Y-m-d H-i-s') . "_" . $this->imageFile->baseName . '.' . $this->imageFile->extension;
             $this->imageFile->saveAs($directory . '\\'.$file_name);
             /*$foto = new Foto();
                 $foto->idproducto = $id;

@@ -3,6 +3,10 @@
 use yii\helpers\Html;
 use kartik\time\TimePicker;
 use yii\widgets\ActiveForm;
+use kartik\select2\Select2;
+use backend\models\Producto;
+use backend\models\Categorias;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Comercios */
@@ -32,6 +36,14 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model,'hora_apertura')->widget(TimePicker::classname(), []); ?>
 
     <?= $form->field($model, 'hora_cierre')->widget(TimePicker::classname(), []) ?>
+
+    <?= dropDownList( ArrayHelper::map(Categorias::find()->All(), 'id', 'nombre')) ?>
+    <?= Select2::widget([
+    'name' => 'products',
+    'value' => '',
+    'data' => ArrayHelper::map(Producto::find()->All(), 'id', 'Nombre'),
+    'options' => ['multiple' => true, 'placeholder' => Yii::t('app','Select products...')]
+]); ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
