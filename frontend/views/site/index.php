@@ -115,11 +115,11 @@ if(!Yii::$app->user->getIsGuest()){
             <div class="row">
                 <div class="dropdown datepicker-inline">
                     <h2><?= Yii::t('app',"Deliveries");?></h2>
-                    <select class="btn btn-sm dropdown-toggle" id="datepicker-btn">
-                      <option value="today" selected onclick="getReport('today')"><?= Yii::t('app',"Today");?></option>
-                      <option value="tomorrow" onclick="getReport('tomorrow')"><?= Yii::t('app',"Tomorrow");?></option>
-                      <option value="t_week" onclick="getReport('t_week')"><?= Yii::t('app',"This week");?></option>
-                      <option value="n_week" onclick="getReport('n_week')"><?= Yii::t('app',"Next week");?></option>
+                    <select class="btn btn-sm dropdown-toggle" id="datepicker-btn" onchange="changeDateRange(this.value)">
+                      <option value="today" selected><?= Yii::t('app',"Today");?></option>
+                      <option value="tomorrow"><?= Yii::t('app',"Tomorrow");?></option>
+                      <option value="t_week"><?= Yii::t('app',"This week");?></option>
+                      <option value="n_week"><?= Yii::t('app',"Next week");?></option>
                     </select>
                 </div>
 
@@ -151,6 +151,15 @@ if(!Yii::$app->user->getIsGuest()){
 
     </div>
 </div>
+
+<script type="text/javascript">
+
+    //Funcion para el cambio de fechas
+    function changeDateRange(value) {
+        alert(value);
+    }
+    
+</script>
 
 <script>
     function initialize() {

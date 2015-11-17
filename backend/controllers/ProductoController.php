@@ -118,7 +118,7 @@ class ProductoController extends Controller
             
             $upload_result = $foto->upload();
             if ($upload_result != false){
-                unlink(Yii::getAlias('@backend') . '/imagenes/productos/' . $model->Imagen);
+                unlink(Yii::getAlias('@backend') . DIRECTORY_SEPARATOR.'imagenes'.DIRECTORY_SEPARATOR.'productos'. DIRECTORY_SEPARATOR . $model->Imagen);
                 $model->Imagen = $upload_result;
                 $model->save();
                 return $this->redirect(['view', 'id' => $model->id]);

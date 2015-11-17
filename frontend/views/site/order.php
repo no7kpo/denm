@@ -3,32 +3,17 @@
 /* @var $this yii\web\View */
 use yii\helpers\Html;
 
-$this->title = Yii::t('app', 'Stock for order');
-$shopId = $_GET['id'];
-
-//Datos de ejemplo - Informacion del comercio
-$local_name = 'Devoto San Martin';
+//Defino datos del comercio
+$local_name = $comercio['nombre'];
 $local_dir = 'San Martin 1243';
-$local_hour = '09:00 - 21:00';
+$horaIni = explode(':', $comercio['hora_apertura']);
+$horaFin = explode(':', $comercio['hora_cierre']);
+$local_hour = $horaIni[0].':'.$horaIni[1].' - '.$horaFin[0].':'.$horaFin[1];
+$latitud = $comercio['latitud'];
+$longitud = $comercio['longitud'];
 
-//Data de ejemplo - Lista de productos del pedido $id
-$data = array();
-$data[] = array(
-    'id' => 385,
-    'name' => 'Shampoo de perro',
-    'image' => 'http://www.caloxvetcentroamerica.com/wp-content/uploads/2012/05/Champu_Antialergico.png'
-);
-$data[] = array(
-    'id' => 101,
-    'name' => 'Pasta de dientes Colgate',
-    'image' => 'https://www.perfumeriasif.com/1419-22008-medium/colgate-pasta-proteccion-caries-75-ml.jpg'
-);
-$data[] = array(
-    'id' => 95,
-    'name' => 'Espuma de afeitar Gillette',
-    'image' => 'https://www.gillette.com/WebHandlers/JSCSSCompressHandler.ashx?filetype=image&sourcefilename=/Content/es-AR/Images/Nav_preview/Espuma-para-Afeitar-Foamy.png'
-);
 
+$this->title = Yii::t('app', 'Stock for order');
 
 if(!Yii::$app->user->getIsGuest()){
 ?>
@@ -38,14 +23,14 @@ if(!Yii::$app->user->getIsGuest()){
     <div class="row" id="indx-welcome">
         <div class="col-md-10">
             <div>
-            <?php if(count($data) > 0){ ?>
+            <?php if(count($productos) > 0){ ?>
 
-                <h2><p><?= Html::encode($this->title)?> Nº <?php echo $id.' - '.$local_name;?></p></h2>
+                <h2><p><?= Html::encode($this->title)?> Nº <?php echo $orderId.' - '.$local_name;?></p></h2>
                 <p> <?php echo $local_dir.' | '.$local_hour; ?></p>
             
             <?php } else{ ?>
 
-            	<h2><p><?= Html::encode($this->title)?> Nº <?php echo $id; ?>?</p></h2>
+            	<h2><p><?= Html::encode($this->title)?> Nº <?php echo $orderId; ?>?</p></h2>
             	<p> <?= Yii::t('app','It looks like the order doesnt exist');?>.</p>
             
             <?php } ?>
@@ -60,7 +45,7 @@ if(!Yii::$app->user->getIsGuest()){
     <br>
     <div class="body-content">
     
-    <?php if(count($data) > 0){ ?>
+    <?php if(count($productos) > 0){ ?>
     	<div class="col-md-4">
 
         	<div class="row text-center">
@@ -88,25 +73,20 @@ if(!Yii::$app->user->getIsGuest()){
 	                            <th class="text-center"><?= Yii::t('app','Stock');?></th>
 	                        </tr>
 
-	                        <?php foreach($data as $item){ ?>
+	                        <?php foreach($productos as $item){ ?>
 	                        <tr>
-	                            <td><?php echo $item['name']; ?></td>
-	                            <td class="text-center"><span><img class="item img-responsive" src=<?php if($item['image'] == ''){ echo "/assets/images/wrong.png"; } else{ echo $item['image']; } ?>></span></td>
+	                            <td><?php echo $item['Nombre']; ?></td>
+	                            <td class="text-center"><?php if($item['Imagen'] == ''){ echo '<span class="not-delivered glyphicon glyphicon-remove"></span>'; } else{ echo '<span><img class="item img-responsive" src="../../backend/imagenes/productos/'.$item["Imagen"].'"></span>'; } ?></td>
 	                           	<td class="text-center">
-	                           		<input class="input-stock" onblur="saveThisItem(<?php echo $shopId;?>,<?php echo $item['id'];?>,this.value)" type="number" id="stock_<?php echo $item['id'];?>" value="0" min="0" max="1000">
+	                           		<input class="input-stock" onblur="saveThisItem(<?php echo $orderId;?>,<?php echo $item['id'];?>,this.value)" type="number" id="stock_<?php echo $item['id'];?>" value="0" min="0" max="1000">
 	                           	</td>
 	                        </tr>
 	                        <?php } ?>
 	                    </table>
 	                </div>
-                    <script type="text/javascript">
-                        function saveThisItem(shop,item,value) {
-
-                            console.log(shop,item,value);
-                        }
-                    </script>
+                    
                     <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/index"';?>><?= Yii::t('app','Cancel');?></a></p>
-                    <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" onclick=<?php echo '"deliveryDone('.$id.')"';?>><?= Yii::t('app','Done');?>!</a></p>
+                    <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" onclick=<?php echo '"deliveryDone('.$orderId.')"';?>><?= Yii::t('app','Done');?>!</a></p>
                 </form>
 		    </div>
         </div>
@@ -123,44 +103,59 @@ if(!Yii::$app->user->getIsGuest()){
 
 </div>
 
+
+<script type="text/javascript">
+
+    //Actualiza valor del stock
+    function saveThisItem(orderId,itemId,value) {
+        console.log(orderId,itemId,value);
+        
+        var url = '/site/SaveThisItem';
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: { "orderId" :  orderId, "itemId" : itemId, "stock" : value },
+            success: function(response){
+                console.log(response);
+            }
+        });
+    }
+
+    //Asigna como finalizada la orden
+    function deliveryDone(orderId) {
+        console.log(orderId);
+    }
+</script>
+
 <script>
     function initialize() {
+        var latitud=<?php echo $latitud; ?>;
+        var longitud=<?php echo $longitud; ?>;
         var mapCanvas = document.getElementById('map-canvas');
         
         var mapOptions = {
-            center: new google.maps.LatLng(-34.8977714, -56.165),
+            center: new google.maps.LatLng(latitud,longitud),
             zoom: 13,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         }
-
+        
         var map = new google.maps.Map(mapCanvas,mapOptions);
-        var markers = [];
         
         google.maps.event.addListener(map, 'click', function( event ){
+            document.getElementById('productos-ubicacion').value="Latitud: "+event.latLng.lat()+" "+", Longitud: "+event.latLng.lng();
+        });
 
-            document.getElementById('comercios-latitud').value=event.latLng.lat();
-            document.getElementById('comercios-longitud').value=event.latLng.lng();
-            var marcador = new google.maps.LatLng(event.latLng.lat(),event.latLng.lng());
-            var marker = new google.maps.Marker({
-                position: marcador,
-                draggable:true,
-                animation: google.maps.Animation.DROP,
-                map: map,
-                title: ''
-            });
-            
-            markers.push(marker);
-            
-            if(markers.length==1){
-                markers[0].setMap(map);
-            }
-            else{
-                markers[0].setMap(null);
-                markers.splice(0,1);
-                marker.setMap(map);    
-            }
-           
-        });    
+        var markers = [];
+        
+        var marcador = new google.maps.LatLng(latitud,longitud);
+        var marker = new google.maps.Marker({
+          position: marcador,
+          dragabble: false,
+          map: map,
+          title: ''
+        });
+
+        marker.setMap(map);
     }
     google.maps.event.addDomListener(window, 'load', initialize);
 </script>

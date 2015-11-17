@@ -4,26 +4,8 @@
 use yii\helpers\Html;
 
 $this->title = Yii::t('app', 'New Order');
-$shopId = ''; //actualizar variable segun id de dropdown - jquery?
+$comercioId = ''; //actualizar variable segun id de dropdown - jquery?
 
-//Data de ejemplo - Lista de Ids, Nombres de Comercios
-$data = array();
-$data[] = array(
-    'id' => 1,
-    'name' => 'Devoto San Martin',
-);
-$data[] = array(
-    'id' => 2,
-    'name' => 'Tienda Inglesa Propios',
-);
-$data[] = array(
-    'id' => 3,
-    'name' => 'Cobadonga Hogar',
-);
-$data[] = array(
-    'id' => 4,
-    'name' => 'Cobadonga Hogar 2',
-);
 
 if(!Yii::$app->user->getIsGuest()){
 
@@ -37,13 +19,13 @@ if(!Yii::$app->user->getIsGuest()){
     		<div class="text-center" id="new-order-sel">
                 <h1 class="text-center"><?= Html::encode($this->title)?></h1>
 
-                <?php if(count($data) > 0){ ?>
+                <?php if(count($comercios) > 0){ ?>
                 
                 <div id="shop_select" class="dropdown datepicker-inline">
                     <select class="btn btn-sm dropdown-toggle" id="shop-dropdown">
                     
-                    <?php foreach($data as $shop){ ?>
-                      <option value=<?php echo $shop['id'];?>><?php echo $shop['name'];?></option>
+                    <?php foreach($comercios as $comercio){ ?>
+                      <option value=<?php echo $comercio['id'];?>><?php echo $comercio['nombre'];?></option>
                     <?php } ?>
                     
                     </select>

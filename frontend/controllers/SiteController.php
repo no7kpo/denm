@@ -13,6 +13,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use frontend\models\CreateorderForm;
+use yii\db\Query;
 
 /**
  * Site controller
@@ -221,16 +222,76 @@ class SiteController extends Controller
 
 
     public function actionOrder($id = 0){
-        return $this->render('order');
+        
+        //Define connection
+        $connection = \Yii::$app->db;
+
+        $orderId = $_GET['id'];
+
+        //Get shop id
+        $shopId = '1'; //Conseguir id de comercio segun order id!!
+
+        //Get productos
+        $query = $connection->createCommand('SELECT p.id, p.Nombre, p.Imagen FROM productos p JOIN producto_tienda pt ON p.id = pt.idproducto WHERE pt.idcomercio = '.$shopId);
+        $productos = $query->queryAll();
+
+        //Get comercio
+        $query = $connection->createCommand('SELECT * FROM comercios WHERE id = '.$shopId);
+        $comercio = $query->queryOne();
+
+        return $this->render('order', [
+            'orderId' => $orderId,
+            'shopId' => $shopId,
+            'productos' => $productos,
+            'comercio' => $comercio,
+        ]);
+
+    }
+
+    public function actionSaveThisItem(){
+        //$orderId = $_POST['orderId'];
+        //$itemId = $_POST['itemId'];
+        //$stock = $_POST['stock'];
+
+        //Define connection
+        /*$connection = \Yii::$app->db;
+
+        $query = $connection->createCommand('SELECT * FROM comercios WHERE id = '.$shopId);
+        $comercio = $query->queryOne();*/
+
+        echo 'OK';
     }
 
 
     public function actionNeworder(){
-        return $this->render('new_order');
+        //Define connection
+        $connection = \Yii::$app->db;
+
+        //Get comercios
+        $query = $connection->createCommand('SELECT c.id, c.nombre FROM comercios c');
+        $comercios = $query->queryAll();
+
+        return $this->render('new_order', [
+            'comercios' => $comercios,
+        ]);
     }
     
 
     public function actionCreateorder($id = 0){
+        //Define connection
+        $connection = \Yii::$app->db;
+
+        $shopId = $_GET['id'];
+
+        //Get comercio
+        $query = $connection->createCommand('SELECT c.id, c.nombre, c.hora_apertura, c.hora_cierre FROM comercios c WHERE id = '.$shopId);
+        $comercio = $query->queryOne();
+
+        //Get items
+        $query = $connection->createCommand('SELECT p.id, p.nombre, p.Imagen FROM productos p JOIN producto_tienda pt ON p.id = pt.idproducto WHERE pt.idcomercio = '.$shopId);
+        $items = $query->queryAll();
+
+        //Yii crap
         $model = new CreateorderForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->createorderform($id)) {
@@ -242,6 +303,8 @@ class SiteController extends Controller
         
         return $this->render('create_order', [
             'model' => $model,
+            'comercio' => $comercio,
+            'items' => $items,
         ]);
     }
 

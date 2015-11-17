@@ -7,19 +7,14 @@ use yii\jui\DatePicker;
 
 $this->title = Yii::t('app', 'Create Order');
 
-//Datos de ejemplo - Informacion del comercio
-$local_name = 'Devoto San Martin';
+//Defino datos del comercio
+$local_name = $comercio['nombre'];
 $local_dir = 'San Martin 1243';
-$local_hour = '09:00 - 21:00';
+$horaIni = explode(':', $comercio['hora_apertura']);
+$horaFin = explode(':', $comercio['hora_cierre']);
+$local_hour = $horaIni[0].':'.$horaIni[1].' - '.$horaFin[0].':'.$horaFin[1];
 
-//Data de ejemplo - Informacion de productos asociados al comercio de id $id
-$data = array();
-$data[] = array(
-    'id' => 385,
-    'name' => 'Shampoo de perro',
-    'stock' => 50, //stock available in our store?
-    'image' => 'http://www.caloxvetcentroamerica.com/wp-content/uploads/2012/05/Champu_Antialergico.png'
-);
+$stock = 50; //TRAER DE BASE!!!!!
 
 if(!Yii::$app->user->getIsGuest()){
 
@@ -44,7 +39,7 @@ if(!Yii::$app->user->getIsGuest()){
     <br>
     <div class="body-content">
     
-    <?php if(count($data) > 0){ ?>
+    <?php if(count($items) > 0){ ?>
 
         <?php $form = ActiveForm::begin(['id' => 'form-createorder']); ?>
             <div class="col-md-4">
@@ -86,13 +81,13 @@ if(!Yii::$app->user->getIsGuest()){
                                     <th class="text-center"><?= Yii::t('app','New delivery stock');?></th>
                                 </tr>
 
-                                <?php foreach($data as $item){ ?>
+                                <?php foreach($items as $item){ ?>
                                 <tr>
-                                    <td><?php echo $item['name']; ?></td>
-                                    <td class="text-center"><?php echo $item['stock']; ?></td>
-                                    <td class="text-center"><span><img class="item img-responsive" src=<?php if($item['image'] == ''){ echo "/assets/images/wrong.png"; } else{ echo $item['image']; } ?>></span></td>
+                                    <td><?php echo $item['nombre']; ?></td>
+                                    <td class="text-center"><?php echo $stock; ?></td>
+                                    <td class="text-center"><?php if($item['Imagen'] == ''){ echo '<span class="not-delivered glyphicon glyphicon-remove"></span>'; } else{ echo '<span><img class="item img-responsive" src="../../backend/imagenes/productos/'.$item["Imagen"].'"></span>'; } ?></td>
                                     <td class="text-center">
-                                        <input class="input-stock" type="number" id="stock_<?php echo $item['id'];?>" value="0" min="0" max="<?php echo $item['stock'];?>">
+                                        <input class="input-stock" type="number" id="stock_<?php echo $item['id'];?>" value="0" min="0" max="<?php echo $stock;?>">
                                     </td>
                                 </tr>
                                 <?php } ?>
