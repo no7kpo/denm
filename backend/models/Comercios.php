@@ -14,11 +14,13 @@ use Yii;
  * @property integer $prioridad
  * @property string $hora_apertura
  * @property string $hora_cierre
+ * @property string $direccion
  *
  * @property ProductoTienda[] $productoTiendas
  * @property Productos[] $idproductos
  * @property RutaComercio[] $rutaComercios
  * @property Rutas[] $idrutas
+ * @property StockPedido $stockPedido
  */
 class Comercios extends \yii\db\ActiveRecord
 {
@@ -40,7 +42,8 @@ class Comercios extends \yii\db\ActiveRecord
             [['prioridad'], 'integer'],
             [['hora_apertura', 'hora_cierre'], 'safe'],
             [['nombre'], 'string', 'max' => 50],
-            [['latitud', 'longitud'], 'string', 'max' => 100]
+            [['latitud', 'longitud'], 'string', 'max' => 100],
+            [['direccion'], 'string', 'max' => 255]
         ];
     }
 
@@ -52,11 +55,12 @@ class Comercios extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'nombre' => Yii::t('app', 'Name'),
-            'latitud' => Yii::t('app', 'Latitud'),
-            'longitud' => Yii::t('app', 'Longitud'),
+            'latitud' => Yii::t('app', 'Latitude'),
+            'longitud' => Yii::t('app', 'Longitude'),
             'prioridad' => Yii::t('app', 'Priority'),
-            'hora_apertura' => Yii::t('app', 'Open hour'),
-            'hora_cierre' => Yii::t('app', 'Closing hour'),
+            'hora_apertura' => Yii::t('app', 'Open hours'),
+            'hora_cierre' => Yii::t('app', 'Close hours'),
+            'direccion' => Yii::t('app', 'Adress'),
         ];
     }
 
@@ -90,5 +94,13 @@ class Comercios extends \yii\db\ActiveRecord
     public function getIdrutas()
     {
         return $this->hasMany(Rutas::className(), ['id' => 'idruta'])->viaTable('ruta_comercio', ['idcomercio' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStockPedido()
+    {
+        return $this->hasMany(StockPedido::className(), ['idcomercio' => 'id'])>viaTable('stock_pedido', ['idcomercio' => 'id']);
     }
 }
