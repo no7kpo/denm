@@ -1,19 +1,18 @@
 <?php
-
 namespace backend\models;
-
 use Yii;
-
 /**
  * This is the model class for table "productos".
  *
  * @property string $id
  * @property string $Nombre
  * @property string $idcategoria
+ * @property string $Imagen
  *
  * @property ProductoTienda[] $productoTiendas
  * @property Comercios[] $idcomercios
  * @property Categorias $idcategoria0
+ * @property StockPedido $stockPedido
  */
 class Producto extends \yii\db\ActiveRecord
 {
@@ -24,20 +23,17 @@ class Producto extends \yii\db\ActiveRecord
     {
         return 'productos';
     }
-
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['Nombre', 'idcategoria'], 'required'],
+            [['Nombre', 'idcategoria', 'Imagen'], 'required'],
             [['idcategoria'], 'integer'],
-            [['Nombre', 'Imagen'], 'string', 'max' => 100],
-
+            [['Nombre', 'Imagen'], 'string', 'max' => 100]
         ];
     }
-
     /**
      * @inheritdoc
      */
@@ -47,10 +43,9 @@ class Producto extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'Nombre' => Yii::t('app', 'Name'),
             'idcategoria' => Yii::t('app', 'Category'),
-            'Imagen' => 'Imagen',
+            'Imagen' => Yii::t('app', 'Image'),
         ];
     }
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -58,7 +53,6 @@ class Producto extends \yii\db\ActiveRecord
     {
         return $this->hasMany(ProductoTienda::className(), ['idproducto' => 'id']);
     }
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -66,7 +60,6 @@ class Producto extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Comercios::className(), ['id' => 'idcomercio'])->viaTable('producto_tienda', ['idproducto' => 'id']);
     }
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -74,9 +67,11 @@ class Producto extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Categorias::className(), ['id' => 'idcategoria']);
     }
-
-    /*    public function getFotos()
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStockPedido()
     {
-        return $this->hasOne(Foto::className(), ['idProducto' => 'id']);
-    }*/
+        return $this->hasMany(StockPedido::className(), ['idproducto' => 'id'])->viaTable('stock_pedido', ['idproducto' => 'id']);
+    }
 }
