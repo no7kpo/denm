@@ -16,6 +16,8 @@ $local_hour = $horaIni[0].':'.$horaIni[1].' - '.$horaFin[0].':'.$horaFin[1];
 
 $stock = 50; //TRAER DE BASE!!!!!
 
+$userId = Yii::$app->user->getId();
+
 if(!Yii::$app->user->getIsGuest()){
 
 ?>
@@ -85,9 +87,9 @@ if(!Yii::$app->user->getIsGuest()){
                                 <tr>
                                     <td><?php echo $item['nombre']; ?></td>
                                     <td class="text-center"><?php echo $stock; ?></td>
-                                    <td class="text-center"><?php if($item['Imagen'] == ''){ echo '<span class="not-delivered glyphicon glyphicon-remove"></span>'; } else{ echo '<span><img class="item img-responsive" src="../../backend/imagenes/productos/'.$item["Imagen"].'"></span>'; } ?></td>
+                                    <td class="text-center"><?php if($item['Imagen'] == ''){ echo '<span class="not-delivered glyphicon glyphicon-remove"></span>'; } else{ ?><span><img class="item img-responsive" src="<?=Yii::getAlias('@product_pictures')?><?php echo DIRECTORY_SEPARATOR.$item['Imagen'];?>"></span><?php } ?></td>
                                     <td class="text-center">
-                                        <input class="input-stock" type="number" id="stock_<?php echo $item['id'];?>" value="0" min="0" max="<?php echo $stock;?>">
+                                        <input class="input-stock" type="number" id="<?php echo $item['id'];?>" value="0" min="0" max="<?php echo $stock;?>">
                                     </td>
                                 </tr>
                                 <?php } ?>
@@ -95,7 +97,7 @@ if(!Yii::$app->user->getIsGuest()){
                         </div>
 
                         <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/index"';?>><?= Yii::t('app','Cancel');?></a></p>
-                        <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" id="" href=<?php echo '';?>><?= Yii::t('app','Create');?></a></p>
+                        <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" onclick="createNewOrder()"><?= Yii::t('app','Create');?></a></p>
                     </form>
                 </div>
             </div>
@@ -114,6 +116,27 @@ if(!Yii::$app->user->getIsGuest()){
 
 </div>
 
+<script type="text/javascript">
+    function createNewOrder() {
+        var deliveryDay = $('#delivery_day').val();
+        var arrayItems = [];
+
+        $(".input-stock").each(function() {
+            arrayItems[$(this).attr("id")] = $(this).val();
+        });
+
+        var url = "<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/createneworder'; ?>";
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: { "userId" : <?php echo $userId; ?>,"deliveryDay" :  deliveryDay, "arrayItems" : arrayItems },
+            success: function(response){
+                console.log(response);
+            }
+        });
+    }
+</script>
 
 <?php } else{ ?>
 

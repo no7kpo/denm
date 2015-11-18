@@ -87,10 +87,10 @@ class SiteController extends Controller
         $fecha = date('Y-m-d');
 
         //Get ordenes
-        $query = $connection->createCommand('SELECT st.idcomercio, st.fecha, c.nombre, c.latitud, c.longitud, c.direccion, c.prioridad, c.hora_apertura, c.hora_cierre FROM stock_pedido st JOIN comercios c ON st.idcomercio = c.id WHERE fecha = '.$fecha);
-        $ordenes = $query->queryAll();
-
-        echo '<pre>'; print_r($ordenes); die();
+        //$query = $connection->createCommand('SELECT st.idcomercio, st.fecha, c.nombre, c.latitud, c.longitud, c.direccion, c.prioridad, c.hora_apertura, c.hora_cierre FROM stock_pedido st JOIN comercios c ON st.idcomercio = c.id WHERE fecha = '.$fecha);
+        //$ordenes = $query->queryAll();
+        $ordenes = '';
+        //echo '<pre>'; print_r($ordenes); die();
 
         return $this->render('index', [
             'ordenes' => $ordenes,
@@ -261,20 +261,31 @@ class SiteController extends Controller
 
     }
 
-    public function actionSaveThisItem(){
-        //$orderId = $_POST['orderId'];
-        //$itemId = $_POST['itemId'];
-        //$stock = $_POST['stock'];
+    public function actionSavethisitem(){
+        $orderId = $_POST['orderId'];
+        $itemId = $_POST['itemId'];
+        $stock = $_POST['stock'];
 
         //Define connection
-        /*$connection = \Yii::$app->db;
+        $connection = \Yii::$app->db;
 
-        $query = $connection->createCommand('SELECT * FROM comercios WHERE id = '.$shopId);
-        $comercio = $query->queryOne();*/
+        //$query = $connection->createCommand('SELECT * FROM comercios WHERE id = '.$shopId);
+        //$comercio = $query->queryOne();
 
-        echo 'OK';
+        echo $orderId . ' - ' . $itemId . ' - ' . $stock;
     }
 
+    public function actionDeliverydone(){
+        $orderId = $_POST['orderId'];
+
+        //Define connection
+        $connection = \Yii::$app->db;
+
+        //$query = $connection->createCommand('SELECT * FROM comercios WHERE id = '.$shopId);
+        //$comercio = $query->queryOne();
+
+        echo $orderId;
+    }
 
     public function actionNeworder(){
         //Define connection
@@ -319,6 +330,22 @@ class SiteController extends Controller
             'comercio' => $comercio,
             'items' => $items,
         ]);
+    }
+
+
+    public function actionCreateneworder(){
+        //Define connection
+        $connection = \Yii::$app->db;
+
+        $userId = $_POST['userId'];
+        $deliveryDay = $_POST['deliveryDay'];
+        $arrayItems = $_POST['arrayItems'];
+
+        //Get comercios
+        //$query = $connection->createCommand('SELECT c.id, c.nombre FROM comercios c');
+        //$comercios = $query->queryAll();
+
+        print_r($arrayItems);
     }
 
 }

@@ -76,7 +76,7 @@ if(!Yii::$app->user->getIsGuest()){
 	                        <?php foreach($productos as $item){ ?>
 	                        <tr>
 	                            <td><?php echo $item['Nombre']; ?></td>
-	                            <td class="text-center"><?php if($item['Imagen'] == ''){ echo '<span class="not-delivered glyphicon glyphicon-remove"></span>'; } else{ echo '<span><img class="item img-responsive" src="../../backend/imagenes/productos/'.$item["Imagen"].'"></span>'; } ?></td>
+	                            <td class="text-center"><?php if($item['Imagen'] == ''){ echo '<span class="not-delivered glyphicon glyphicon-remove"></span>'; } else{ ?><span><img class="item img-responsive" src="<?=Yii::getAlias('@product_pictures')?><?php echo DIRECTORY_SEPARATOR.$item['Imagen'];?>"></span><?php } ?></td>
 	                           	<td class="text-center">
 	                           		<input class="input-stock" onblur="saveThisItem(<?php echo $orderId;?>,<?php echo $item['id'];?>,this.value)" type="number" id="stock_<?php echo $item['id'];?>" value="0" min="0" max="1000">
 	                           	</td>
@@ -110,13 +110,14 @@ if(!Yii::$app->user->getIsGuest()){
     function saveThisItem(orderId,itemId,value) {
         console.log(orderId,itemId,value);
         
-        var url = '/site/SaveThisItem';
+        var url = "<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/savethisitem'; ?>";
+
         $.ajax({
             type: "POST",
             url: url,
             data: { "orderId" :  orderId, "itemId" : itemId, "stock" : value },
             success: function(response){
-                console.log(response);
+                alert(response);
             }
         });
     }
@@ -124,7 +125,19 @@ if(!Yii::$app->user->getIsGuest()){
     //Asigna como finalizada la orden
     function deliveryDone(orderId) {
         console.log(orderId);
+
+        var url = "<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/deliverydone'; ?>";
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: { "orderId" :  orderId },
+            success: function(response){
+                alert(response);
+            }
+        });
     }
+
 </script>
 
 <script>
