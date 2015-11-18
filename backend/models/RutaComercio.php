@@ -5,24 +5,24 @@ namespace backend\models;
 use Yii;
 
 /**
- * This is the model class for table "ruta".
+ * This is the model class for table "ruta_comercio".
  *
- * @property string $id
+ * @property string $idruta
  * @property string $idcomercio
+ * @property integer $orden
  * @property integer $relevado
- * @property string $fecha
  *
  * @property Comercios $idcomercio0
- * @property RutaRelevador[] $rutaRelevadors
+ * @property Rutas $idruta0
  */
-class Rutas extends \yii\db\ActiveRecord
+class RutaComercio extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'ruta';
+        return 'ruta_comercio';
     }
 
     /**
@@ -31,10 +31,9 @@ class Rutas extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'idcomercio', 'fecha'], 'required'],
-            [['id', 'idcomercio', 'relevado'], 'integer'],
-            [['fecha'], 'safe'],
-            [['idcomercio'], 'unique']
+            [['idruta', 'idcomercio', 'orden'], 'required'],
+            [['idruta', 'idcomercio', 'orden', 'relevado'], 'integer'],
+            [['relevado'],'default','value'=>'0']
         ];
     }
 
@@ -44,10 +43,10 @@ class Rutas extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
+            'idruta' => Yii::t('app', 'Route'),
             'idcomercio' => Yii::t('app', 'Shop'),
+            'orden' => Yii::t('app', 'Order'),
             'relevado' => Yii::t('app', 'Relevated'),
-            'fecha' => Yii::t('app', 'Date'),
         ];
     }
 
@@ -62,8 +61,8 @@ class Rutas extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getRutaRelevadors()
+    public function getIdruta0()
     {
-        return $this->hasMany(RutaRelevador::className(), ['idruta' => 'id']);
+        return $this->hasOne(Rutas::className(), ['id' => 'idruta']);
     }
 }
