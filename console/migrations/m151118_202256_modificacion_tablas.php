@@ -10,7 +10,7 @@ class m151118_202256_modificacion_tablas extends Migration
             // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
-          $this->addColumn('{{%user}}','latitud','string');
+        $this->addColumn('{{%user}}','latitud','string');
         $this->addColumn('{{%user}}','longitud','string');
         $this->addColumn('{{%comercios}}','dia','integer');
         $this->dropTable('{{%ruta_comercio}}');
@@ -31,7 +31,7 @@ class m151118_202256_modificacion_tablas extends Migration
          $this->addForeignKey('fk_idrelevador_relevador', '{{%ruta_relevador}}', 'idrelevador', '{{%user}}', 'id', 'CASCADE', 'RESTRICT');
         $this->createIndex('idruta_index', '{{%ruta_relevador}}', 'idruta', true);
         $this->addPrimaryKey ( 'ruta_pk','{{%ruta}}' , 'id' );
-        $this->addPrimaryKey ( 'ruta_pk_relevador','{{%ruta}}' , ['idruta','idrelevador' ]);
+        $this->addPrimaryKey ( 'ruta_pk_relevador','{{%ruta_relevador}}' , ['idruta','idrelevador' ]);
          $this->addForeignKey('fk_idruta_ruta', '{{%ruta_relevador}}', 'idruta', '{{%ruta}}', 'id', 'CASCADE', 'RESTRICT');
     }
     public function down()
