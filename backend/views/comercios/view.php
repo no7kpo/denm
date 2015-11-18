@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
         width: 500px;
         height: 400px;
       }
-    </style>
+</style>
 <script src="https://maps.googleapis.com/maps/api/js"></script>
     <h1><?= Html::encode($this->title) ?></h1>
 

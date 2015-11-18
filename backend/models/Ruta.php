@@ -5,16 +5,14 @@ namespace backend\models;
 use Yii;
 
 /**
- * This is the model class for table "ruta".
+ * This is the model class for table "rutas".
  *
  * @property string $id
- * @property string $idcomercio
- * @property integer $relevado
  * @property string $fecha
+ * @property string $iduser
  *
- * @property Comercios $idcomercio0
- * @property RutaRelevador[] $rutaRelevadors
- * @property User[] $idrelevadors
+ * @property RutaComercio[] $rutaComercios
+ * @property Comercios[] $idcomercios
  */
 class Ruta extends \yii\db\ActiveRecord
 {
@@ -23,7 +21,7 @@ class Ruta extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'ruta';
+        return 'rutas';
     }
 
     /**
@@ -32,10 +30,9 @@ class Ruta extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'idcomercio', 'fecha'], 'required'],
-            [['id', 'idcomercio', 'relevado'], 'integer'],
+            [['fecha', 'iduser'], 'required'],
             [['fecha'], 'safe'],
-            [['idcomercio'], 'unique']
+            [['iduser'], 'integer']
         ];
     }
 
@@ -46,33 +43,24 @@ class Ruta extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'idcomercio' => Yii::t('app', 'Shop'),
-            'relevado' => Yii::t('app', 'Relevated'),
             'fecha' => Yii::t('app', 'Date'),
+            'iduser' => Yii::t('app', 'User'),
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdcomercio0()
+    public function getRutaComercios()
     {
-        return $this->hasOne(Comercios::className(), ['id' => 'idcomercio']);
+        return $this->hasMany(RutaComercio::className(), ['idruta' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getRutaRelevadors()
+    public function getIdcomercios()
     {
-        return $this->hasMany(RutaRelevador::className(), ['idruta' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getIdrelevadors()
-    {
-        return $this->hasMany(User::className(), ['id' => 'idrelevador'])->viaTable('ruta_relevador', ['idruta' => 'id']);
+        return $this->hasMany(Comercios::className(), ['id' => 'idcomercio'])->viaTable('ruta_comercio', ['idruta' => 'id']);
     }
 }

@@ -22,9 +22,7 @@ use backend\models\Categorias;
     	<?=$form->field($img_model, 'imageFile')->fileInput(['multiple' => false, 'accept' => 'image/*']) ?>
     <?php
     } 
-    
      ?> 
-
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : 

@@ -46,11 +46,11 @@ class StockPedido extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idcomercio' => Yii::t('app', 'Shop'),
-            'idproducto' => Yii::t('app', 'Products'),
+            'idcomercio' => Yii::t('app', 'Idcomercio'),
+            'idproducto' => Yii::t('app', 'Idproducto'),
             'stock' => Yii::t('app', 'Stock'),
-            'pedido' => Yii::t('app', 'Request'),
-            'fecha' => Yii::t('app', 'Date'),
+            'pedido' => Yii::t('app', 'Pedido'),
+            'fecha' => Yii::t('app', 'Fecha'),
         ];
     }
 
