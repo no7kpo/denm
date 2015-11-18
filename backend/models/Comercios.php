@@ -1,9 +1,6 @@
 <?php
-
 namespace backend\models;
-
 use Yii;
-
 /**
  * This is the model class for table "comercios".
  *
@@ -14,11 +11,13 @@ use Yii;
  * @property integer $prioridad
  * @property string $hora_apertura
  * @property string $hora_cierre
+ * @property string $direccion
+ * @property integer $dia
  *
  * @property ProductoTienda[] $productoTiendas
  * @property Productos[] $idproductos
- * @property RutaComercio[] $rutaComercios
- * @property Rutas[] $idrutas
+ * @property Ruta $ruta
+ * @property StockPedido $stockPedido
  */
 class Comercios extends \yii\db\ActiveRecord
 {
@@ -29,7 +28,6 @@ class Comercios extends \yii\db\ActiveRecord
     {
         return 'comercios';
     }
-
     /**
      * @inheritdoc
      */
@@ -37,13 +35,13 @@ class Comercios extends \yii\db\ActiveRecord
     {
         return [
             [['nombre', 'latitud', 'longitud', 'prioridad', 'hora_apertura', 'hora_cierre'], 'required'],
-            [['prioridad'], 'integer'],
+            [['prioridad', 'dia'], 'integer'],
             [['hora_apertura', 'hora_cierre'], 'safe'],
             [['nombre'], 'string', 'max' => 50],
-            [['latitud', 'longitud'], 'string', 'max' => 100]
+            [['latitud', 'longitud'], 'string', 'max' => 100],
+            [['direccion'], 'string', 'max' => 255]
         ];
     }
-
     /**
      * @inheritdoc
      */
@@ -52,14 +50,15 @@ class Comercios extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'nombre' => Yii::t('app', 'Name'),
-            'latitud' => Yii::t('app', 'Latitud'),
-            'longitud' => Yii::t('app', 'Longitud'),
+            'latitud' => Yii::t('app', 'Latitude'),
+            'longitud' => Yii::t('app', 'Longitude'),
             'prioridad' => Yii::t('app', 'Priority'),
             'hora_apertura' => Yii::t('app', 'Open hour'),
-            'hora_cierre' => Yii::t('app', 'Closing hour'),
+            'hora_cierre' => Yii::t('app', 'Close hour'),
+            'direccion' => Yii::t('app', 'Adress'),
+            'dia' => Yii::t('app', 'Day of the week'),
         ];
     }
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -67,7 +66,6 @@ class Comercios extends \yii\db\ActiveRecord
     {
         return $this->hasMany(ProductoTienda::className(), ['idcomercio' => 'id']);
     }
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -75,20 +73,18 @@ class Comercios extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Productos::className(), ['id' => 'idproducto'])->viaTable('producto_tienda', ['idcomercio' => 'id']);
     }
-
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getRutaComercios()
+    public function getRuta()
     {
-        return $this->hasMany(RutaComercio::className(), ['idcomercio' => 'id']);
+        return $this->hasOne(Ruta::className(), ['idcomercio' => 'id']);
     }
-
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdrutas()
+    public function getStockPedido()
     {
-        return $this->hasMany(Rutas::className(), ['id' => 'idruta'])->viaTable('ruta_comercio', ['idcomercio' => 'id']);
+        return $this->hasMany(StockPedido::className(), ['idcomercio' => 'id'])->viaTable('stock_pedido', ['idcomercio' => 'id']);
     }
 }
