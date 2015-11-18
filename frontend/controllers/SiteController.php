@@ -81,7 +81,20 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        //Define connection
+        $connection = \Yii::$app->db;
+
+        $fecha = date('Y-m-d');
+
+        //Get ordenes
+        $query = $connection->createCommand('SELECT st.idcomercio, st.fecha, c.nombre, c.latitud, c.longitud, c.direccion, c.prioridad, c.hora_apertura, c.hora_cierre FROM stock_pedido st JOIN comercios c ON st.idcomercio = c.id WHERE fecha = '.$fecha);
+        $ordenes = $query->queryAll();
+
+        echo '<pre>'; print_r($ordenes); die();
+
+        return $this->render('index', [
+            'ordenes' => $ordenes,
+        ]);
     }
 
     /**
