@@ -53,4 +53,12 @@ class ProductoTienda extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Producto::className(), ['id' => 'idproducto']);
     }
+    public function getAllProductos($idComercio)
+    {
+        return $this->find('idproducto')->where(['idcomercio' => $idComercio])->all();
+    }
+    public function getAllComercios($idProducto)
+    {
+        return $this->find('idcomercio')->where(['idproducto' => $idProducto])->all();
+    }
 }

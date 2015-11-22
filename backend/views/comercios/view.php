@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
+use backend\models\Categorias;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Comercios */
@@ -41,9 +43,29 @@ $this->params['breadcrumbs'][] = $this->title;
             'hora_cierre',
         ],
     ]) ?>
-    <article>
-        <div id="map-canvas"></div>
-    </article>
+    <div class="row">
+      <div class="col-md-5">
+        <h2><?=Yii::t('app','Products')?></h2>
+        <?= GridView::widget([
+            'dataProvider' => $productos,
+            'columns' => [
+              ['class' => 'yii\grid\SerialColumn'],
+
+              ['attribute'=>'idcategoria',
+                'value' => function($producto){
+                    return Categorias::findOne($producto->idcategoria)->nombre;
+                }
+              ],
+              'Nombre',
+            ]
+            
+        ])?>
+      </div>
+      <article class="col-md-7">
+          <h2><?=Yii::t('app', 'Location')?></h2>
+          <div id="map-canvas" style="width:100%"></div>
+      </article>
+    </div>
 
     <input type='hidden' value=  id='latitud'/>
 <input type='hidden' value= id='longitud' />

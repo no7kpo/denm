@@ -5,11 +5,14 @@ namespace backend\controllers;
 use Yii;
 use backend\models\Comercios;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-
+use backend\models\ProductoTienda;
+use backend\models\Producto;
+use backend\models\Categorias;
 /**
  * ComerciosController implements the CRUD actions for Comercios model.
  */
@@ -58,8 +61,24 @@ class ComerciosController extends Controller
      */
     public function actionView($id)
     {
+        $ProductoTiendaModel = new ProductoTienda();
+        $ProductosId = $ProductoTiendaModel->getAllProductos($id);
+        $Productos = [];
+        if($ProductosId != null){
+            foreach ($ProductosId as $key => $value) {
+                $producto = Producto::find()->where(['id' => $value['idproducto']])->one();
+                array_push($Productos, $producto);
+            }
+        }
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $Productos,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'productos' => $dataProvider,
         ]);
     }
 
@@ -100,16 +119,81 @@ class ComerciosController extends Controller
         }
     }
 
-        public function actionAddproducts($id)
+    public function actionAddproducts($id)
     {
         $model = $this->findModel($id);
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+            //Obtengo los id de los productos en la tienda $id
+            $ProductoTiendaModel = new ProductoTienda();
+            $Productos = $ProductoTiendaModel->getAllProductos($id);
+            $ProductosId = [];
+            foreach ($Productos as $key => $value) {
+                array_push($ProductosId, $value['idproducto']);
+            }
+            //Obtengo todos los productos y los separo en 2 arreglos
+            $ProductosEnTienda = [];
+            $RestoProductos = [];
+            $TodosLosProductos = Producto::find()->all();
+            foreach ($TodosLosProductos as $key => $value) {
+                if(in_array($value['id'], $ProductosId)) {
+                    array_push($ProductosEnTienda, $value);
+                } else {
+                    array_push($RestoProductos, $value);
+                }
+            }
+            $productos = new ArrayDataProvider([
+                'allModels' => $ProductosEnTienda,
+            ]);
+            $resto = new ArrayDataProvider([
+                'allModels' => $RestoProductos,
+            ]);
             return $this->render('addProducts', [
                 'model' => $model,
+                'productos' => $productos,
+                'resto' => $resto,
             ]);
+        }
+    }
+
+    public function actionAdd_product(){
+        $ProductoTiendaModel = new ProductoTienda();
+        
+        if ($ProductoTiendaModel->load(Yii::$app->request->post())) {
+            $producto = Producto::find()->where(['id' => $ProductoTiendaModel->idproducto])->one();
+            $categoria = Categorias::findOne($producto->idcategoria);
+            $ProductoTiendaModel->save();
+            $tooltip = Yii::t('app', 'Click to remove');
+            $message = ['id' => $producto->id, 
+                        'nombre' => $producto->Nombre, 
+                        'categoria' => $categoria->nombre,
+                        'tooltip' => $tooltip
+                        ];
+            Yii::$app->response->format = 'json';
+            return $message;
+        }
+    }
+
+    public function actionRemove_product(){
+        $ProductoTiendaModel = new ProductoTienda();
+        if($ProductoTiendaModel->load(Yii::$app->request->post())){
+            $producto = Producto::find()->where(['id' => $ProductoTiendaModel->idproducto])->one();
+            $categoria = Categorias::findOne($producto->idcategoria);
+            $ProductoTienda = ProductoTienda::find()
+                            ->where(['idproducto' => $ProductoTiendaModel->idproducto, 
+                                    'idcomercio' => $ProductoTiendaModel->idcomercio])
+                            ->one();
+            $ProductoTienda->delete();
+            $tooltip = Yii::t('app', 'Click to add');
+            $message = ['id' => $producto->id, 
+                        'nombre' => $producto->Nombre, 
+                        'categoria' => $categoria->nombre,
+                        'tooltip' => $tooltip
+                        ];
+            Yii::$app->response->format = 'json';
+            return $message;
         }
     }
 

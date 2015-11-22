@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
             'Nombre',
             ['attribute'=>'idcategoria',
-            'value' => function($producto){
+             'value' => function($producto){
                     return Categorias::findOne($producto->idcategoria)->nombre;
                 }
             ],

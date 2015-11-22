@@ -1,4 +1,6 @@
 <?php
+//Alias para poder mostrar imágenes de productos en toda la aplicación
+Yii::setAlias('@product_pictures','http://localhost/demn/backend/imagenes/productos');
 return [
     'components' => [
         'db' => [

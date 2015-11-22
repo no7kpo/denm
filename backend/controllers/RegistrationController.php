@@ -66,10 +66,6 @@ class RegistrationController extends BaseRegistrationController
                 $code = $query['code'];
                 return $this->confirm($user->id, $code); 
             } else{
-                /*return $this->render('/message', [
-                    'title'  => Yii::t('user', 'Your account has been created'),
-                    'module' => $this->module,
-                ]);*/
                 Yii::$app->session->setFlash('type-message', 'text-success');
                 Yii::$app->session->setFlash('message', Yii::t('user', 'Your account has been created'));
                 return $this->redirect(["/user/login"]);    
