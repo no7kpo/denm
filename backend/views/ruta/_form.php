@@ -12,9 +12,13 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'fecha')->textInput() ?>
+    <?= $form->field($model, 'id')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'iduser')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'idcomercio')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'relevado')->textInput() ?>
+
+    <?= $form->field($model, 'fecha')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

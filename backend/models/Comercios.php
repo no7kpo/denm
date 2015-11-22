@@ -56,7 +56,7 @@ class Comercios extends \yii\db\ActiveRecord
             'hora_apertura' => Yii::t('app', 'Open hour'),
             'hora_cierre' => Yii::t('app', 'Close hour'),
             'direccion' => Yii::t('app', 'Adress'),
-            'dia' => Yii::t('app', 'Day of the week'),
+            'dia' => Yii::t('app', 'Day to control stock'),
         ];
     }
     /**
