@@ -37,10 +37,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            
             'prioridad',
-            'hora_apertura',
-            'hora_cierre',
+            ['attribute'=>'dia',
+                'value' => $model->getdia()
+
+              ],
         ],
     ]) ?>
     <div class="row">

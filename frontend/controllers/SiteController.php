@@ -97,6 +97,22 @@ class SiteController extends Controller
         ]);
     }
 
+    public function actionChangedirection()
+    {
+        return $this->render('changedirection');
+    }
+    public function actionUpdateaddress()
+    {
+        $request = Yii::$app->request;
+        $latitud=$request->post('latitud');
+        $longitud=$request->post('longitud');
+        $user = Yii::$app->user->identity;
+        $user->latitud=$latitud;
+        $user->longitud=$longitud;
+        $user->scenario = 'update';
+        $user->save();
+        return $this->render('index');
+    }
     /**
      * Logs in a user.
      *
