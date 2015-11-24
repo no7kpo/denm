@@ -60,6 +60,20 @@ class User extends BaseUser
             'longitud' => Yii::t('app', 'Longitude'),
         ];
     }
+        /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRutaRelevador()
+    {
+        return $this->hasOne(RutaRelevador::className(), ['idrelevador' => 'id']);
+    }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIdrutas()
+    {
+        return $this->hasMany(Ruta::className(), ['id' => 'idruta'])->viaTable('ruta_relevador', ['idrelevador' => 'id']);
+    }
     
 }

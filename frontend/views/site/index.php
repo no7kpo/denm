@@ -5,6 +5,8 @@
 $this->title = Yii::t('app', 'Home');
 $count = 1;
 
+$user=Yii::$app->user->identity;
+
 //Data de ejemplo - Lista de pedidos y nombre de comercio
 $data = array();
 $data[] = array(
