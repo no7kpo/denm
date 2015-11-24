@@ -1,53 +1,50 @@
 <?php
-
+   use miloschuman\highcharts\Highcharts;
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$this->title = 'Bienvenido a Relevadores APP';
 ?>
 <div class="site-index">
+<br>
+ <?php
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
+echo Highcharts::widget([
+   'options' => [
+      'title' => ['text' => 'Productos mas consumidos por comercios'],
+      'xAxis' => [
+         'categories' => ['Manzanas', 'Bananas', 'Naranja']
+      ],
+      'yAxis' => [
+         'title' => ['text' => 'Productos Vendidos']
+      ],
+      'series' => [
+         ['name' => 'La tienda de Pepe', 'data' => [1, 0, 4]],
+         ['name' => 'Frutas Zarlanga', 'data' => [5, 7, 3]]
+      ]
+   ]
+]);
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+?>
+<br><br>
+<?php
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
+echo Highcharts::widget([
+   'options' => [
+      'title' => ['text' => 'Relevadores mas efectivos'],
+      'xAxis' => [
+         'categories' => ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes']
+      ],
+      'yAxis' => [
+         'title' => ['text' => 'Relevadores']
+      ],
+      'series' => [
+         ['name' => 'Diego', 'data' => [85, 25, 78, 100, 97]],
+         ['name' => 'Piwi', 'data' => [90, 10, 80, 55, 100]],
+         ['name' => 'Nico', 'data' => [79, 30, 81, 90, 80]],
+         ['name' => 'Matias', 'data' => [80, 15, 60, 70, 99]]
+      ]
+   ]
+]);
 
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
-        </div>
-
-    </div>
+?>
 </div>

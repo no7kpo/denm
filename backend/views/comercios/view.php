@@ -5,6 +5,8 @@ use yii\widgets\DetailView;
 use yii\grid\GridView;
 use backend\models\Categorias;
 
+
+
 /* @var $this yii\web\View */
 /* @var $model backend\models\Comercios */
 
@@ -99,6 +101,10 @@ function initialize() {
 }
 
 
+
+
 google.maps.event.addDomListener(window, 'load', initialize);
+
+
 
 </script>
