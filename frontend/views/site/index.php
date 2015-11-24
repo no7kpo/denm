@@ -5,6 +5,8 @@
 $this->title = Yii::t('app', 'Home');
 $count = 1;
 
+$user=Yii::$app->user->identity;
+
 //Data de ejemplo - Lista de pedidos y nombre de comercio
 $data = array();
 $data[] = array(
@@ -71,7 +73,6 @@ $data[] = array(
     'delivered' => false
 );
 
-if(!Yii::$app->user->getIsGuest()){
 ?>
 
 <div class="site-index">
@@ -104,6 +105,7 @@ if(!Yii::$app->user->getIsGuest()){
                     <h3 class="text-center"><?= Yii::t('app',"Take new orders!");?></h3>
                     <p class="text-center"><a class="btn btn-default btn-primary btn-sm" id="med-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/neworder"';?>><?= Yii::t('app',"New order");?></a></p>
                 </div>
+
             </div>
 
         </div>
@@ -148,7 +150,10 @@ if(!Yii::$app->user->getIsGuest()){
             </div>
 
         </div>
-
+                <div class="text-center">
+                    <h3 class="text-center"><?= Yii::t('app',"Change personal address!");?></h3>
+                    <p class="text-center"><a class="btn btn-default btn-primary btn-sm" id="med-btn" href=<?php echo '"site/changedirection"';?>><?= Yii::t('app',"Update");?></a></p>
+                </div>
     </div>
 </div>
 
@@ -204,30 +209,3 @@ if(!Yii::$app->user->getIsGuest()){
 
 </script>
 
-<?php } else{ ?>
-
-<div class="site-index">
-
-    <div class="row" id="indx-welcome">
-        <div class="col-md-10">
-            <div>
-                <h2><p><?= Yii::t('app',"Welcome back .. guest?");?></p></h2>
-                <p> - <?= Yii::t('app',"It's nice see you!");?></p>
-            </div>
-        </div>
-
-        <div class="col-md-2 right">
-            <img class="img-responsive right" src="/assets/images/map.jpg">
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
-            <br><br>
-            <h1><?= Yii::t('app',"Please");?> <a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/login'?>> <?= Yii::t('app',"login");?></a> <?= Yii::t('app',"or");?> <a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/signup'?>><?= Yii::t('app',"signup");?></a>.</h1>
-        </div>
-    </div>
-
-</div>
-
-<?php } ?>

@@ -82,6 +82,6 @@ $nombreColumna = function ($data){ return Categorias::findOne($data->idcategoria
 </div>
 
 <?php
-  $this->registerJsFile('/js/product-store.js', ['depends' => [yii\web\JqueryAsset::className()]]);
+  $this->registerJsFile('denm/backend/web/js/product-store.js', ['depends' => [yii\web\JqueryAsset::className()]]);
 ?>
 
