@@ -34,9 +34,7 @@ class StockPedido extends \yii\db\ActiveRecord
         return [
             [['idcomercio', 'idproducto', 'stock', 'pedido', 'fecha'], 'required'],
             [['idcomercio', 'idproducto', 'stock', 'pedido'], 'integer'],
-            [['fecha'], 'safe'],
-            [['idcomercio'], 'unique'],
-            [['idproducto'], 'unique']
+            [['fecha'], 'safe']
         ];
     }
 

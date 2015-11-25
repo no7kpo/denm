@@ -28,6 +28,7 @@ $fieldOptions3 = [
     'inputTemplate' => "{input}<span class='glyphicon glyphicon-lock form-control-feedback'></span>"
 ];
 ?>
+
 <div class="row login-box">
     <!--<div class="col-md-4 col-md-offset-4">-->
         <div class="login-logo">
@@ -62,6 +63,7 @@ $fieldOptions3 = [
 
                 <?php endif ?>
 
+              
                 <?= Html::submitButton(Yii::t('user', 'Sign up'), ['class' => 'btn btn-success btn-block']) ?>
 
                 <?php ActiveForm::end(); ?>

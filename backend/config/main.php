@@ -20,6 +20,9 @@ return [
             'controllerMap' => [
                 'registration' => 'backend\controllers\RegistrationController'
             ],
+            'modelMap'=> [
+                'User' => 'common\models\User'
+            ]
         ],
         'rbac' => [
             'class' => 'dektrium\rbac\Module',
