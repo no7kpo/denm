@@ -1,5 +1,5 @@
 <?php
-namespace backend\models;
+namespace common\models;
 use Yii;
 /**
  * This is the model class for table "ruta_relevador".
@@ -27,7 +27,6 @@ class RutaRelevador extends \yii\db\ActiveRecord
         return [
             [['idruta', 'idrelevador'], 'required'],
             [['idruta', 'idrelevador'], 'integer'],
-            [['idrelevador'], 'unique']
         ];
     }
     /**

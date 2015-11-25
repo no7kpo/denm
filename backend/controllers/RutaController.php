@@ -3,12 +3,15 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Ruta;
+use common\models\Ruta;
+use common\models\RutaRelevador;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\db\Query;
+use yii\helpers\ArrayHelper;
 
 /**
  * RutaController implements the CRUD actions for Ruta model.
@@ -75,8 +78,13 @@ class RutaController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+            $connection = \Yii::$app->db;
+            $sql = 'SELECT * FROM user WHERE id in (Select user_id FROM auth_assignment WHERE item_name = "relevador")';
+            $modelo = \common\models\User::findBySql($sql)->all(); 
+            $dataUsuarios=ArrayHelper::map($modelo, 'id', 'username');
+            $rutarel= new RutaRelevador();
             return $this->render('create', [
-                'model' => $model,
+                'model' => $model,'users' => $dataUsuarios,'rutarel' =>$rutarel
             ]);
         }
     }

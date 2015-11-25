@@ -1,6 +1,8 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
+
 
 
 /* @var $this yii\web\View */
@@ -12,10 +14,11 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ruta-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
-        'model' => $model,
+      <?= $this->render('_form', [
+        'model' => $model, 'user' => $users,'rutarel' =>$rutarel
+        
     ]) ?>
+
+
 
 </div>
