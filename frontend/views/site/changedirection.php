@@ -1,17 +1,19 @@
-<?php use yii\widgets\ActiveForm; ?>
-<style>
-      #map-canvas {
-        width: 500px;
-        height: 400px;
-      }
-    </style>
+<?php
+use yii\helpers\Html;
+use yii\widgets\ActiveForm; 
+
+$this->title = Yii::t('app', 'Change address');
+?>
+
 <script src="https://maps.googleapis.com/maps/api/js"></script>
-<div class="site-index">
+
+
+<div class="change-address">
 
     <div class="row" id="indx-welcome">
         <div class="col-md-10">
             <div>
-                <h2><p><?= Yii::t('app','Change address');?> </p></h2>
+                <h2><p><?= Html::encode($this->title)?></p></h2>
             </div>
         </div>
 
@@ -19,24 +21,28 @@
             <img class="img-responsive map-center" id="map_logo" src="/assets/images/map.jpg">
         </div>
     </div>
-    
+
+
     <br>
     <div class="body-content">
-
-        <div class="col-md-4">
-
-
-                <div id="map-canvas"></div>
-
-    <form action="updateaddress" method="post">
-        <input type="hidden" id="longitud" name="longitud" value="">
-        <input type="hidden" id="latitud" name="latitud" value="">
-        <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>"/>
-        <input type="submit" value=<?=Yii::t('app', 'Update') ?>>
-    </form> 
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div id="map-canvas" class="img-responsive map-center google-map"></div>
+                <br>
+                <div class="text-center">
+                    <br>
+                    <form action="updateaddress" method="post">
+                        <input type="hidden" id="longitud" name="longitud" value="">
+                        <input type="hidden" id="latitud" name="latitud" value="">
+                        <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>"/>
+                        <input type="submit" class="btn btn-default btn-primary btn-sm med-btn" id="med-btn" value=<?=Yii::t('app', 'Update') ?>>
+                    </form>
+                    <br>
+                </div>
+            </div>
         </div>
-
     </div>
+
 </div>
 
 

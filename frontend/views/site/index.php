@@ -91,11 +91,13 @@ $count = 1;
                 </div>
             </div>
 
+            <div class="text-center">
+                <h4 class="text-center"><?= Yii::t('app',"Change personal address!");?></h4>
+                <p class="text-center"><a class="btn btn-default btn-primary btn-sm" id="med-btn" href=<?php echo '"site/changedirection"';?>><?= Yii::t('app',"Update");?></a></p>
+            </div>
+
         </div>
-                <div class="text-center">
-                    <h3 class="text-center"><?= Yii::t('app',"Change personal address!");?></h3>
-                    <p class="text-center"><a class="btn btn-default btn-primary btn-sm" id="med-btn" href=<?php echo '"site/changedirection"';?>><?= Yii::t('app',"Update");?></a></p>
-                </div>
+
     </div>
 </div>
 
@@ -103,7 +105,24 @@ $count = 1;
 
     //Funcion para el cambio de fechas
     function changeDateRange(value) {
-        alert(value);
+
+        console.log(value);
+
+        var url = "<?php echo 'http://'.$_SERVER['HTTP_HOST']; ?>";
+
+        $.ajax({
+            type: "GET",
+            url: url,
+            data: { "filter" :  value },
+            success: function(response){
+                
+                $.each(JSON.parse(response), function(index, value) {
+                    console.log(value);
+
+                    $("#delivery-table").append(value);
+                });
+            }
+        });
     }
     
 </script>

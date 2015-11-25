@@ -87,15 +87,82 @@ class SiteController extends Controller
         $relevadorId = Yii::$app->user->identity->id;
         $fecha = date('Y-m-d');
 
-        //Get ordenes
-        $query = $connection->createCommand('SELECT r.id as id, r.relevado as relevado, r.fecha as fecha, r.idcomercio as idComercio, c.nombre as nombre, c.latitud as latitud, c.longitud as longitud, c.prioridad as prioridad, c.hora_apertura as horaAper, c.hora_cierre as horaCierr FROM ruta r JOIN ruta_relevador rr ON r.id = rr.idruta JOIN comercios c ON r.idcomercio = c.id WHERE rr.idrelevador = '.$relevadorId.' AND r.fecha = "'.$fecha.'"');
-        $orders = $query->queryAll();
+        if(isset($_GET['filter'])){
 
-        //echo '<pre>'; print_r($rutas); die();
+            if($_GET['filter'] == ''){
+                $nuevafecha = $fecha;
+            }
+            else if($_GET['filter'] == 'today'){
+                $nuevafecha = $fecha;
+            }
+            else if($_GET['filter'] == 'yesterday'){
+                $nuevafecha = strtotime ( '-1 day' , strtotime ( $fecha ) ) ;
+                $nuevafecha = date ( 'Y-m-d' , $nuevafecha );
+            }
+            else if($_GET['filter'] == 'last7'){
+                $nuevafecha = strtotime ( '-7 day' , strtotime ( $fecha ) ) ;
+                $nuevafecha = date ( 'Y-m-d' , $nuevafecha );
+            }
+            else if($_GET['filter'] == 'last30'){
+                $nuevafecha = strtotime ( '-30 day' , strtotime ( $fecha ) ) ;
+                $nuevafecha = date ( 'Y-m-d' , $nuevafecha );
+            }
+            else{
+                $nuevafecha = $fecha;
+            }
 
-        return $this->render('index', [
-            'orders' => $orders,
-        ]);
+            //Get ordenes between filter days
+            $query = $connection->createCommand('SELECT r.id as id, r.relevado as relevado, r.fecha as fecha, r.idcomercio as idComercio, c.nombre as nombre, c.latitud as latitud, c.longitud as longitud, c.prioridad as prioridad, c.hora_apertura as horaAper, c.hora_cierre as horaCierr FROM ruta r JOIN ruta_relevador rr ON r.id = rr.idruta JOIN comercios c ON r.idcomercio = c.id WHERE rr.idrelevador = '.$relevadorId.' AND r.fecha BETWEEN "'.$nuevafecha.'" AND "'.$fecha.'"');
+            $orders = $query->queryAll();
+            
+            $response = array();
+            $count = 1;
+
+            foreach($orders as $order){
+                $horaIni = explode(':', $order['horaAper']);
+                $horaFin = explode(':', $order['horaCierr']);
+                $local_hour = $horaIni[0].':'.$horaIni[1].' - '.$horaFin[0].':'.$horaFin[1];
+
+                $response[$count] = '<tr><td>'.$count.'</td><td title="Delivery info">';
+                
+                if($order['relevado'] != 1){
+                    $response[$count] = $response[$count].'<a class="btn-default" href="http://'.$_SERVER['HTTP_HOST'].'/site/order?id='.$order['idComercio'].'"><span class="info glyphicon glyphicon-info-sign"></span>';
+                }
+                
+                $response[$count] = $response[$count].$order['nombre'];
+
+                if($order['relevado'] != 1){
+                    $response[$count] = $response[$count].'</a>';
+                }
+
+                $response[$count] = $response[$count].'</td><td class="text-center">'.$order['fecha'].'</td><td class="text-center">'.$local_hour.'</td><td class="text-center">';
+
+                if($order['relevado'] == 1){
+                    $response[$count] = $response[$count].'<span class="delivered glyphicon glyphicon-ok"></span>';
+                }
+                else{
+                    $response[$count] = $response[$count].'<span class="not-delivered glyphicon glyphicon-remove"></span>';
+                }
+
+                $response[$count] = $response[$count].'</td></tr>';
+
+                $count++;
+            }
+
+            echo json_encode($response);
+        }
+
+        else{
+            
+            //Get ordenes
+            $query = $connection->createCommand('SELECT r.id as id, r.relevado as relevado, r.fecha as fecha, r.idcomercio as idComercio, c.nombre as nombre, c.latitud as latitud, c.longitud as longitud, c.prioridad as prioridad, c.hora_apertura as horaAper, c.hora_cierre as horaCierr FROM ruta r JOIN ruta_relevador rr ON r.id = rr.idruta JOIN comercios c ON r.idcomercio = c.id WHERE rr.idrelevador = '.$relevadorId.' AND r.fecha = "'.$fecha.'"');
+            $orders = $query->queryAll();
+
+            return $this->render('index', [
+                'orders' => $orders,
+            ]);
+        }
+
     }
 
     public function actionChangedirection()
