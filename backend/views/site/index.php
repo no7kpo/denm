@@ -8,7 +8,7 @@ $this->title = 'Bienvenido a Relevadores APP';
 <br>
  <?php
 
-echo Highcharts::widget([
+/*echo Highcharts::widget([
    'options' => [
       'title' => ['text' => 'Productos mas consumidos por comercios'],
       'xAxis' => [
@@ -22,13 +22,13 @@ echo Highcharts::widget([
          ['name' => 'Frutas Zarlanga', 'data' => [5, 7, 3]]
       ]
    ]
-]);
+]);*/
 
 ?>
 <br><br>
 <?php
 
-echo Highcharts::widget([
+/*echo Highcharts::widget([
    'options' => [
       'title' => ['text' => 'Relevadores mas efectivos'],
       'xAxis' => [
@@ -44,7 +44,7 @@ echo Highcharts::widget([
          ['name' => 'Matias', 'data' => [80, 15, 60, 70, 99]]
       ]
    ]
-]);
+]);*/
 
 ?>
 </div>

@@ -5,71 +5,6 @@
 $this->title = Yii::t('app', 'Home');
 $count = 1;
 
-//Data de ejemplo - Lista de pedidos y nombre de comercio
-$data = array();
-$data[] = array(
-    'id' => 1,
-    'name' => 'Devoto San Martin',
-    'date' => '10-11-2015',
-    'hours' => '09:00 - 21:00',
-    'delivered' => true
-);
-$data[] = array(
-    'id' => 2,
-    'name' => 'Tienda Inglesa Propios',
-    'date' => '10-11-2015',
-    'hours' => '09:00 - 22:00',
-    'delivered' => true
-);
-$data[] = array(
-    'id' => 3,
-    'name' => 'Cobadonga Hogar',
-    'date' => '10-11-2015',
-    'hours' => '10:00 - 17:00',
-    'delivered' => false
-);
-$data[] = array(
-    'id' => 4,
-    'name' => 'Cobadonga Hogar 2',
-    'date' => '10-11-2015',
-    'hours' => '11:00 - 16:00',
-    'delivered' => false
-);
-$data[] = array(
-    'id' => 4,
-    'name' => 'Cobadonga Hogar 2',
-    'date' => '10-11-2015',
-    'hours' => '11:00 - 16:00',
-    'delivered' => false
-);
-$data[] = array(
-    'id' => 4,
-    'name' => 'Cobadonga Hogar 2',
-    'date' => '10-11-2015',
-    'hours' => '11:00 - 16:00',
-    'delivered' => false
-);
-$data[] = array(
-    'id' => 4,
-    'name' => 'Cobadonga Hogar 2',
-    'date' => '10-11-2015',
-    'hours' => '11:00 - 16:00',
-    'delivered' => false
-);
-$data[] = array(
-    'id' => 4,
-    'name' => 'Cobadonga Hogar 2',
-    'date' => '10-11-2015',
-    'hours' => '11:00 - 16:00',
-    'delivered' => false
-);
-$data[] = array(
-    'id' => 4,
-    'name' => 'Cobadonga Hogar 2',
-    'date' => '10-11-2015',
-    'hours' => '11:00 - 16:00',
-    'delivered' => false
-);
 
 if(!Yii::$app->user->getIsGuest()){
 ?>
@@ -117,9 +52,9 @@ if(!Yii::$app->user->getIsGuest()){
                     <h2><?= Yii::t('app',"Deliveries");?></h2>
                     <select class="btn btn-sm dropdown-toggle" id="datepicker-btn" onchange="changeDateRange(this.value)">
                       <option value="today" selected><?= Yii::t('app',"Today");?></option>
-                      <option value="tomorrow"><?= Yii::t('app',"Tomorrow");?></option>
-                      <option value="t_week"><?= Yii::t('app',"This week");?></option>
-                      <option value="n_week"><?= Yii::t('app',"Next week");?></option>
+                      <option value="yesterday"><?= Yii::t('app',"Yesterday");?></option>
+                      <option value="last7"><?= Yii::t('app',"Last 7 days");?></option>
+                      <option value="last30"><?= Yii::t('app',"Last 30 days");?></option>
                     </select>
                 </div>
 
@@ -134,13 +69,23 @@ if(!Yii::$app->user->getIsGuest()){
                             <th class="text-center"><?= Yii::t('app',"Delivered");?></th>
                         </tr>
 
-                        <?php if(count($data) > 0){ foreach($data as $order){ ?>
+                        <?php if(count($orders) > 0){ foreach($orders as $order){ 
+                            $horaIni = explode(':', $order['horaAper']);
+                            $horaFin = explode(':', $order['horaCierr']);
+                            $local_hour = $horaIni[0].':'.$horaIni[1].' - '.$horaFin[0].':'.$horaFin[1];
+                        ?>
                         <tr>
                             <td><?php echo $count; ?></td>
-                            <td title="Delivery info"><a class="btn-default" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/order?id='.$order['id'].'">'; echo '<span class="info glyphicon glyphicon-info-sign"></span> '.$order['name']; ?></a></td>
-                            <td class="text-center"><?php echo $order['date']; ?></td>
-                            <td class="text-center"><?php echo $order['hours']; ?></td>
-                            <td class="text-center"><?php if($order['delivered'] == true){ echo '<span class="delivered glyphicon glyphicon-ok"></span>'; } else{ echo '<span class="not-delivered glyphicon glyphicon-remove"></span>'; } ?></td>
+                            <td title="Delivery info">
+                                <?php if($order['relevado'] != 1){ ?>
+                                    <a class="btn-default" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/order?id='.$order['idComercio'].'">'; echo '<span class="info glyphicon glyphicon-info-sign"></span> ';?>
+                                <?php } echo $order['nombre']; if($order['relevado'] != 1){ ?>
+                                    </a>
+                                <?php } ?>
+                            </td>
+                            <td class="text-center"><?php echo $order['fecha']; ?></td>
+                            <td class="text-center"><?php echo $local_hour; ?></td>
+                            <td class="text-center"><?php if($order['relevado'] == 1){ echo '<span class="delivered glyphicon glyphicon-ok"></span>'; } else{ echo '<span class="not-delivered glyphicon glyphicon-remove"></span>'; } ?></td>
                         </tr>
                         <?php $count++; }}?>
                     </table>

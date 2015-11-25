@@ -5,7 +5,6 @@ use yii\helpers\Html;
 
 //Defino datos del comercio
 $local_name = $comercio['nombre'];
-$local_dir = 'San Martin 1243';
 $horaIni = explode(':', $comercio['hora_apertura']);
 $horaFin = explode(':', $comercio['hora_cierre']);
 $local_hour = $horaIni[0].':'.$horaIni[1].' - '.$horaFin[0].':'.$horaFin[1];
@@ -13,7 +12,7 @@ $latitud = $comercio['latitud'];
 $longitud = $comercio['longitud'];
 
 
-$this->title = Yii::t('app', 'Stock for order');
+$this->title = Yii::t('app', 'Stock for Shop');
 
 if(!Yii::$app->user->getIsGuest()){
 ?>
@@ -25,12 +24,12 @@ if(!Yii::$app->user->getIsGuest()){
             <div>
             <?php if(count($productos) > 0){ ?>
 
-                <h2><p><?= Html::encode($this->title)?> Nº <?php echo $orderId.' - '.$local_name;?></p></h2>
-                <p> <?php echo $local_dir.' | '.$local_hour; ?></p>
+                <h2><p><?= Html::encode($this->title)?> Nº <?php echo $shopId.' - '.$local_name;?></p></h2>
+                <p> <?php echo $local_hour; ?></p>
             
             <?php } else{ ?>
 
-            	<h2><p><?= Html::encode($this->title)?> Nº <?php echo $orderId; ?>?</p></h2>
+            	<h2><p><?= Html::encode($this->title)?> Nº <?php echo $shopId; ?>?</p></h2>
             	<p> <?= Yii::t('app','It looks like the order doesnt exist');?>.</p>
             
             <?php } ?>
@@ -75,10 +74,10 @@ if(!Yii::$app->user->getIsGuest()){
 
 	                        <?php foreach($productos as $item){ ?>
 	                        <tr>
-	                            <td><?php echo $item['Nombre']; ?></td>
-	                            <td class="text-center"><?php if($item['Imagen'] == ''){ echo '<span class="not-delivered glyphicon glyphicon-remove"></span>'; } else{ ?><span><img class="item img-responsive" src="<?=Yii::getAlias('@product_pictures')?><?php echo DIRECTORY_SEPARATOR.$item['Imagen'];?>"></span><?php } ?></td>
+	                            <td><?php echo $item['nombre']; ?></td>
+	                            <td class="text-center"><?php if($item['imagen'] == ''){ echo '<span class="not-delivered glyphicon glyphicon-remove"></span>'; } else{ ?><span><img class="item img-responsive" src="<?=Yii::getAlias('@product_pictures')?><?php echo DIRECTORY_SEPARATOR.$item['imagen'];?>"></span><?php } ?></td>
 	                           	<td class="text-center">
-	                           		<input class="input-stock" onblur="saveThisItem(<?php echo $orderId;?>,<?php echo $item['id'];?>,this.value)" type="number" id="stock_<?php echo $item['id'];?>" value="0" min="0" max="1000">
+	                           		<input class="input-stock" onblur="saveThisItem(<?php echo $item['idproducto'];?>,this.value)" type="number" id="stock_<?php echo $item['idproducto'];?>" value="<?php echo $item['pedido'];?>" min="0" max="1000">
 	                           	</td>
 	                        </tr>
 	                        <?php } ?>
@@ -86,7 +85,7 @@ if(!Yii::$app->user->getIsGuest()){
 	                </div>
                     
                     <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/index"';?>><?= Yii::t('app','Cancel');?></a></p>
-                    <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" onclick=<?php echo '"deliveryDone('.$orderId.')"';?>><?= Yii::t('app','Done');?>!</a></p>
+                    <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" onclick=<?php echo '"deliveryDone('.$shopId.')"';?>><?= Yii::t('app','Done');?>!</a></p>
                 </form>
 		    </div>
         </div>
@@ -107,33 +106,32 @@ if(!Yii::$app->user->getIsGuest()){
 <script type="text/javascript">
 
     //Actualiza valor del stock
-    function saveThisItem(orderId,itemId,value) {
-        console.log(orderId,itemId,value);
-        
+    function saveThisItem(itemId,value) {
+
         var url = "<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/savethisitem'; ?>";
 
         $.ajax({
             type: "POST",
             url: url,
-            data: { "orderId" :  orderId, "itemId" : itemId, "stock" : value },
+            data: { "shopId" :  <?php echo $shopId; ?>, "fecha" : "<?php echo $fecha; ?>", "itemId" : itemId, "stock" : value },
             success: function(response){
-                alert(response);
+                console.log(response);
             }
         });
     }
 
     //Asigna como finalizada la orden
-    function deliveryDone(orderId) {
-        console.log(orderId);
-
+    function deliveryDone(shopId) {
+        
         var url = "<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/deliverydone'; ?>";
 
         $.ajax({
             type: "POST",
             url: url,
-            data: { "orderId" :  orderId },
+            data: { "shopId" :  shopId, "fecha" : "<?php echo $fecha; ?>" },
             success: function(response){
-                alert(response);
+                console.log(response);
+                window.location.href = "<?php echo 'http://'.$_SERVER['HTTP_HOST']; ?>";
             }
         });
     }
