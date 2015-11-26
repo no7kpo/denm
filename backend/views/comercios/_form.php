@@ -28,10 +28,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'prioridad')->textInput() ?>
 
-    
-    <?= $form->field($model,'hora_apertura')->widget(TimePicker::classname(), []); ?>
+     <?=   $form->field($model, 'dia')->dropDownList( ['0' => Yii::t('app','Monday'), '1' => Yii::t('app','Tuesday'), '2' => Yii::t('app','Wednesday'), '3' => Yii::t('app','Thursday'), '4'=> Yii::t('app','Friday'), '5' => Yii::t('app','Saturday')]) ?>
 
-    <?= $form->field($model, 'hora_cierre')->widget(TimePicker::classname(), []) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -148,7 +148,11 @@ class SiteController extends Controller
     }
 */
 
-    
+    public function actionChangedirection()
+    {
+        return $this->render('changedirection');
+    }
+
     /*public function actionLogin()
     {
         if (!\Yii::$app->user->isGuest) {

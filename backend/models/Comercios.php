@@ -9,8 +9,6 @@ use Yii;
  * @property string $latitud
  * @property string $longitud
  * @property integer $prioridad
- * @property string $hora_apertura
- * @property string $hora_cierre
  * @property string $direccion
  * @property integer $dia
  *
@@ -34,12 +32,10 @@ class Comercios extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'latitud', 'longitud', 'prioridad', 'hora_apertura', 'hora_cierre'], 'required'],
+            [['nombre', 'latitud', 'longitud', 'prioridad'], 'required'],
             [['prioridad', 'dia'], 'integer'],
-            [['hora_apertura', 'hora_cierre'], 'safe'],
             [['nombre'], 'string', 'max' => 50],
-            [['latitud', 'longitud'], 'string', 'max' => 100],
-            [['direccion'], 'string', 'max' => 255]
+            [['latitud', 'longitud'], 'string', 'max' => 100]
         ];
     }
     /**
@@ -53,10 +49,8 @@ class Comercios extends \yii\db\ActiveRecord
             'latitud' => Yii::t('app', 'Latitude'),
             'longitud' => Yii::t('app', 'Longitude'),
             'prioridad' => Yii::t('app', 'Priority'),
-            'hora_apertura' => Yii::t('app', 'Open hour'),
-            'hora_cierre' => Yii::t('app', 'Close hour'),
             'direccion' => Yii::t('app', 'Adress'),
-            'dia' => Yii::t('app', 'Day of the week'),
+            'dia' => Yii::t('app', 'Day to control stock'),
         ];
     }
     /**
@@ -86,5 +80,14 @@ class Comercios extends \yii\db\ActiveRecord
     public function getStockPedido()
     {
         return $this->hasMany(StockPedido::className(), ['idcomercio' => 'id'])->viaTable('stock_pedido', ['idcomercio' => 'id']);
+    }
+
+    public function getDia(){
+        if($this->dia == '0') return Yii::t('app','Monday');
+        if($this->dia == '1') return Yii::t('app','Tuesday');
+        if($this->dia == '2') return Yii::t('app','Wednesday');
+        if($this->dia == '3') return Yii::t('app','Thursday');
+        if($this->dia == '4') return Yii::t('app','Friday');
+        if($this->dia == '5') return Yii::t('app','Saturday');
     }
 }

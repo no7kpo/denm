@@ -16,7 +16,7 @@ use dektrium\user\controllers\RegistrationController as BaseRegistrationControll
 use dektrium\user\Finder;
 use dektrium\user\models\RegistrationForm;
 use dektrium\user\models\ResendForm;
-use dektrium\user\models\User;
+use common\models\User;
 use dektrium\user\traits\AjaxValidationTrait;
 use dektrium\user\models\UserSearch;
 use Yii;

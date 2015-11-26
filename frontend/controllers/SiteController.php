@@ -84,19 +84,103 @@ class SiteController extends Controller
         //Define connection
         $connection = \Yii::$app->db;
 
+        $relevadorId = Yii::$app->user->identity->id;
         $fecha = date('Y-m-d');
 
-        //Get ordenes
-        //$query = $connection->createCommand('SELECT st.idcomercio, st.fecha, c.nombre, c.latitud, c.longitud, c.direccion, c.prioridad, c.hora_apertura, c.hora_cierre FROM stock_pedido st JOIN comercios c ON st.idcomercio = c.id WHERE fecha = '.$fecha);
-        //$ordenes = $query->queryAll();
-        $ordenes = '';
-        //echo '<pre>'; print_r($ordenes); die();
+        if(isset($_GET['filter'])){
 
-        return $this->render('index', [
-            'ordenes' => $ordenes,
-        ]);
+            if($_GET['filter'] == ''){
+                $nuevafecha = $fecha;
+            }
+            else if($_GET['filter'] == 'today'){
+                $nuevafecha = $fecha;
+            }
+            else if($_GET['filter'] == 'yesterday'){
+                $nuevafecha = strtotime ( '-1 day' , strtotime ( $fecha ) ) ;
+                $nuevafecha = date ( 'Y-m-d' , $nuevafecha );
+            }
+            else if($_GET['filter'] == 'last7'){
+                $nuevafecha = strtotime ( '-7 day' , strtotime ( $fecha ) ) ;
+                $nuevafecha = date ( 'Y-m-d' , $nuevafecha );
+            }
+            else if($_GET['filter'] == 'last30'){
+                $nuevafecha = strtotime ( '-30 day' , strtotime ( $fecha ) ) ;
+                $nuevafecha = date ( 'Y-m-d' , $nuevafecha );
+            }
+            else{
+                $nuevafecha = $fecha;
+            }
+
+            //Get ordenes between filter days
+            $query = $connection->createCommand('SELECT r.id as id, r.relevado as relevado, r.fecha as fecha, r.idcomercio as idComercio, c.nombre as nombre, c.latitud as latitud, c.longitud as longitud, c.prioridad as prioridad, c.hora_apertura as horaAper, c.hora_cierre as horaCierr FROM ruta r JOIN ruta_relevador rr ON r.id = rr.idruta JOIN comercios c ON r.idcomercio = c.id WHERE rr.idrelevador = '.$relevadorId.' AND r.fecha BETWEEN "'.$nuevafecha.'" AND "'.$fecha.'"');
+            $orders = $query->queryAll();
+            
+            $response = array();
+            $count = 1;
+
+            foreach($orders as $order){
+                $horaIni = explode(':', $order['horaAper']);
+                $horaFin = explode(':', $order['horaCierr']);
+                $local_hour = $horaIni[0].':'.$horaIni[1].' - '.$horaFin[0].':'.$horaFin[1];
+
+                $response[$count] = '<tr><td>'.$count.'</td><td title="Delivery info">';
+                
+                if($order['relevado'] != 1){
+                    $response[$count] = $response[$count].'<a class="btn-default" href="http://'.$_SERVER['HTTP_HOST'].'/site/order?id='.$order['idComercio'].'"><span class="info glyphicon glyphicon-info-sign"></span>';
+                }
+                
+                $response[$count] = $response[$count].$order['nombre'];
+
+                if($order['relevado'] != 1){
+                    $response[$count] = $response[$count].'</a>';
+                }
+
+                $response[$count] = $response[$count].'</td><td class="text-center">'.$order['fecha'].'</td><td class="text-center">'.$local_hour.'</td><td class="text-center">';
+
+                if($order['relevado'] == 1){
+                    $response[$count] = $response[$count].'<span class="delivered glyphicon glyphicon-ok"></span>';
+                }
+                else{
+                    $response[$count] = $response[$count].'<span class="not-delivered glyphicon glyphicon-remove"></span>';
+                }
+
+                $response[$count] = $response[$count].'</td></tr>';
+
+                $count++;
+            }
+
+            echo json_encode($response);
+        }
+
+        else{
+            
+            //Get ordenes
+            $query = $connection->createCommand('SELECT r.id as id, r.relevado as relevado, r.fecha as fecha, r.idcomercio as idComercio, c.nombre as nombre, c.latitud as latitud, c.longitud as longitud, c.prioridad as prioridad, c.hora_apertura as horaAper, c.hora_cierre as horaCierr FROM ruta r JOIN ruta_relevador rr ON r.id = rr.idruta JOIN comercios c ON r.idcomercio = c.id WHERE rr.idrelevador = '.$relevadorId.' AND r.fecha = "'.$fecha.'"');
+            $orders = $query->queryAll();
+
+            return $this->render('index', [
+                'orders' => $orders,
+            ]);
+        }
+
     }
 
+    public function actionChangedirection()
+    {
+        return $this->render('changedirection');
+    }
+    public function actionUpdateaddress()
+    {
+        $request = Yii::$app->request;
+        $latitud=$request->post('latitud');
+        $longitud=$request->post('longitud');
+        $user = Yii::$app->user->identity;
+        $user->latitud=$latitud;
+        $user->longitud=$longitud;
+        $user->scenario = 'update';
+        $user->save();
+        return $this->render('index');
+    }
     /**
      * Logs in a user.
      *
@@ -239,13 +323,13 @@ class SiteController extends Controller
         //Define connection
         $connection = \Yii::$app->db;
 
-        $orderId = $_GET['id'];
-
         //Get shop id
-        $shopId = '1'; //Conseguir id de comercio segun order id!!
+        $shopId = $_GET['id'];
+
+        $fecha = date('Y-m-d');
 
         //Get productos
-        $query = $connection->createCommand('SELECT p.id, p.Nombre, p.Imagen FROM productos p JOIN producto_tienda pt ON p.id = pt.idproducto WHERE pt.idcomercio = '.$shopId);
+        $query = $connection->createCommand('SELECT sp.idproducto as idproducto, sp.pedido as pedido, p.Nombre as nombre, p.Imagen as imagen FROM stock_pedido sp JOIN productos p ON sp.idproducto = p.id WHERE sp.idcomercio = '.$shopId.' AND sp.fecha = "'.$fecha.'"');
         $productos = $query->queryAll();
 
         //Get comercio
@@ -253,8 +337,8 @@ class SiteController extends Controller
         $comercio = $query->queryOne();
 
         return $this->render('order', [
-            'orderId' => $orderId,
             'shopId' => $shopId,
+            'fecha' => $fecha,
             'productos' => $productos,
             'comercio' => $comercio,
         ]);
@@ -262,29 +346,31 @@ class SiteController extends Controller
     }
 
     public function actionSavethisitem(){
-        $orderId = $_POST['orderId'];
+        $shopId = $_POST['shopId'];
+        $fecha = $_POST['fecha'];
         $itemId = $_POST['itemId'];
         $stock = $_POST['stock'];
 
         //Define connection
         $connection = \Yii::$app->db;
 
-        //$query = $connection->createCommand('SELECT * FROM comercios WHERE id = '.$shopId);
-        //$comercio = $query->queryOne();
+        $query = $connection->createCommand('UPDATE stock_pedido SET stock = '.$stock.' WHERE idcomercio = '.$shopId.' AND idproducto = '.$itemId.' AND fecha = "'.$fecha.'"');
+        $query->execute();
 
-        echo $orderId . ' - ' . $itemId . ' - ' . $stock;
+        echo 'UPDATE stock_pedido SET stock = '.$stock.' WHERE idcomercio = '.$shopId.' AND idproducto = '.$itemId.' AND fecha = "'.$fecha.'"';
     }
 
     public function actionDeliverydone(){
-        $orderId = $_POST['orderId'];
+        $shopId = $_POST['shopId'];
+        $fecha = $_POST['fecha'];
 
         //Define connection
         $connection = \Yii::$app->db;
 
-        //$query = $connection->createCommand('SELECT * FROM comercios WHERE id = '.$shopId);
-        //$comercio = $query->queryOne();
+        $query = $connection->createCommand('UPDATE ruta SET relevado = 1 WHERE idcomercio = '.$shopId.' AND fecha = "'.$fecha.'"');
+        $query->execute();
 
-        echo $orderId;
+        echo 'UPDATE ruta SET relevado = 1 WHERE idcomercio = '.$shopId.' AND fecha = "'.$fecha.'"';
     }
 
     public function actionNeworder(){

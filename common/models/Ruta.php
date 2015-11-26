@@ -1,5 +1,5 @@
 <?php
-namespace backend\models;
+namespace common\models;
 use Yii;
 /**
  * This is the model class for table "ruta".
@@ -30,8 +30,7 @@ class Ruta extends \yii\db\ActiveRecord
         return [
             [['id', 'idcomercio', 'fecha'], 'required'],
             [['id', 'idcomercio', 'relevado'], 'integer'],
-            [['fecha'], 'safe'],
-            [['idcomercio'], 'unique']
+            [['fecha'], 'safe']
         ];
     }
     /**

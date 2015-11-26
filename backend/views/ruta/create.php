@@ -1,21 +1,24 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
+
 
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Ruta */
 
-$this->title = Yii::t('app', 'Create route');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'route'), 'url' => ['index']];
+$this->title = Yii::t('app', 'Create Ruta');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Rutas'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ruta-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
-        'model' => $model,
+      <?= $this->render('_form', [
+        'model' => $model, 'user' => $users,'rutarel' =>$rutarel
+        
     ]) ?>
+
+
 
 </div>
