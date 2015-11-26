@@ -38,7 +38,7 @@ $(document).ready(function(){
 		var productoId = $(this).attr("id");
 		var comercioId = $('input[name="model-id"]').val();
 		$.ajax({
-			url: '/comercios/add_product',
+			url: 'add_product',
 			type: 'post',
 			dataType: 'json',
 			data: {

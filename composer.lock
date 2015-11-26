@@ -4,6 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
+
     "hash": "b4d8a46accb2158d2d9d9fc66cd2fe6e",
     "content-hash": "9bf8c621f9ee0757367e1a61772fd0c6",
     "packages": [
@@ -1193,7 +1194,7 @@
         },
         {
             "name": "miloschuman/yii2-highcharts-widget",
-            "version": "v4.1.9",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/miloschuman/yii2-highcharts.git",
@@ -3307,7 +3308,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "dektrium/yii2-user": 20,
-        "dektrium/yii2-rbac": 20
+        "dektrium/yii2-rbac": 20,
+        "miloschuman/yii2-highcharts-widget": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

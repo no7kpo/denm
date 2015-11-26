@@ -12,6 +12,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use backend\models\ProductoTienda;
 use backend\models\Producto;
+use yii\helpers\ArrayHelper;
 use backend\models\Categorias;
 /**
  * ComerciosController implements the CRUD actions for Comercios model.
@@ -193,6 +194,15 @@ class ComerciosController extends Controller
             Yii::$app->response->format = 'json';
             return $message;
         }
+    }
+
+    public function actionPordia(){
+        $request= Yii::$app->request;
+        $dia=$request->post('id');
+        $comercios=Comercios::find()->where(['dia'=>$dia])->all();
+        $return=ArrayHelper::toArray($comercios, ['id', 'nombre','latitud','longitud']);
+        
+        echo json_encode($return);
     }
 
     /**

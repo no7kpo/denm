@@ -41,6 +41,7 @@
                     ['label' => Yii::t('app','Categories'), 'url' => ['/categorias/index']],
                     ['label' => Yii::t('app','Products'), 'url' => ['/producto/index']],
                     ['label' => Yii::t('app','Stores'), 'url' => ['/comercios/index']],
+                    ['label' => Yii::t('app','Routes'), 'url' => ['/ruta/index']],
                     ['label' => 'Gii', 'icon' => 'fa fa-file-code-o', 'url' => ['/gii']],
                     ['label' => 'Debug', 'icon' => 'fa fa-dashboard', 'url' => ['/debug']],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],

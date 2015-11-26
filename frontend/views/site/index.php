@@ -5,73 +5,6 @@
 $this->title = Yii::t('app', 'Home');
 $count = 1;
 
-//Data de ejemplo - Lista de pedidos y nombre de comercio
-$data = array();
-$data[] = array(
-    'id' => 1,
-    'name' => 'Devoto San Martin',
-    'date' => '10-11-2015',
-    'hours' => '09:00 - 21:00',
-    'delivered' => true
-);
-$data[] = array(
-    'id' => 2,
-    'name' => 'Tienda Inglesa Propios',
-    'date' => '10-11-2015',
-    'hours' => '09:00 - 22:00',
-    'delivered' => true
-);
-$data[] = array(
-    'id' => 3,
-    'name' => 'Cobadonga Hogar',
-    'date' => '10-11-2015',
-    'hours' => '10:00 - 17:00',
-    'delivered' => false
-);
-$data[] = array(
-    'id' => 4,
-    'name' => 'Cobadonga Hogar 2',
-    'date' => '10-11-2015',
-    'hours' => '11:00 - 16:00',
-    'delivered' => false
-);
-$data[] = array(
-    'id' => 4,
-    'name' => 'Cobadonga Hogar 2',
-    'date' => '10-11-2015',
-    'hours' => '11:00 - 16:00',
-    'delivered' => false
-);
-$data[] = array(
-    'id' => 4,
-    'name' => 'Cobadonga Hogar 2',
-    'date' => '10-11-2015',
-    'hours' => '11:00 - 16:00',
-    'delivered' => false
-);
-$data[] = array(
-    'id' => 4,
-    'name' => 'Cobadonga Hogar 2',
-    'date' => '10-11-2015',
-    'hours' => '11:00 - 16:00',
-    'delivered' => false
-);
-$data[] = array(
-    'id' => 4,
-    'name' => 'Cobadonga Hogar 2',
-    'date' => '10-11-2015',
-    'hours' => '11:00 - 16:00',
-    'delivered' => false
-);
-$data[] = array(
-    'id' => 4,
-    'name' => 'Cobadonga Hogar 2',
-    'date' => '10-11-2015',
-    'hours' => '11:00 - 16:00',
-    'delivered' => false
-);
-
-if(!Yii::$app->user->getIsGuest()){
 ?>
 
 <div class="site-index">
@@ -104,6 +37,7 @@ if(!Yii::$app->user->getIsGuest()){
                     <h3 class="text-center"><?= Yii::t('app',"Take new orders!");?></h3>
                     <p class="text-center"><a class="btn btn-default btn-primary btn-sm" id="med-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/neworder"';?>><?= Yii::t('app',"New order");?></a></p>
                 </div>
+
             </div>
 
         </div>
@@ -117,9 +51,9 @@ if(!Yii::$app->user->getIsGuest()){
                     <h2><?= Yii::t('app',"Deliveries");?></h2>
                     <select class="btn btn-sm dropdown-toggle" id="datepicker-btn" onchange="changeDateRange(this.value)">
                       <option value="today" selected><?= Yii::t('app',"Today");?></option>
-                      <option value="tomorrow"><?= Yii::t('app',"Tomorrow");?></option>
-                      <option value="t_week"><?= Yii::t('app',"This week");?></option>
-                      <option value="n_week"><?= Yii::t('app',"Next week");?></option>
+                      <option value="yesterday"><?= Yii::t('app',"Yesterday");?></option>
+                      <option value="last7"><?= Yii::t('app',"Last 7 days");?></option>
+                      <option value="last30"><?= Yii::t('app',"Last 30 days");?></option>
                     </select>
                 </div>
 
@@ -134,17 +68,32 @@ if(!Yii::$app->user->getIsGuest()){
                             <th class="text-center"><?= Yii::t('app',"Delivered");?></th>
                         </tr>
 
-                        <?php if(count($data) > 0){ foreach($data as $order){ ?>
+                        <?php if(count($orders) > 0){ foreach($orders as $order){ 
+                            $horaIni = explode(':', $order['horaAper']);
+                            $horaFin = explode(':', $order['horaCierr']);
+                            $local_hour = $horaIni[0].':'.$horaIni[1].' - '.$horaFin[0].':'.$horaFin[1];
+                        ?>
                         <tr>
                             <td><?php echo $count; ?></td>
-                            <td title="Delivery info"><a class="btn-default" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/order?id='.$order['id'].'">'; echo '<span class="info glyphicon glyphicon-info-sign"></span> '.$order['name']; ?></a></td>
-                            <td class="text-center"><?php echo $order['date']; ?></td>
-                            <td class="text-center"><?php echo $order['hours']; ?></td>
-                            <td class="text-center"><?php if($order['delivered'] == true){ echo '<span class="delivered glyphicon glyphicon-ok"></span>'; } else{ echo '<span class="not-delivered glyphicon glyphicon-remove"></span>'; } ?></td>
+                            <td title="Delivery info">
+                                <?php if($order['relevado'] != 1){ ?>
+                                    <a class="btn-default" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/order?id='.$order['idComercio'].'">'; echo '<span class="info glyphicon glyphicon-info-sign"></span> ';?>
+                                <?php } echo $order['nombre']; if($order['relevado'] != 1){ ?>
+                                    </a>
+                                <?php } ?>
+                            </td>
+                            <td class="text-center"><?php echo $order['fecha']; ?></td>
+                            <td class="text-center"><?php echo $local_hour; ?></td>
+                            <td class="text-center"><?php if($order['relevado'] == 1){ echo '<span class="delivered glyphicon glyphicon-ok"></span>'; } else{ echo '<span class="not-delivered glyphicon glyphicon-remove"></span>'; } ?></td>
                         </tr>
                         <?php $count++; }}?>
                     </table>
                 </div>
+            </div>
+
+            <div class="text-center">
+                <h4 class="text-center"><?= Yii::t('app',"Change personal address!");?></h4>
+                <p class="text-center"><a class="btn btn-default btn-primary btn-sm" id="med-btn" href=<?php echo '"site/changedirection"';?>><?= Yii::t('app',"Update");?></a></p>
             </div>
 
         </div>
@@ -156,7 +105,24 @@ if(!Yii::$app->user->getIsGuest()){
 
     //Funcion para el cambio de fechas
     function changeDateRange(value) {
-        alert(value);
+
+        console.log(value);
+
+        var url = "<?php echo 'http://'.$_SERVER['HTTP_HOST']; ?>";
+
+        $.ajax({
+            type: "GET",
+            url: url,
+            data: { "filter" :  value },
+            success: function(response){
+                
+                $.each(JSON.parse(response), function(index, value) {
+                    console.log(value);
+
+                    $("#delivery-table").append(value);
+                });
+            }
+        });
     }
     
 </script>
@@ -204,30 +170,3 @@ if(!Yii::$app->user->getIsGuest()){
 
 </script>
 
-<?php } else{ ?>
-
-<div class="site-index">
-
-    <div class="row" id="indx-welcome">
-        <div class="col-md-10">
-            <div>
-                <h2><p><?= Yii::t('app',"Welcome back .. guest?");?></p></h2>
-                <p> - <?= Yii::t('app',"It's nice see you!");?></p>
-            </div>
-        </div>
-
-        <div class="col-md-2 right">
-            <img class="img-responsive right" src="/assets/images/map.jpg">
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
-            <br><br>
-            <h1><?= Yii::t('app',"Please");?> <a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/login'?>> <?= Yii::t('app',"login");?></a> <?= Yii::t('app',"or");?> <a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/signup'?>><?= Yii::t('app',"signup");?></a>.</h1>
-        </div>
-    </div>
-
-</div>
-
-<?php } ?>
