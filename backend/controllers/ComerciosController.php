@@ -123,9 +123,7 @@ class ComerciosController extends Controller
     {
         $model = $this->findModel($id);
         
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+        if (!$model->load(Yii::$app->request->post())) {
             //Obtengo los id de los productos en la tienda $id
             $ProductoTiendaModel = new ProductoTienda();
             $Productos = $ProductoTiendaModel->getAllProductos($id);

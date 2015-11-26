@@ -29,7 +29,8 @@ $nombreColumna = function ($data){ return Categorias::findOne($data->idcategoria
             <?php
               foreach ($productos->allModels as $key => $value) { ?>
                 <div class='row'>
-                  <div id="<?=$value['id']?>" class="btn removeProduct" data-toggle="tooltip" title="<?=Yii::t('app','Click to remove')?>" style="width:100%">
+                  <div id="<?=$value['id']?>" class="btn removeProduct" data-toggle="tooltip" 
+                    title="<?=Yii::t('app','Click to remove')?>" style="width:100%">
                     <?=$nombreColumna($value)?> - <?=$value['Nombre']?>
                   </div>
                 </div>
@@ -49,7 +50,8 @@ $nombreColumna = function ($data){ return Categorias::findOne($data->idcategoria
             <?php
               foreach ($resto->allModels as $key => $value) { ?>
               <div class="row">
-                <div id="<?=$value['id']?>" class="btn addProduct" data-toggle="tooltip" title="<?=Yii::t('app','Click to add')?>" style="width:100%">
+                <div id="<?=$value['id']?>" class="btn addProduct" data-toggle="tooltip" 
+                    title="<?=Yii::t('app','Click to add')?>" style="width:100%">
                   <?=$nombreColumna($value)?> - <?=$value['Nombre']?>
                 </div>
               </div>
@@ -60,22 +62,6 @@ $nombreColumna = function ($data){ return Categorias::findOne($data->idcategoria
         </div>
       </div>
     </div>
-    <!-- <article class='col-md-6'>
-     <?php $form = ActiveForm::begin(['options' => ['enctype'=>'multipart/form-data']]); ?>
-     <?php/*   $form->field(new Categorias, 'nombre')->dropDownList( [
-      ArrayHelper::map(Categorias::find()->All(), 'id', 'nombre')],
-      [ 'onchange'=>'$.post( "'.Yii::$app->urlManager->createUrl(["Categorias/getProductos"]).'",function(data){
-        console.log("asa");
-                    $("#list_products").html( "Se ejecuta javascript" );
-                    })'
-     ]); */?>
-     <?php ActiveForm::end(); ?>
-     <div class='list_products' ></div>
-      </article>
-      <article class='col-sm-6'>
-        
-      </article>
-    </div> -->
 </div>
 <div>
   <input type="hidden" name="model-id" value="<?=$model->id?>" />
