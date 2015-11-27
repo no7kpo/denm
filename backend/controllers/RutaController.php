@@ -89,6 +89,49 @@ class RutaController extends Controller
         }
     }
 
+    public function actionGenerarruta()
+    {
+        $model = new Ruta();
+        $rutarelevador= new RutaRelevador();
+
+        $request= Yii::$app->request;
+        $comercios=$request->post('datos');
+        $model->dia=$request->post('dia');
+        $user= \common\models\User::find()->where(['id' => $request->post('relevador')])->one();
+         $max = Ruta::find()->max('id');
+         $idruta=$max+1;
+          $connection = \Yii::$app->db;
+          foreach($comercios as $comercio){
+          //  var_dump($comercio);
+          //  die;
+            $connection->createCommand()->insert('ruta',[
+                'id'=>$idruta,
+                'idcomercio'=>$comercio['id'],
+                'relevado' => 0,
+                'dia' => $model->dia
+            ])->execute();
+          }
+          $connection->createCommand()->insert('ruta_relevador',[
+            'idruta' => $idruta,
+            'idrelevador' => $user->id
+            ])->execute();
+          return $this->goHome();
+          
+/*
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+           
+            $sql = 'SELECT * FROM user WHERE id in (Select user_id FROM auth_assignment WHERE item_name = "relevador")';
+            $modelo = \common\models\User::findBySql($sql)->all(); 
+            $dataUsuarios=ArrayHelper::map($modelo, 'id', 'username');
+            $rutarel= new RutaRelevador();
+            return $this->render('create', [
+                'model' => $model,'users' => $dataUsuarios,'rutarel' =>$rutarel
+            ]);
+        }*/
+    }
+
     /**
      * Updates an existing Ruta model.
      * If update is successful, the browser will be redirected to the 'view' page.

@@ -46,7 +46,17 @@ use yii\widgets\ActiveForm;
     ]) ?>
     <div id="map-canvas"></div>
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    	<?= Html::button(Yii::t('app', 'Create'), [ 'class' => 'btn btn-primary', 'onclick' => '
+                        $.post( "'.Url::toRoute('/ruta/generarruta').'", { datos: orden, relevador: document.getElementById("rutarelevador-idrelevador").value,dia: document.getElementById("ruta-dia").value } )
+                            .done(function( data ) {
+                            	
+                               	
+                               	console.log(data);
+                               	
+                                }
+                        );
+                    '   
+    ]) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
@@ -57,8 +67,16 @@ use yii\widgets\ActiveForm;
 var rutafinal=[];
 var destinos = [];
 var comercios= [];
+var orden=[];
+var geocoder;
+var directionsDisplay;
+var directionsService;	
 
 function initialize() {
+	sessionStorage.clear();
+	geocoder = new google.maps.Geocoder();
+	directionsService = new google.maps.DirectionsService();
+	
     var mapCanvas = document.getElementById('map-canvas');
     var mapOptions = {
       center: new google.maps.LatLng(-34.8977714, -56.165),
@@ -66,7 +84,8 @@ function initialize() {
       mapTypeId: google.maps.MapTypeId.ROADMAP
     }
     var map = new google.maps.Map(mapCanvas,mapOptions);
-    sessionStorage.clear();
+   
+    
 
         
     	
@@ -74,61 +93,72 @@ function initialize() {
 }
 
 function calculateDistances(origen,dest) {
-		  var service = new google.maps.DistanceMatrixService();
-		  service.getDistanceMatrix({
-			  origins: [origen], //Dado que es una matriz se pueden especificar varios origenes y destinos
-			  destinations: dest, 
-			  travelMode: google.maps.TravelMode.DRIVING,
-			  unitSystem: google.maps.UnitSystem.METRIC,
-			  
-			  //avoidHighways: false,
-			  //avoidTolls: false
-		  }, callbackMostrarDistancias);
+  var service = new google.maps.DistanceMatrixService();
+
+  service.getDistanceMatrix({
+	  origins:[origen], //Dado que es una matriz se pueden especificar varios origenes y destinos
+	  destinations: dest, 
+	  travelMode: google.maps.TravelMode.DRIVING,
+	  unitSystem: google.maps.UnitSystem.METRIC,
+	  
+	  //avoidHighways: false,
+	  //avoidTolls: false
+  }, callbackMostrarDistancias);
+}
+
+//Muestra el resultado de la solicitud
+function callbackMostrarDistancias(response, status) {
+  if (status != google.maps.DistanceMatrixStatus.OK) {
+	alert('Error was: ' + status);
+  } 
+  else 
+  {
+	var origins = response.originAddresses;
+	var destinations = response.destinationAddresses;
+	var outputDiv = document.getElementById('outputDiv');
+	outputDiv.innerHTML = '';
+//	deleteOverlays();
+//	rutafinal[0]=origins[0];
+//	console.log(origins);
+
+
+
+//	for (var i = 0; i < origins.length; i++) {
+	  var results = response.rows[0].elements;
+	//  addMarker(origins[i], false);
+	  var distanciachica=0;
+	  var mascerca;
+	  //Muestra el resultado con el detalle de las distancias a cada punto, en kilometros y en metros
+
+	  for (var j = 0; j < results.length; j++) {
+		//addMarker(destinations[j], true);
+		var dist=results[j].distance.value;
+		if(distanciachica==0 || dist<distanciachica){
+			distanciachica=dist;
+			mascerca=destinations[j];
 		}
 
-		//Muestra el resultado de la solicitud
-		function callbackMostrarDistancias(response, status) {
-		  if (status != google.maps.DistanceMatrixStatus.OK) {
-			alert('Error was: ' + status);
-		  } 
-		  else 
-		  {
-			var origins = response.originAddresses;
-			var destinations = response.destinationAddresses;
-			var outputDiv = document.getElementById('outputDiv');
-			outputDiv.innerHTML = '';
-		//	deleteOverlays();
+	  }
+	var indexofcerca= destinations.indexOf(mascerca);
+	  
+	  
+	//  results.splice(indexofcerca,1);
+	  orden.push(comercios[indexofcerca]);
+	  comercios.splice(indexofcerca,1);
+	  var nuevoorigen=destinos[indexofcerca];
+	  rutafinal.push(nuevoorigen);
+	  destinos.splice(indexofcerca,1);
 
-			
-			  var results = response.rows[0].elements;
-			//  addMarker(origins[i], false);
-			  var distanciachica=0;
-			  var mascerca;
-			  //Muestra el resultado con el detalle de las distancias a cada punto, en kilometros y en metros
-			  for (var j = 0; j < results.length; j++) {
-				//addMarker(destinations[j], true);
-				var dist=results[j].distance.value;
-				if(distanciachica==0 || dist<distanciachica){
-					distanciachica=dist;
-					mascerca=destinations[j];
-				}
+	//}
+	if(destinos.length>0){
+		calculateDistances(nuevoorigen,destinos);
+	}else{
+		calcular_ruta();
+	}
+	
 
-			/*	outputDiv.innerHTML += '<i>' + origins[i] + '</i> a <i>' + destinations[j] + '</i>'
-					+ ': <b>' + results[j].distance.text  
-					+ ' ( ' + results[j].distance.value + ' mts )</b> en '
-					+ results[j].duration.text + '<br>';*/
-			  }
-			
-			rutafinal.push(mascerca);
-			var indexofcerca= destinations.indexOf(mascerca);
-			comercios.splice(indexofcerca,1);
-			destinos.splice(indexofcerca,1);
-			console.log(destinos.length  + 'en calculate');
-			console.log(destinos);
-			console.log(comercios);
-			console.log(rutafinal);
-		  }
-		}
+  }
+}
 
 function loadMap(){
 	var mapCanvas = document.getElementById('map-canvas');
@@ -140,9 +170,9 @@ function loadMap(){
    // var image = {url:"<?= Yii::getAlias('@map_icon'). '/store.png'?>",scaledSize: new google.maps.Size('50','50'),origin: new google.maps.Point(0,0),anchor:new google.maps.Point(0,0)};
     var hogar = 'https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=O|FFFF00|000000';
     var map = new google.maps.Map(mapCanvas,mapOptions);
+    directionsDisplay = new google.maps.DirectionsRenderer({map: map,draggable: true});
 	var markers = [];
 	var comer=JSON.parse(sessionStorage.comercios);
-	var geocoder;
 		var bounds = new google.maps.LatLngBounds();
 	var relevador=JSON.parse(sessionStorage.relevador);
 	var mark=new google.maps.LatLng(relevador.latitud,relevador.longitud);
@@ -172,13 +202,13 @@ function loadMap(){
      });
      google.maps.event.addListener(marker, "click", function (e) { iw.open(map, this); });
 	}
-	rutafinal.push(JSON.parse(sessionStorage.relevador));
+	rutafinal.push(mark);
 
-for(var x in comer){
-  comercios.push(comer[x]);
-}
+	for(var x in comer){
+	  comercios.push(comer[x]);
+	}
 	calculateDistances(mark,destinos);
-	console.log(destinos.length + 'áfter calculate');
+	
 	/*while(destinos.length>3){
 		calculateDistances(destinos[0],destinos);
 	}*/
@@ -188,5 +218,52 @@ for(var x in comer){
    
 
 google.maps.event.addDomListener(window, 'load', initialize);
+
+function calcular_ruta() {
+		  		  
+		  // Retrieve the start and end locations and create a DirectionsRequest using DRIVING, BICYCLE OR WALKING directions.		  
+
+			var origen  = rutafinal[0];
+			var destino = rutafinal[rutafinal.length-1];
+			var puntosmedios=[];
+			puntosmedios=rutafinal;
+			puntosmedios.pop();
+			puntosmedios.shift();
+			console.log(orden);
+			var wypt=[];
+			for (var i = 0; i < puntosmedios.length; i++) {
+    			if (puntosmedios[i]) {
+      				wypt.push({
+        				location: puntosmedios[i],
+        				stopover: true
+      				});
+    			}
+  			}
+			var modo_viaje = 'DRIVING';
+						
+			//var estadio = new google.maps.LatLng(-34.894300, -56.152912);		
+
+			var request = {
+				 origin: origen, 
+				 destination: destino,
+				 travelMode: google.maps.DirectionsTravelMode[modo_viaje],
+				 waypoints: wypt,
+				 optimizeWaypoints: true,
+				 unitSystem: google.maps.UnitSystem.METRIC,
+				 provideRouteAlternatives: true		
+			};		  		  
+
+			// Route the directions and pass the response to a function to create markers for each step.
+			directionsService.route(request, function(response, status) {
+				if (status == google.maps.DirectionsStatus.OK){			
+					directionsDisplay.setPanel();
+					directionsDisplay.setDirections(response);					
+				}
+				else{
+					alert("No existen rutas entre ambos puntos");
+				}
+			});  
+						
+	    }
 
 </script>
