@@ -101,9 +101,11 @@ if(!Yii::$app->user->getIsGuest()){
 <script type="text/javascript">
     function createNewOrder() {
         var arrayItems = [];
+        var count = 0;
 
         $(".input-stock").each(function() {
-            arrayItems[$(this).attr("id")] = $(this).val();
+            arrayItems[count] = $(this).attr("id")+':'+$(this).val();
+            count++;
         });
 
         var url = "<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/createneworder'; ?>";
@@ -111,9 +113,10 @@ if(!Yii::$app->user->getIsGuest()){
         $.ajax({
             type: "POST",
             url: url,
-            data: { "userId" : <?php echo $userId; ?>, "deliveryDay" :  "<?php echo $fecha; ?>", "arrayItems" : arrayItems },
+            data: { "shopId" : "<?php echo $shopId;?>", "fecha" :  "<?php echo $fecha; ?>", "arrayItems" : arrayItems },
             success: function(response){
                 console.log(response);
+                window.location.href = "<?php echo 'http://'.$_SERVER['HTTP_HOST']; ?>";
             }
         });
     }
