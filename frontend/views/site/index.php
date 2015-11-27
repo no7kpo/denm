@@ -7,7 +7,7 @@ $count = 1;
 
 ?>
 
-<div class="site-index">
+<div class="site-index site-page">
 
     <div class="row" id="indx-welcome">
         <div class="col-md-10">
@@ -17,7 +17,7 @@ $count = 1;
             </div>
         </div>
 
-        <div class="col-md-2">
+        <div class="col-md-2 logo_banner">
             <img class="img-responsive map-center" id="map_logo" src="/assets/images/map.jpg">
         </div>
     </div>
@@ -73,7 +73,7 @@ $count = 1;
                             $horaFin = explode(':', $order['horaCierr']);
                             $local_hour = $horaIni[0].':'.$horaIni[1].' - '.$horaFin[0].':'.$horaFin[1];
                         ?>
-                        <tr>
+                        <tr class="tr-data">
                             <td><?php echo $count; ?></td>
                             <td title="Delivery info">
                                 <?php if($order['relevado'] != 1){ ?>
@@ -105,6 +105,10 @@ $count = 1;
 
     //Funcion para el cambio de fechas
     function changeDateRange(value) {
+
+        $(".tr-data").each(function(index, elem) {
+            elem.remove();
+        });
 
         console.log(value);
 

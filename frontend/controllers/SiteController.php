@@ -87,6 +87,7 @@ class SiteController extends Controller
         $relevadorId = Yii::$app->user->identity->id;
         $fecha = date('Y-m-d');
 
+        //Si existe el filtro, armo JSON para responder
         if(isset($_GET['filter'])){
 
             if($_GET['filter'] == ''){
@@ -118,12 +119,13 @@ class SiteController extends Controller
             $response = array();
             $count = 1;
 
+            //Armo Html
             foreach($orders as $order){
                 $horaIni = explode(':', $order['horaAper']);
                 $horaFin = explode(':', $order['horaCierr']);
                 $local_hour = $horaIni[0].':'.$horaIni[1].' - '.$horaFin[0].':'.$horaFin[1];
 
-                $response[$count] = '<tr><td>'.$count.'</td><td title="Delivery info">';
+                $response[$count] = '<tr class="tr-data"><td>'.$count.'</td><td title="Delivery info">';
                 
                 if($order['relevado'] != 1){
                     $response[$count] = $response[$count].'<a class="btn-default" href="http://'.$_SERVER['HTTP_HOST'].'/site/order?id='.$order['idComercio'].'"><span class="info glyphicon glyphicon-info-sign"></span>';
@@ -153,12 +155,16 @@ class SiteController extends Controller
         }
 
         else{
-            
+            //Get personal location
+            $query = $connection->createCommand('SELECT latitud, longitud FROM user WHERE id = '.$relevadorId);
+            $personalLocation = $query->queryOne();
+
             //Get ordenes
             $query = $connection->createCommand('SELECT r.id as id, r.relevado as relevado, r.fecha as fecha, r.idcomercio as idComercio, c.nombre as nombre, c.latitud as latitud, c.longitud as longitud, c.prioridad as prioridad, c.hora_apertura as horaAper, c.hora_cierre as horaCierr FROM ruta r JOIN ruta_relevador rr ON r.id = rr.idruta JOIN comercios c ON r.idcomercio = c.id WHERE rr.idrelevador = '.$relevadorId.' AND r.fecha = "'.$fecha.'"');
             $orders = $query->queryAll();
 
             return $this->render('index', [
+                'personalLocation' => $personalLocation,
                 'orders' => $orders,
             ]);
         }
@@ -169,6 +175,7 @@ class SiteController extends Controller
     {
         return $this->render('changedirection');
     }
+
     public function actionUpdateaddress()
     {
         $request = Yii::$app->request;
@@ -181,6 +188,7 @@ class SiteController extends Controller
         $user->save();
         return $this->render('index');
     }
+
     /**
      * Logs in a user.
      *
@@ -325,8 +333,12 @@ class SiteController extends Controller
 
         //Get shop id
         $shopId = $_GET['id'];
-
         $fecha = date('Y-m-d');
+        $relevadorId = Yii::$app->user->identity->id;
+
+        //Get personal location
+        $query = $connection->createCommand('SELECT latitud, longitud FROM user WHERE id = '.$relevadorId);
+        $personalLocation = $query->queryOne();
 
         //Get productos
         $query = $connection->createCommand('SELECT sp.idproducto as idproducto, sp.pedido as pedido, p.Nombre as nombre, p.Imagen as imagen FROM stock_pedido sp JOIN productos p ON sp.idproducto = p.id WHERE sp.idcomercio = '.$shopId.' AND sp.fecha = "'.$fecha.'"');
@@ -337,6 +349,7 @@ class SiteController extends Controller
         $comercio = $query->queryOne();
 
         return $this->render('order', [
+            'personalLocation' => $personalLocation,
             'shopId' => $shopId,
             'fecha' => $fecha,
             'productos' => $productos,
@@ -392,27 +405,18 @@ class SiteController extends Controller
         $connection = \Yii::$app->db;
 
         $shopId = $_GET['id'];
+        $fecha = date('Y-m-d');
 
         //Get comercio
-        $query = $connection->createCommand('SELECT c.id, c.nombre, c.hora_apertura, c.hora_cierre FROM comercios c WHERE id = '.$shopId);
+        $query = $connection->createCommand('SELECT c.id, c.nombre, c.hora_apertura, c.hora_cierre FROM comercios c WHERE c.id = '.$shopId);
         $comercio = $query->queryOne();
 
         //Get items
-        $query = $connection->createCommand('SELECT p.id, p.nombre, p.Imagen FROM productos p JOIN producto_tienda pt ON p.id = pt.idproducto WHERE pt.idcomercio = '.$shopId);
+        $query = $connection->createCommand('SELECT p.id, p.nombre, p.Imagen, sp.stock FROM productos p JOIN stock_pedido sp ON p.id = sp.idproducto WHERE sp.idcomercio = '.$shopId.' AND sp.fecha = "'.$fecha.'"');
         $items = $query->queryAll();
 
-        //Yii crap
-        $model = new CreateorderForm();
-        if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->createorderform($id)) {
-                if (Yii::$app->getUser()->login($user)) {
-                    return $this->goHome();
-                }
-            }
-        }
-        
         return $this->render('create_order', [
-            'model' => $model,
+            'fecha' => $fecha,
             'comercio' => $comercio,
             'items' => $items,
         ]);

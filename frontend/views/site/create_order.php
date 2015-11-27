@@ -2,19 +2,15 @@
 
 /* @var $this yii\web\View */
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
-use yii\jui\DatePicker;
 
 $this->title = Yii::t('app', 'Create Order');
 
 //Defino datos del comercio
 $local_name = $comercio['nombre'];
-$local_dir = 'San Martin 1243';
 $horaIni = explode(':', $comercio['hora_apertura']);
 $horaFin = explode(':', $comercio['hora_cierre']);
 $local_hour = $horaIni[0].':'.$horaIni[1].' - '.$horaFin[0].':'.$horaFin[1];
 
-$stock = 50; //TRAER DE BASE!!!!!
 
 $userId = Yii::$app->user->getId();
 
@@ -23,18 +19,18 @@ if(!Yii::$app->user->getIsGuest()){
 ?>
 
 
-<div class="site-createorder">
+<div class="site-createorder site-page">
 
         <div class="row" id="indx-welcome">
         <div class="col-md-10">
             <div>
                 <h2><p><?= Html::encode($this->title)?> for: <?php echo $local_name;?></p></h2>
-                <p> <?php echo $local_dir.' | '.$local_hour; ?></p>
+                <p> <?php echo $local_hour; ?></p>
             </div>
         </div>
 
         <div class="col-md-2">
-            <img class="img-responsive map-center" id="map_logo" src="/assets/images/items.png">
+            <img class="img-responsive map-center logo_banner" id="map_logo" src="/assets/images/items.png">
         </div>
     </div>
 
@@ -43,24 +39,12 @@ if(!Yii::$app->user->getIsGuest()){
     
     <?php if(count($items) > 0){ ?>
 
-        <?php $form = ActiveForm::begin(['id' => 'form-createorder']); ?>
             <div class="col-md-4">
 
                 <div class="row text-left">
                     <div class="text-center create-order-date">
-                        <h2><?= Yii::t('app','Delivery day');?></h2>
-
-                        <?php echo DatePicker::widget([
-                            'id' => 'delivery_day',
-                            'clientOptions' => [
-                                'model' => $model,
-                                'attribute' => 'deliveryDate',
-                                //'dateFormat' => 'dd-MM-yyyy',
-                            ],
-                            'options' => ['class' => 'form-control', 'style' => 'max-width: 260px;']
-                        ]); ?>
-                        
-                        <br>
+                        <h2><?= Yii::t('app','Order day');?></h2>
+                        <input class="input-date" type="text" value="<?php echo $fecha; ?>" disabled>
                     </div>
                     <br>
                 </div>
@@ -80,16 +64,16 @@ if(!Yii::$app->user->getIsGuest()){
                                     <th><?= Yii::t('app','Name');?></th>
                                     <th class="text-center"><?= Yii::t('app','Available stock');?></th>
                                     <th class="text-center"><?= Yii::t('app','Image');?></th>
-                                    <th class="text-center"><?= Yii::t('app','New delivery stock');?></th>
+                                    <th class="text-center"><?= Yii::t('app','Stock to deliver');?></th>
                                 </tr>
 
                                 <?php foreach($items as $item){ ?>
                                 <tr>
                                     <td><?php echo $item['nombre']; ?></td>
-                                    <td class="text-center"><?php echo $stock; ?></td>
+                                    <td class="text-center"><?php echo $item['stock']; ?></td>
                                     <td class="text-center"><?php if($item['Imagen'] == ''){ echo '<span class="not-delivered glyphicon glyphicon-remove"></span>'; } else{ ?><span><img class="item img-responsive" src="<?=Yii::getAlias('@product_pictures')?><?php echo DIRECTORY_SEPARATOR.$item['Imagen'];?>"></span><?php } ?></td>
                                     <td class="text-center">
-                                        <input class="input-stock" type="number" id="<?php echo $item['id'];?>" value="0" min="0" max="<?php echo $stock;?>">
+                                        <input class="input-stock" type="number" id="<?php echo $item['id'];?>" value="0" min="0" max="1000">
                                     </td>
                                 </tr>
                                 <?php } ?>
@@ -101,8 +85,6 @@ if(!Yii::$app->user->getIsGuest()){
                     </form>
                 </div>
             </div>
-
-        <?php ActiveForm::end(); ?>
 
     <?php }else{ ?>
         <div class="col-md-12">
@@ -118,7 +100,6 @@ if(!Yii::$app->user->getIsGuest()){
 
 <script type="text/javascript">
     function createNewOrder() {
-        var deliveryDay = $('#delivery_day').val();
         var arrayItems = [];
 
         $(".input-stock").each(function() {
@@ -130,7 +111,7 @@ if(!Yii::$app->user->getIsGuest()){
         $.ajax({
             type: "POST",
             url: url,
-            data: { "userId" : <?php echo $userId; ?>,"deliveryDay" :  deliveryDay, "arrayItems" : arrayItems },
+            data: { "userId" : <?php echo $userId; ?>, "deliveryDay" :  "<?php echo $fecha; ?>", "arrayItems" : arrayItems },
             success: function(response){
                 console.log(response);
             }
