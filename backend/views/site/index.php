@@ -1,31 +1,13 @@
 <?php
    use miloschuman\highcharts\Highcharts;
+   use yii\jui\DatePicker;
 /* @var $this yii\web\View */
 
 $this->title = 'Bienvenido a Relevadores APP';
 ?>
 <div class="site-index">
 <br>
- <?php
-
-echo Highcharts::widget([
-   'options' => [
-      'title' => ['text' => 'Productos mas vendidos por comercios'],
-      'xAxis' => [
-         'categories' => ['Manzanas', 'Bananas', 'Naranja']
-      ],
-      'yAxis' => [
-         'title' => ['text' => 'Cantidad de ventas']
-      ],
-      'series' => [
-         ['name' => 'La tienda de Pepe', 'data' => [1, 0, 4]],
-         ['name' => 'Frutas Zarlanga', 'data' => [5, 7, 3]]
-      ]
-   ]
-]);
-
-?>
-<br><br>
+<h4> REPORTE DE PORCENTAJE DE EFECTIVIDAD EN RELEVADORES</h4><br>
 <?php
 
 echo Highcharts::widget([
@@ -35,13 +17,87 @@ echo Highcharts::widget([
          'categories' => $users
       ],
       'yAxis' => [
-         'title' => ['text' => 'Porcentaje de eficiencia']
+         'title' => ['text' => 'Porcentaje']
       ],
       'series' => [
-         ['name' => 'Relevadores', 'data' => $percent]
+        ['type' => 'column', 'name' => 'Eficiencia', 'data' => $percent,
+                'dataLabels' => [
+                'enabled'=> true,
+                'rotation'=> -90,
+                'color'=> '#FFFFFF',
+                'align'=> 'right',
+                'y'=> 10, 
+                ],
+        ],
       ]
    ]
 ]);
 
 ?>
+<br><br>
+<h4> REPORTE DE PEDIDOS DE COMERCIO EN EL TIEMPO</h4><br>
+<form>
+    <table>
+           <tr>
+              <td>
+                <fieldset>
+                    <legend>Desde:</legend>
+                    <?= yii\jui\DatePicker::widget(['name' => 'startDate', 'language' => 'es-UY' , 'dateFormat' => 'dd-MM-yyyy']) ?>
+                </fieldset>
+              </td>
+              <td> &nbsp;&nbsp;&nbsp; </td>
+              <td>
+                <fieldset>
+                    <legend>Hasta:</legend>
+                    <?= yii\jui\DatePicker::widget(['name' => 'endDate', 'language' => 'es-UY' , 'dateFormat' => 'dd-MM-yyyy']) ?>
+                </fieldset>
+              </td>
+              <td> &nbsp;&nbsp;&nbsp; </td>
+              <td> 
+                    <select id="store-picker">
+                      <option value="0" selected>Seleccione un comercio</option>
+                      <?php echo $stores ?>
+                    </select>
+
+                </td>
+                <td> &nbsp;&nbsp;&nbsp; </td>
+                <td> 
+                    <input type="button" value='Generar Gr&aacute;fica'/>
+
+                </td>
+
+        </tr>
+    </table>
+    <br>
+ <?php
+
+
+$comercio='Frutas Zarlanga';
+/*$desde='2015-11-24';
+$hasta='2015-11-26';*/
+echo Highcharts::widget([
+   'options' => [
+      'title' => ['text' => 'Productos pedidos por el comercio ' . $comercio . ' desde: '. $datei . ' hasta: ' . $datef],
+      'xAxis' => [
+         'categories' => $prods
+      ],
+      'yAxis' => [
+         'title' => ['text' => 'Cantidad pedida']
+      ],
+      'series' => [
+         ['type' => 'column', 'name' => 'Cantidad', 'data' => $pedi,
+                'dataLabels' => [
+                'enabled'=> true,
+                'rotation'=> -90,
+                'color'=> '#FFFFFF',
+                'align'=> 'right',
+                'y'=> 10, 
+                ],
+        ],
+      ]
+   ]
+]);
+
+?>
+</form>
 </div>
