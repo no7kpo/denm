@@ -49,8 +49,7 @@ class Comercios extends \yii\db\ActiveRecord
             'latitud' => Yii::t('app', 'Latitude'),
             'longitud' => Yii::t('app', 'Longitude'),
             'prioridad' => Yii::t('app', 'Priority'),
-            'direccion' => Yii::t('app', 'Adress'),
-            'dia' => Yii::t('app', 'Day to control stock'),
+            'dia' => Yii::t('app', 'Day to control stock')
         ];
     }
     /**

@@ -28,9 +28,8 @@ class Ruta extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'idcomercio', 'fecha'], 'required'],
-            [['id', 'idcomercio', 'relevado'], 'integer'],
-            [['fecha'], 'safe']
+            [['id', 'idcomercio'], 'required'],
+            [['id', 'idcomercio', 'relevado','dia'], 'integer']
         ];
     }
     /**
@@ -42,7 +41,7 @@ class Ruta extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'idcomercio' => Yii::t('app', 'Shop'),
             'relevado' => Yii::t('app', 'Relevated'),
-            'fecha' => Yii::t('app', 'Date'),
+            'dia' => Yii::t('app', 'Day of week'),
         ];
     }
     /**

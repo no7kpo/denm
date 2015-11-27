@@ -86,9 +86,10 @@ class SiteController extends Controller
 
         $relevadorId = Yii::$app->user->identity->id;
         $fecha = date('Y-m-d');
+        $dw = (date("N") + 6) % 7;
 
         //Get ordenes
-        $query = $connection->createCommand('SELECT r.id as id, r.relevado as relevado, r.fecha as fecha, r.idcomercio as idComercio, c.nombre as nombre, c.latitud as latitud, c.longitud as longitud, c.prioridad as prioridad, c.hora_apertura as horaAper, c.hora_cierre as horaCierr FROM ruta r JOIN ruta_relevador rr ON r.id = rr.idruta JOIN comercios c ON r.idcomercio = c.id WHERE rr.idrelevador = '.$relevadorId.' AND r.fecha = "'.$fecha.'"');
+        $query = $connection->createCommand('SELECT r.id as id, r.relevado as relevado, r.dia as dia, r.idcomercio as idComercio, c.nombre as nombre, c.latitud as latitud, c.longitud as longitud, c.prioridad as prioridad FROM ruta r JOIN ruta_relevador rr ON r.id = rr.idruta JOIN comercios c ON r.idcomercio = c.id WHERE rr.idrelevador = '.$relevadorId.' AND r.dia = "'.$dw.'"');
         $orders = $query->queryAll();
 
         //echo '<pre>'; print_r($rutas); die();
@@ -112,7 +113,7 @@ class SiteController extends Controller
         $user->longitud=$longitud;
         $user->scenario = 'update';
         $user->save();
-        return $this->render('index');
+        return $this->goHome();
     }
     /**
      * Logs in a user.

@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'idcomercio',
             'relevado',
-            'fecha',
+            'dia',
         ],
     ]) ?>
 

@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\Comercios;
+use common\models\User;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 use yii\web\Controller;
@@ -202,8 +203,24 @@ class ComerciosController extends Controller
         $request= Yii::$app->request;
         $dia=$request->post('id');
         $comercios=Comercios::find()->where(['dia'=>$dia])->all();
-        $return=ArrayHelper::toArray($comercios, ['id', 'nombre','latitud','longitud']);
-        
+        $sql = 'SELECT * FROM comercios WHERE id in (Select idcomercio FROM ruta WHERE dia = "'.$dia.'")';
+        $modelo = Comercios::findBySql($sql)->all(); 
+        $comerciosrecorridos=ArrayHelper::toArray($modelo, ['id', 'nombre','latitud','longitud']);
+        $comerciosarray=ArrayHelper::toArray($comercios, ['id', 'nombre','latitud','longitud']);
+        if(isset($comerciosrecorridos) && !empty($comerciosrecorridos) ){
+            $return = array_diff_key($comerciosarray,$comerciosrecorridos);
+            echo json_encode($return);
+        }else{
+            echo json_encode($comerciosarray);
+        }
+       
+    }
+
+    public function actionRelevador(){
+        $request= Yii::$app->request;
+        $relevadorId=$request->post('id');
+        $relevador=User::find()->where(['id'=>$relevadorId])->one();
+        $return=ArrayHelper::toArray($relevador, ['id', 'nombre','latitud','longitud']);
         echo json_encode($return);
     }
 
