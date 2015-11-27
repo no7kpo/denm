@@ -38,7 +38,6 @@ use yii\widgets\ActiveForm;
                             .done(function( data ) {
                             	
                                	sessionStorage.setItem("comercios",data);
-                               	console.log(data);
                                	loadMap();
                                 }
                         );
@@ -86,7 +85,17 @@ function initialize() {
     var map = new google.maps.Map(mapCanvas,mapOptions);
    
     
-
+    $.post( "<?=Url::toRoute('/comercios/relevador')?>", { id: document.getElementById("rutarelevador-idrelevador").value } )
+        .done(function( data ) {
+           	sessionStorage.setItem("relevador",data);
+        }
+    );
+    $.post( "<?=Url::toRoute('/comercios/pordia')?>", { id: document.getElementById("ruta-dia").value } )
+	    .done(function( data ) {
+	       	sessionStorage.setItem("comercios",data);
+	       	loadMap();
+        }
+	);
         
     	
      
