@@ -10,6 +10,7 @@ use Yii;
  * @property string $fecha
  * @property integer $dia
  * @property integer $activa
+  * @property string $fecha
  *
  * @property Comercios $idcomercio0
  * @property RutaRelevador[] $rutaRelevadors
@@ -31,7 +32,8 @@ class Ruta extends \yii\db\ActiveRecord
     {
         return [
             [['id', 'idcomercio'], 'required'],
-            [['id', 'idcomercio', 'relevado','dia','activa'], 'integer']
+            [['id', 'idcomercio', 'relevado','dia','activa'], 'integer'],
+            [['fecha'], 'safe']
         ];
     }
     /**
@@ -44,7 +46,8 @@ class Ruta extends \yii\db\ActiveRecord
             'idcomercio' => Yii::t('app', 'Shop'),
             'relevado' => Yii::t('app', 'Relevated'),
             'dia' => Yii::t('app', 'Day of week'),
-            'activa' => Yii::t('app', 'Is active')
+            'activa' => Yii::t('app', 'Is active'),
+            'fecha' => Yii::t('app', 'Fecha')
         ];
     }
     /**

@@ -157,15 +157,26 @@ class SiteController extends Controller
         else{
             //Get personal location
             $query = $connection->createCommand('SELECT latitud, longitud FROM user WHERE id = '.$relevadorId);
+<<<<<<< HEAD
             //$personalLocation = $query->queryOne();
 
             //Get ordenes
             $query = $connection->createCommand('SELECT r.id as id, r.relevado as relevado, r.fecha as fecha, r.idcomercio as idComercio, c.nombre as nombre, c.latitud as latitud, c.longitud as longitud, c.prioridad as prioridad, c.hora_apertura as horaAper, c.hora_cierre as horaCierr FROM ruta r JOIN ruta_relevador rr ON r.id = rr.idruta JOIN comercios c ON r.idcomercio = c.id WHERE rr.idrelevador = '.$relevadorId.' AND r.fecha = "'.$fecha.'"');
+=======
+            $personalLocation = $query->queryOne();
+
+            //Get ordenes
+            $query = $connection->createCommand('SELECT r.id as id, r.relevado as relevado, r.dia as dia,r.fecha as fecha, r.idcomercio as idComercio, c.nombre as nombre, c.latitud as latitud, c.longitud as longitud, c.prioridad as prioridad, c.hora_apertura as horaAper, c.hora_cierre as horaCierr FROM ruta r JOIN ruta_relevador rr ON r.id = rr.idruta JOIN comercios c ON r.idcomercio = c.id WHERE rr.idrelevador = '.$relevadorId.' AND r.dia = '.$dw.' AND r.activa=1');
+>>>>>>> refs/remotes/origin/rutas-2
             $orders = $query->queryAll();
 
             return $this->render('index', [
                 //'personalLocation' => $personalLocation,
+<<<<<<< HEAD
                 'orders' => $orders,
+=======
+                'orders' => $orders, 'relevador' =>$personalLocation
+>>>>>>> refs/remotes/origin/rutas-2
             ]);
         }
 
