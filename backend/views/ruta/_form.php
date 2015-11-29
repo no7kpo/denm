@@ -216,7 +216,10 @@ function loadMap(){
 	for(var x in comer){
 	  comercios.push(comer[x]);
 	}
-	calculateDistances(mark,destinos);
+	if(comer!=""){
+		calculateDistances(mark,destinos);
+	}
+	
 	
 	/*while(destinos.length>3){
 		calculateDistances(destinos[0],destinos);

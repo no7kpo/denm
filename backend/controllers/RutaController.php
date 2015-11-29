@@ -6,6 +6,7 @@ use Yii;
 use common\models\Ruta;
 use common\models\RutaRelevador;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -45,9 +46,19 @@ class RutaController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
+                    $connection = \Yii::$app->db;
+            $sql = $connection->createCommand('SELECT DISTINCT r.id as id,r.dia as dia ,rr.idrelevador as idrelevador FROM ruta r JOIN ruta_relevador rr on r.id=rr.idruta WHERE activa=1 ');
+            $modelo =$sql->queryAll(); 
+            $dataProvider = new ArrayDataProvider([
+        'key'=>'id',
+        'allModels' => $modelo,
+        'sort' => [
+            'attributes' => ['id', 'dia', 'idrelevador'],
+        ],
+]);    
+     /*   $dataProvider = new ActiveDataProvider([
             'query' => Ruta::find(),
-        ]);
+        ]);*/
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
@@ -108,7 +119,8 @@ class RutaController extends Controller
                 'id'=>$idruta,
                 'idcomercio'=>$comercio['id'],
                 'relevado' => 0,
-                'dia' => $model->dia
+                'dia' => $model->dia,
+                'activo' => 1
             ])->execute();
           }
           $connection->createCommand()->insert('ruta_relevador',[

@@ -203,7 +203,7 @@ class ComerciosController extends Controller
         $request= Yii::$app->request;
         $dia=$request->post('id');
         $comercios=Comercios::find()->where(['dia'=>$dia])->all();
-        $sql = 'SELECT * FROM comercios WHERE id in (Select idcomercio FROM ruta WHERE dia = "'.$dia.'")';
+        $sql = 'SELECT * FROM comercios WHERE id in (Select idcomercio FROM ruta WHERE dia = "'.$dia.'" and activo=1)';
         $modelo = Comercios::findBySql($sql)->all(); 
         $comerciosrecorridos=ArrayHelper::toArray($modelo, ['id', 'nombre','latitud','longitud']);
         $comerciosarray=ArrayHelper::toArray($comercios, ['id', 'nombre','latitud','longitud']);
