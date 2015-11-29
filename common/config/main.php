@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'language' =>'en-US', 
+	'language' =>'es-UY', 
 
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'modules' => [
@@ -23,8 +23,9 @@ return [
         'i18n' => [
              'translations' => [
                  '*' => [
-                 'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@common/messages',
+                    'sourceLanguage' => 'en-US',
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/messages'
                 ],
             ],
         ],

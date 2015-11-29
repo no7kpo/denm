@@ -17,9 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Already registered? Sign in!' => '',
-    'Don\'t have an account? Sign up!' => '',
-    'Sign up' => '',
-    'You don\'t have permission' => '',
-    'Your account has been created' => '',
+    'Clear field' => '',
+    'Select date' => '',
 ];

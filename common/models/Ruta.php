@@ -8,6 +8,8 @@ use Yii;
  * @property string $idcomercio
  * @property integer $relevado
  * @property string $fecha
+ * @property integer $dia
+ * @property integer $activa
  *
  * @property Comercios $idcomercio0
  * @property RutaRelevador[] $rutaRelevadors
@@ -28,9 +30,8 @@ class Ruta extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'idcomercio', 'fecha'], 'required'],
-            [['id', 'idcomercio', 'relevado'], 'integer'],
-            [['fecha'], 'safe']
+            [['id', 'idcomercio'], 'required'],
+            [['id', 'idcomercio', 'relevado','dia','activa'], 'integer']
         ];
     }
     /**
@@ -42,7 +43,8 @@ class Ruta extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'idcomercio' => Yii::t('app', 'Shop'),
             'relevado' => Yii::t('app', 'Relevated'),
-            'fecha' => Yii::t('app', 'Date'),
+            'dia' => Yii::t('app', 'Day of week'),
+            'activa' => Yii::t('app', 'Is active')
         ];
     }
     /**
@@ -65,5 +67,13 @@ class Ruta extends \yii\db\ActiveRecord
     public function getIdrelevadors()
     {
         return $this->hasMany(User::className(), ['id' => 'idrelevador'])->viaTable('ruta_relevador', ['idruta' => 'id']);
+    }
+           public function getDia(){
+        if($this->dia == '0') return Yii::t('app','Monday');
+        if($this->dia == '1') return Yii::t('app','Tuesday');
+        if($this->dia == '2') return Yii::t('app','Wednesday');
+        if($this->dia == '3') return Yii::t('app','Thursday');
+        if($this->dia == '4') return Yii::t('app','Friday');
+        if($this->dia == '5') return Yii::t('app','Saturday');
     }
 }

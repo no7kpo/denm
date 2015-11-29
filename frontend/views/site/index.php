@@ -68,10 +68,9 @@ $count = 1;
                             <th class="text-center"><?= Yii::t('app',"Delivered");?></th>
                         </tr>
 
-                        <?php if(count($orders) > 0){ foreach($orders as $order){ 
-                            $horaIni = explode(':', $order['horaAper']);
-                            $horaFin = explode(':', $order['horaCierr']);
-                            $local_hour = $horaIni[0].':'.$horaIni[1].' - '.$horaFin[0].':'.$horaFin[1];
+                        <?php if(count($orders) > 0){ 
+
+                            foreach($orders as $order){ 
                         ?>
                         <tr class="tr-data">
                             <td><?php echo $count; ?></td>
@@ -83,10 +82,15 @@ $count = 1;
                                 <?php } ?>
                             </td>
                             <td class="text-center"><?php echo $order['fecha']; ?></td>
-                            <td class="text-center"><?php echo $local_hour; ?></td>
+                            
                             <td class="text-center"><?php if($order['relevado'] == 1){ echo '<span class="delivered glyphicon glyphicon-ok"></span>'; } else{ echo '<span class="not-delivered glyphicon glyphicon-remove"></span>'; } ?></td>
                         </tr>
-                        <?php $count++; }}?>
+                        <?php $count++; }}else{
+
+
+                        }
+
+                        ?>
                     </table>
                 </div>
             </div>
@@ -143,7 +147,10 @@ $count = 1;
 
         var map = new google.maps.Map(mapCanvas,mapOptions);
         var markers = [];
-        
+var ordenes=[];
+          
+ordenes=<?php echo json_encode($orders); ?>;
+        console.log(ordenes);
         google.maps.event.addListener(map, 'click', function( event ){
 
             document.getElementById('comercios-latitud').value=event.latLng.lat();
