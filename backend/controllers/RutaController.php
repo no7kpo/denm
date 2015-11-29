@@ -13,6 +13,8 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
+use backend\models\Comercios;
+use common\models\User;
 
 /**
  * RutaController implements the CRUD actions for Ruta model.
@@ -47,13 +49,13 @@ class RutaController extends Controller
     public function actionIndex()
     {
                     $connection = \Yii::$app->db;
-            $sql = $connection->createCommand('SELECT DISTINCT r.id as id,r.dia as dia ,rr.idrelevador as idrelevador FROM ruta r JOIN ruta_relevador rr on r.id=rr.idruta WHERE activa=1 ');
+            $sql = $connection->createCommand('SELECT DISTINCT r.id as id,r.dia as dia ,u.username as relevador FROM ruta r JOIN ruta_relevador rr on r.id=rr.idruta JOIN User u on rr.idrelevador=u.id WHERE activa=1 ');
             $modelo =$sql->queryAll(); 
             $dataProvider = new ArrayDataProvider([
         'key'=>'id',
         'allModels' => $modelo,
         'sort' => [
-            'attributes' => ['id', 'dia', 'idrelevador'],
+            'attributes' => ['id', 'dia', 'relevador'],
         ],
 ]);    
      /*   $dataProvider = new ActiveDataProvider([
@@ -72,8 +74,14 @@ class RutaController extends Controller
      */
     public function actionView($id)
     {
+        $model=$this->findModel($id);
+        $sql = 'SELECT * FROM comercios WHERE id in (Select idcomercio FROM ruta WHERE id='.$id.')';
+        $comercios = Comercios::findBySql($sql)->all(); 
+         $comerciosarray=ArrayHelper::toArray($comercios, ['id', 'nombre','latitud','longitud']);
+        $sql = 'SELECT * FROM User JOIN ruta_relevador ON id=idrelevador WHERE idruta='.$id;
+        $user=User::findBySql($sql)->one(); 
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model, 'comercios' =>json_encode($comerciosarray), 'usuario' => $user
         ]);
     }
 
@@ -173,6 +181,12 @@ class RutaController extends Controller
     {
         $this->findModel($id)->delete();
 
+        return $this->redirect(['index']);
+    }
+    public function actionDisable($id)
+    {
+        $connection = \Yii::$app->db;
+        $connection->createCommand('UPDATE ruta SET activa=0 WHERE id='.$id)->execute();
         return $this->redirect(['index']);
     }
 

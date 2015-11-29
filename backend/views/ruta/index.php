@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use common\models\user;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -24,9 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
                 'id',
                 'dia',
-                ['attribute'=>'idrelevador',
-                    'value' => User::findOne($dataProvider->getModels()->idrelevador)->nombre,
-                ],    
+                'relevador',
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
