@@ -128,7 +128,7 @@ class RutaController extends Controller
                 'idcomercio'=>$comercio['id'],
                 'relevado' => 0,
                 'dia' => $model->dia,
-                'activo' => 1
+                'activa' => 1
             ])->execute();
           }
           $connection->createCommand()->insert('ruta_relevador',[

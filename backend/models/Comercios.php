@@ -11,6 +11,8 @@ use Yii;
  * @property integer $prioridad
  * @property string $direccion
  * @property integer $dia
+  * @property string $hora_apertura
+ * @property string $hora_cierre
  *
  * @property ProductoTienda[] $productoTiendas
  * @property Productos[] $idproductos
@@ -34,6 +36,7 @@ class Comercios extends \yii\db\ActiveRecord
         return [
             [['nombre', 'latitud', 'longitud', 'prioridad'], 'required'],
             [['prioridad', 'dia'], 'integer'],
+            [['hora_apertura', 'hora_cierre'], 'safe'],
             [['nombre'], 'string', 'max' => 50],
             [['latitud', 'longitud'], 'string', 'max' => 100]
         ];
@@ -49,6 +52,8 @@ class Comercios extends \yii\db\ActiveRecord
             'latitud' => Yii::t('app', 'Latitude'),
             'longitud' => Yii::t('app', 'Longitude'),
             'prioridad' => Yii::t('app', 'Priority'),
+            'hora_apertura' => Yii::t('app', 'Open hours'),
+            'hora_cierre' => Yii::t('app', 'Closing hours'),
             'dia' => Yii::t('app', 'Day to control stock')
         ];
     }
