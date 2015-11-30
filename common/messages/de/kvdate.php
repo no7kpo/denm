@@ -17,14 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Already registered? Sign in!' => '',
-    'Continue' => '',
-    'Don\'t have an account? Sign up!' => '',
-    'If you already registered, sign in and connect this account on settings page' => '',
-    'In order to finish your registration, we need you to enter following fields' => '',
-    'Request new confirmation message' => '',
-    'Sign in' => '',
-    'Sign up' => '',
-    'You don\'t have admin permission' => '',
-    'Your account has been created' => '',
+    'Clear field' => '',
+    'Select date' => '',
 ];
