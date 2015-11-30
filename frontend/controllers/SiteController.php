@@ -85,6 +85,7 @@ class SiteController extends Controller
         $connection = \Yii::$app->db;
 
         $relevadorId = Yii::$app->user->identity->id;
+        $dia = date('N');
         $fecha = date('Y-m-d');
 
         //Si existe el filtro, armo JSON para responder
@@ -99,12 +100,17 @@ class SiteController extends Controller
             else if($_GET['filter'] == 'yesterday'){
                 $nuevafecha = strtotime ( '-1 day' , strtotime ( $fecha ) ) ;
                 $nuevafecha = date ( 'Y-m-d' , $nuevafecha );
+                $fecha = $nuevafecha;
             }
             else if($_GET['filter'] == 'last7'){
+                $fecha = strtotime ( '-1 day' , strtotime ( $fecha ) ) ;
+                $fecha = date ( 'Y-m-d' , $fecha );
                 $nuevafecha = strtotime ( '-7 day' , strtotime ( $fecha ) ) ;
                 $nuevafecha = date ( 'Y-m-d' , $nuevafecha );
             }
             else if($_GET['filter'] == 'last30'){
+                $fecha = strtotime ( '-1 day' , strtotime ( $fecha ) ) ;
+                $fecha = date ( 'Y-m-d' , $fecha );
                 $nuevafecha = strtotime ( '-30 day' , strtotime ( $fecha ) ) ;
                 $nuevafecha = date ( 'Y-m-d' , $nuevafecha );
             }
@@ -157,14 +163,14 @@ class SiteController extends Controller
         else{
             //Get personal location
             $query = $connection->createCommand('SELECT latitud, longitud FROM user WHERE id = '.$relevadorId);
-            //$personalLocation = $query->queryOne();
+            $personalLocation = $query->queryOne();
 
             //Get ordenes
             $query = $connection->createCommand('SELECT r.id as id, r.relevado as relevado, r.fecha as fecha, r.idcomercio as idComercio, c.nombre as nombre, c.latitud as latitud, c.longitud as longitud, c.prioridad as prioridad, c.hora_apertura as horaAper, c.hora_cierre as horaCierr FROM ruta r JOIN ruta_relevador rr ON r.id = rr.idruta JOIN comercios c ON r.idcomercio = c.id WHERE rr.idrelevador = '.$relevadorId.' AND r.fecha = "'.$fecha.'"');
             $orders = $query->queryAll();
 
             return $this->render('index', [
-                //'personalLocation' => $personalLocation,
+                'personalLocation' => $personalLocation,
                 'orders' => $orders,
             ]);
         }
@@ -338,7 +344,7 @@ class SiteController extends Controller
 
         //Get personal location
         $query = $connection->createCommand('SELECT latitud, longitud FROM user WHERE id = '.$relevadorId);
-        //$personalLocation = $query->queryOne();
+        $personalLocation = $query->queryOne();
 
         //Get productos
         $query = $connection->createCommand('SELECT sp.idproducto as idproducto, sp.pedido as pedido, p.Nombre as nombre, p.Imagen as imagen FROM stock_pedido sp JOIN productos p ON sp.idproducto = p.id WHERE sp.idcomercio = '.$shopId.' AND sp.fecha = "'.$fecha.'"');
@@ -349,7 +355,7 @@ class SiteController extends Controller
         $comercio = $query->queryOne();
 
         return $this->render('order', [
-            //'personalLocation' => $personalLocation,
+            'personalLocation' => $personalLocation,
             'shopId' => $shopId,
             'fecha' => $fecha,
             'productos' => $productos,
