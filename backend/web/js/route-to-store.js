@@ -4,8 +4,11 @@ var destinos = [];
 var comercios= [];
 var orden=[];
 var geocoder;
+var mark;
 var directionsDisplay;
 var directionsService;	
+var removidos=[];
+var firstTime=1;
 
 function initialize() {
 	sessionStorage.clear();
@@ -121,7 +124,7 @@ function loadMap(){
 	var comer=JSON.parse(sessionStorage.comercios);
 		var bounds = new google.maps.LatLngBounds();
 	var relevador=JSON.parse(sessionStorage.relevador);
-	var mark=new google.maps.LatLng(relevador.latitud,relevador.longitud);
+	mark=new google.maps.LatLng(relevador.latitud,relevador.longitud);
 	var marca = new google.maps.Marker({
 		position: mark,
 		animation:google.maps.Animation.DROP,
@@ -148,8 +151,9 @@ function loadMap(){
      });
      google.maps.event.addListener(marker, "click", function (e) { iw.open(map, this); });
 	}
-	rutafinal[0]=mark;
 
+	rutafinal[0]=mark;
+	console.log(destinos);
 	for(var x in comer){
 	  comercios.push(comer[x]);
 	}
@@ -164,6 +168,8 @@ function loadMap(){
 	
 	
 }
+
+
    
 
 google.maps.event.addDomListener(window, 'load', initialize);
@@ -201,12 +207,17 @@ google.maps.event.addDomListener(window, 'load', initialize);
 				 unitSystem: google.maps.UnitSystem.METRIC,
 				 provideRouteAlternatives: true		
 			};		  		  
-			loadStores();
+			
 			// Route the directions and pass the response to a function to create markers for each step.
 			directionsService.route(request, function(response, status) {
 				if (status == google.maps.DirectionsStatus.OK){			
 					directionsDisplay.setPanel();
-					directionsDisplay.setDirections(response);					
+					directionsDisplay.setDirections(response);	
+					if(firstTime==1){
+						loadStores();	
+						firstTime=0;
+					}
+						
 				}
 				else{
 					alert("No existen rutas entre ambos puntos");
@@ -237,7 +248,30 @@ google.maps.event.addDomListener(window, 'load', initialize);
 			$('#' + comercioId).remove();
 			$('.tooltip').remove();
 			$('.unassign-store').append(html_string);
-
+			rutafinal=[];
+			var index;
+			destinos=[];
+			console.log(orden);
+			for(var comercio in orden){
+				var com=orden[comercio];
+				if(com['id']==comercioId){
+					index=orden.indexOf(com);
+					removidos.push(com);
+				}else{
+					comercios.push(com);
+					destinos.push( new google.maps.LatLng(com.latitud,com.longitud));
+				}
+			}
+			console.log(destinos);
+			orden = [];
+			rutafinal[0]=mark;
+			console.log(rutafinal);
+			if(destinos.length==0){
+				alert('No se cargara ninguna ruta');
+			}else{
+				calculateDistances(mark,destinos);
+			}
+			
 	})
 
 
@@ -247,15 +281,34 @@ google.maps.event.addDomListener(window, 'load', initialize);
 		var csrfToken = $('meta[name="csrf-token"]').attr("content"); //Anti-forgery token
 		var comercioId = $(this).attr("id");
 		var nombre=document.getElementById(comercioId).innerHTML;
-
 			//Creando el string con codigo html del producto que se inserta en la 
             //tabla de productos no asignado
-			var html_string = "<div class='row'><div id='" + $data['id'] + "' class='btn removeProduct'" +
+			var html_string = "<div class='row'><div id='" + comercioId + "' class='btn removeRoute'" +
 					" data-toggle='tooltip' title='" + "' style='width:100%'>" 
 					 + nombre + "</div></div>";
 			//Se mueve gráficamente el producto de la lista de no asignado a asignado
-			$('#' + productoId).remove();
+			$('#' + comercioId).remove();
 			$('.tooltip').remove();
 			$('.assign-store').append(html_string);
+			rutafinal=[];
+			var index;
+			destinos=[];
+			for(var comercio in orden){
+				var com=orden[comercio];
+					comercios.push(com);
+					destinos.push( new google.maps.LatLng(com.latitud,com.longitud));
+			}
+			for(var comercio in removidos){
+				var com=removidos[comercio];
+				if(com['id']==comercioId){
+					index=removidos.indexOf(com);
+					removidos.splice(index,1);
+					comercios.push(com);
+					destinos.push( new google.maps.LatLng(com.latitud,com.longitud));
+				}
+			}
+			orden = [];
+			rutafinal[0]=mark;
+			calculateDistances(mark,destinos);
 	})
 
