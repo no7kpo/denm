@@ -4,7 +4,7 @@
 
 $this->title = Yii::t('app', 'Home');
 $count = 1;
-
+use yii\helpers\Url;
 ?>
 
 <div class="site-index site-page">
@@ -35,7 +35,7 @@ $count = 1;
                 <br>
                 <div class="text-center" id="new-order">
                     <h3 class="text-center"><?= Yii::t('app',"Take new orders!");?></h3>
-                    <p class="text-center"><a class="btn btn-default btn-primary btn-sm" id="med-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/neworder"';?>><?= Yii::t('app',"New order");?></a></p>
+                    <p class="text-center"><a class="btn btn-default btn-primary btn-sm" id="med-btn" href=<?= Url::to(Yii::$app->request->BaseUrl.'/site/neworder');?>><?= Yii::t('app',"New order");?></a></p>
                 </div>
 
             </div>
@@ -75,7 +75,7 @@ $count = 1;
                             <td><?php echo $count; ?></td>
                             <td title="Delivery info">
                                 <?php if($order['relevado'] != 1){ ?>
-                                    <a class="btn-default" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/order?id='.$order['idComercio'].'">'; echo '<span class="info glyphicon glyphicon-info-sign"></span> ';?>
+                                    <a class="btn-default" href=<?= Url::to(Yii::$app->request->BaseUrl.'/site/order?id='.$order['idComercio']);?>><?php echo '<span class="info glyphicon glyphicon-info-sign"></span> ';?>
                                 <?php } echo $order['nombre']; if($order['relevado'] != 1){ ?>
                                     </a>
                                 <?php } ?>
@@ -246,7 +246,6 @@ function loadMap(){
     var markers = [];
     var infowindows = [];
      comer=<?=json_encode($orders)?>;
-     console.log(comer);
         var bounds = new google.maps.LatLngBounds();
         var relev=<?=json_encode($relevador)?>;
         console.log(relev);

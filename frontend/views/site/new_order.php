@@ -50,7 +50,7 @@ if(!Yii::$app->user->getIsGuest()){
 <script>
     function newOrder(){
         var id = $("#shop_select option:selected").val();
-        url = "http://"+document.domain+"/site/createorder?id="+id;
+        url = "<?=Yii::$app->request->BaseUrl?>"+"/site/createorder?id="+id;
         window.location = url;
     }
 </script>
@@ -75,7 +75,7 @@ if(!Yii::$app->user->getIsGuest()){
     <div class="row">
         <div class="col-md-6">
             <br><br>
-            <h1><?= Yii::t('app','Please');?> <a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/login'?>> <?= Yii::t('app','login');?></a> <?= Yii::t('app','or');?> <a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/signup'?>><?= Yii::t('app','signup');?></a>.</h1>
+            <h1><?= Yii::t('app','Please');?> <a href=<?php echo Yii::$app->request->BaseUrl.'/site/login'?>> <?= Yii::t('app','login');?></a> <?= Yii::t('app','or');?> <a href=<?php echo Yii::$app->request->BaseUrl.'/site/signup'?>><?= Yii::t('app','signup');?></a>.</h1>
         </div>
     </div>
 

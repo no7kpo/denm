@@ -135,7 +135,7 @@ class SiteController extends Controller
                 $response[$count] = '<tr class="tr-data"><td>'.$count.'</td><td title="Delivery info">';
                 
                 if($order['relevado'] != 1){
-                    $response[$count] = $response[$count].'<a class="btn-default" href="http://'.$_SERVER['HTTP_HOST'].'/site/order?id='.$order['idComercio'].'"><span class="info glyphicon glyphicon-info-sign"></span>';
+                    $response[$count] = $response[$count].'<a class="btn-default" href="http://'.Yii::$app->request->BaseUrl.'/site/order?id='.$order['idComercio'].'"><span class="info glyphicon glyphicon-info-sign"></span>';
                 }
                 
                 $response[$count] = $response[$count].$order['nombre'];
@@ -193,7 +193,7 @@ class SiteController extends Controller
         $user->longitud=$longitud;
         $user->scenario = 'update';
         $user->save();
-        return $this->render('index');
+        return $this->goHome();
     }
 
     /**

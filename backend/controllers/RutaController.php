@@ -205,4 +205,29 @@ class RutaController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionPordia(){
+        $request= Yii::$app->request;
+        $dia=$request->post('id');
+        $comercios=Comercios::find()->where(['dia'=>$dia])->all();
+        $sql = 'SELECT * FROM comercios WHERE id in (Select idcomercio FROM ruta WHERE dia = "'.$dia.'" and activa=1)';
+        $modelo = Comercios::findBySql($sql)->all(); 
+        $comerciosrecorridos=ArrayHelper::toArray($modelo, ['id', 'nombre','latitud','longitud']);
+        $comerciosarray=ArrayHelper::toArray($comercios, ['id', 'nombre','latitud','longitud']);
+        if(isset($comerciosrecorridos) && !empty($comerciosrecorridos) ){
+            $return = array_diff_key($comerciosarray,$comerciosrecorridos);
+            echo json_encode($return);
+        }else{
+            echo json_encode($comerciosarray);
+        }
+       
+    }
+
+    public function actionRelevador(){
+        $request= Yii::$app->request;
+        $relevadorId=$request->post('id');
+        $relevador=User::find()->where(['id'=>$relevadorId])->one();
+        $return=ArrayHelper::toArray($relevador, ['id', 'nombre','latitud','longitud']);
+        echo json_encode($return);
+    }
 }
