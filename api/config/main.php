@@ -19,7 +19,7 @@ return [
     ],
     'components' => [        
         'user' => [
-            'identityClass' => 'dektrium\user\models\User',
+            'identityClass' => 'common\models\User',
             'enableSession' => false,
             //'loginUrl' => null,
         ],
@@ -43,12 +43,14 @@ return [
             'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
-                    'GET <apiv:v\d+>/<controller:\w+>/<action:\w+>'   => '<apiv>/<controller>/<action>',
+                    
                     'HEAD <apiv:v\d+>/<controller:\w+>'              => '<apiv>/<controller>/index',
                     'GET <apiv:v\d+>/<controller:\w+>'               => '<apiv>/<controller>/index',
                     'HEAD <apiv:v\d+>/<controller:\w+>/<id:(.)+>'    => '<apiv>/<controller>/view',
-                    'GET <apiv:v\d+>/<controller:\w+>/<id:(.)+>'     => '<apiv>/<controller>/view',
-                    'POST <apiv:v\d+>/<controller:\w+>/<id:(.)+>'    => '<apiv>/<controller>/create', 
+                    'GET <apiv:v\d+>/<controller:\w+>/<action:\w+>/<id:(.)+>'     => '<apiv>/<controller>/view',
+                    'GET <apiv:v\d+>/<controller:\w+>/<action:\w+>'  => '<apiv>/<controller>/<action>',
+                    'POST <apiv:v\d+>/<controller:\w+>/<action:\w+>/<id:(.)+>'    => '<apiv>/<controller>/create',
+                    'POST <apiv:v\d+>/<controller:\w+>/<action:\w+>'  => '<apiv>/<controller>/<action>', 
                     'PUT <apiv:v\d+>/<controller:\w+>/<id:(.)+>'     => '<apiv>/<controller>/update',
                     'PATCH <apiv:v\d+>/<controller:\w+>/<id:(.)+>'   => '<apiv>/<controller>/update',
                     'DELETE <apiv:v\d+>/<controller:\w+>/<id:(.)+>'  => '<apiv>/<controller>/delete',                

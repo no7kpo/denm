@@ -76,4 +76,8 @@ class User extends BaseUser
         return $this->hasMany(Ruta::className(), ['id' => 'idruta'])->viaTable('ruta_relevador', ['idrelevador' => 'id']);
     }
     
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        return static::findOne(['auth_key' => $token]);
+    }
 }
