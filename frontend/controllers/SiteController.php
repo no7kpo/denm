@@ -85,77 +85,91 @@ class SiteController extends Controller
         $connection = \Yii::$app->db;
 
         $relevadorId = Yii::$app->user->identity->id;
-        $dia = date('N');
         $fecha = date('Y-m-d');
         $dw = (date("N") + 6) % 7;
         
         //Si existe el filtro, armo JSON para responder
         if(isset($_GET['filter'])){
 
-            if($_GET['filter'] == ''){
-                $nuevafecha = $fecha;
-            }
-            else if($_GET['filter'] == 'today'){
-                $nuevafecha = $fecha;
+            if($_GET['filter'] == '' | $_GET['filter'] == 'today'){
+
+                //Get ordenes
+                $query = $connection->createCommand('SELECT r.id as id, r.relevado as relevado, r.dia as dia, r.fecha as fecha, r.idcomercio as idComercio, c.nombre as nombre, c.latitud as latitud, c.longitud as longitud, c.prioridad as prioridad, c.hora_apertura as horaAper, c.hora_cierre as horaCierr FROM ruta r JOIN ruta_relevador rr ON r.id = rr.idruta JOIN comercios c ON r.idcomercio = c.id WHERE rr.idrelevador = '.$relevadorId.' AND r.dia = '.$dw);
+                $orders = $query->queryAll();
+            
             }
             else if($_GET['filter'] == 'yesterday'){
                 $nuevafecha = strtotime ( '-1 day' , strtotime ( $fecha ) ) ;
                 $nuevafecha = date ( 'Y-m-d' , $nuevafecha );
                 $fecha = $nuevafecha;
+
+                //Get ordenes between filter days
+                $query = $connection->createCommand('SELECT r.id as id, r.relevado as relevado, r.fecha as fecha, r.idcomercio as idComercio, c.nombre as nombre, c.latitud as latitud, c.longitud as longitud, c.prioridad as prioridad, c.hora_apertura as horaAper, c.hora_cierre as horaCierr FROM ruta r JOIN ruta_relevador rr ON r.id = rr.idruta JOIN comercios c ON r.idcomercio = c.id WHERE rr.idrelevador = '.$relevadorId.' AND r.fecha BETWEEN "'.$nuevafecha.'" AND "'.$fecha.'"');
+                $orders = $query->queryAll();
             }
             else if($_GET['filter'] == 'last7'){
                 $fecha = strtotime ( '-1 day' , strtotime ( $fecha ) ) ;
                 $fecha = date ( 'Y-m-d' , $fecha );
                 $nuevafecha = strtotime ( '-7 day' , strtotime ( $fecha ) ) ;
                 $nuevafecha = date ( 'Y-m-d' , $nuevafecha );
+
+                //Get ordenes between filter days
+                $query = $connection->createCommand('SELECT r.id as id, r.relevado as relevado, r.fecha as fecha, r.idcomercio as idComercio, c.nombre as nombre, c.latitud as latitud, c.longitud as longitud, c.prioridad as prioridad, c.hora_apertura as horaAper, c.hora_cierre as horaCierr FROM ruta r JOIN ruta_relevador rr ON r.id = rr.idruta JOIN comercios c ON r.idcomercio = c.id WHERE rr.idrelevador = '.$relevadorId.' AND r.fecha BETWEEN "'.$nuevafecha.'" AND "'.$fecha.'"');
+                $orders = $query->queryAll();
             }
             else if($_GET['filter'] == 'last30'){
                 $fecha = strtotime ( '-1 day' , strtotime ( $fecha ) ) ;
                 $fecha = date ( 'Y-m-d' , $fecha );
                 $nuevafecha = strtotime ( '-30 day' , strtotime ( $fecha ) ) ;
                 $nuevafecha = date ( 'Y-m-d' , $nuevafecha );
-            }
-            else{
-                $nuevafecha = $fecha;
-            }
 
-            //Get ordenes between filter days
-            $query = $connection->createCommand('SELECT r.id as id, r.relevado as relevado, r.fecha as fecha, r.idcomercio as idComercio, c.nombre as nombre, c.latitud as latitud, c.longitud as longitud, c.prioridad as prioridad, c.hora_apertura as horaAper, c.hora_cierre as horaCierr FROM ruta r JOIN ruta_relevador rr ON r.id = rr.idruta JOIN comercios c ON r.idcomercio = c.id WHERE rr.idrelevador = '.$relevadorId.' AND r.fecha BETWEEN "'.$nuevafecha.'" AND "'.$fecha.'"');
-            $orders = $query->queryAll();
+                //Get ordenes between filter days
+                $query = $connection->createCommand('SELECT r.id as id, r.relevado as relevado, r.fecha as fecha, r.idcomercio as idComercio, c.nombre as nombre, c.latitud as latitud, c.longitud as longitud, c.prioridad as prioridad, c.hora_apertura as horaAper, c.hora_cierre as horaCierr FROM ruta r JOIN ruta_relevador rr ON r.id = rr.idruta JOIN comercios c ON r.idcomercio = c.id WHERE rr.idrelevador = '.$relevadorId.' AND r.fecha BETWEEN "'.$nuevafecha.'" AND "'.$fecha.'"');
+                $orders = $query->queryAll();
+            }
             
             $response = array();
             $count = 1;
 
             //Armo Html
-            foreach($orders as $order){
-                $horaIni = explode(':', $order['horaAper']);
-                $horaFin = explode(':', $order['horaCierr']);
-                $local_hour = $horaIni[0].':'.$horaIni[1].' - '.$horaFin[0].':'.$horaFin[1];
+            if(count($orders) > 0){
+                foreach($orders as $order){
+                    $horaIni = explode(':', $order['horaAper']);
+                    $horaFin = explode(':', $order['horaCierr']);
+                    $local_hour = $horaIni[0].':'.$horaIni[1].' - '.$horaFin[0].':'.$horaFin[1];
 
-                $response[$count] = '<tr class="tr-data"><td>'.$count.'</td><td title="Delivery info">';
-                
-                if($order['relevado'] != 1){
-                    $response[$count] = $response[$count].'<a class="btn-default" href="http://'.Yii::$app->request->BaseUrl.'/site/order?id='.$order['idComercio'].'"><span class="info glyphicon glyphicon-info-sign"></span>';
+                    $response[$count] = '<tr class="tr-data"><td>'.$count.'</td><td title="Delivery info">';
+                    
+                    if($order['relevado'] != 1){
+                        $response[$count] = $response[$count].'<a class="btn-default" href="http://'.Yii::$app->request->BaseUrl.'/site/order?id='.$order['idComercio'].'"><span class="info glyphicon glyphicon-info-sign"></span>';
+                    }
+                    
+                    $response[$count] = $response[$count].$order['nombre'];
+
+                    if($order['relevado'] != 1){
+                        $response[$count] = $response[$count].'</a>';
+                    }
+
+                    if($order['fecha'] == '0000-00-00'){
+                        $response[$count] = $response[$count].'</td><td class="text-center"> - ';
+                    }
+                    else{
+                        $response[$count] = $response[$count].'</td><td class="text-center">'.$order['fecha'];
+                    }
+
+                    $response[$count] = $response[$count].'</td><td class="text-center">'.$local_hour.'</td><td class="text-center">';
+
+                    if($order['relevado'] == 1){
+                        $response[$count] = $response[$count].'<span class="delivered glyphicon glyphicon-ok"></span>';
+                    }
+                    else{
+                        $response[$count] = $response[$count].'<span class="not-delivered glyphicon glyphicon-remove"></span>';
+                    }
+
+                    $response[$count] = $response[$count].'</td></tr>';
+
+                    $count++;
                 }
-                
-                $response[$count] = $response[$count].$order['nombre'];
-
-                if($order['relevado'] != 1){
-                    $response[$count] = $response[$count].'</a>';
-                }
-
-                $response[$count] = $response[$count].'</td><td class="text-center">'.$order['fecha'].'</td><td class="text-center">'.$local_hour.'</td><td class="text-center">';
-
-                if($order['relevado'] == 1){
-                    $response[$count] = $response[$count].'<span class="delivered glyphicon glyphicon-ok"></span>';
-                }
-                else{
-                    $response[$count] = $response[$count].'<span class="not-delivered glyphicon glyphicon-remove"></span>';
-                }
-
-                $response[$count] = $response[$count].'</td></tr>';
-
-                $count++;
             }
 
             echo json_encode($response);
@@ -167,7 +181,7 @@ class SiteController extends Controller
             $personalLocation = $query->queryOne();
 
             //Get ordenes
-            $query = $connection->createCommand('SELECT r.id as id, r.relevado as relevado, r.dia as dia,r.fecha as fecha, r.idcomercio as idComercio, c.nombre as nombre, c.latitud as latitud, c.longitud as longitud, c.prioridad as prioridad, c.hora_apertura as horaAper, c.hora_cierre as horaCierr FROM ruta r JOIN ruta_relevador rr ON r.id = rr.idruta JOIN comercios c ON r.idcomercio = c.id WHERE rr.idrelevador = '.$relevadorId.' AND r.dia = '.$dw.' AND r.activa=1');
+            $query = $connection->createCommand('SELECT r.id as id, r.relevado as relevado, r.dia as dia, r.fecha as fecha, r.idcomercio as idComercio, c.nombre as nombre, c.latitud as latitud, c.longitud as longitud, c.prioridad as prioridad, c.hora_apertura as horaAper, c.hora_cierre as horaCierr FROM ruta r JOIN ruta_relevador rr ON r.id = rr.idruta JOIN comercios c ON r.idcomercio = c.id WHERE rr.idrelevador = '.$relevadorId.' AND r.dia = '.$dw);
             $orders = $query->queryAll();
 
             return $this->render('index', [
@@ -348,7 +362,7 @@ class SiteController extends Controller
         $personalLocation = $query->queryOne();
 
         //Get productos
-        $query = $connection->createCommand('SELECT sp.idproducto as idproducto, sp.pedido as pedido, p.Nombre as nombre, p.Imagen as imagen FROM stock_pedido sp JOIN productos p ON sp.idproducto = p.id WHERE sp.idcomercio = '.$shopId.' AND sp.fecha = "'.$fecha.'"');
+        $query = $connection->createCommand('SELECT sp.idproducto as idproducto, sp.stock as stock, p.Nombre as nombre, p.Imagen as imagen FROM stock_pedido sp JOIN productos p ON sp.idproducto = p.id WHERE sp.idcomercio = '.$shopId/*.' AND sp.fecha = "'.$fecha.'"'*/);
         $productos = $query->queryAll();
 
         //Get comercio
@@ -383,14 +397,15 @@ class SiteController extends Controller
     public function actionDeliverydone(){
         $shopId = $_POST['shopId'];
         $fecha = $_POST['fecha'];
+        $relevadorId = Yii::$app->user->identity->id;
 
         //Define connection
         $connection = \Yii::$app->db;
 
-        $query = $connection->createCommand('UPDATE ruta SET relevado = 1 WHERE idcomercio = '.$shopId.' AND fecha = "'.$fecha.'"');
+        $query = $connection->createCommand('UPDATE ruta r JOIN ruta_relevador rr ON r.id = rr.idruta SET r.relevado = 1, r.activa = 0, r.fecha = "'.$fecha.'" WHERE rr.idrelevador = '.$relevadorId.' AND r.idcomercio = '.$shopId.' AND r.activa = 1');
         $query->execute();
 
-        echo 'UPDATE ruta SET relevado = 1 WHERE idcomercio = '.$shopId.' AND fecha = "'.$fecha.'"';
+        echo 'UPDATE ruta r JOIN ruta_relevador rr ON r.id = rr.idruta SET r.relevado = 1, r.activa = 0, r.fecha = "'.$fecha.'" WHERE rr.idrelevador = '.$relevadorId.' AND r.idcomercio = '.$shopId.' AND r.activa = 1';
     }
 
     public function actionNeworder(){
@@ -419,7 +434,7 @@ class SiteController extends Controller
         $comercio = $query->queryOne();
 
         //Get items
-        $query = $connection->createCommand('SELECT p.id, p.nombre, p.Imagen, sp.stock FROM productos p JOIN stock_pedido sp ON p.id = sp.idproducto WHERE sp.idcomercio = '.$shopId.' AND sp.fecha = "'.$fecha.'"');
+        $query = $connection->createCommand('SELECT p.id, p.nombre, p.Imagen FROM productos p JOIN producto_tienda pt ON p.id = pt.idproducto WHERE pt.idcomercio = '.$shopId);
         $items = $query->queryAll();
 
         return $this->render('create_order', [
@@ -445,9 +460,12 @@ class SiteController extends Controller
                 $pedido = $aux[1];
                 $itemId = $aux[0];
 
-                //Update pedido
-                $query = $connection->createCommand('UPDATE stock_pedido SET pedido = '.$pedido.' WHERE idcomercio = '.$shopId.' AND idproducto = '.$itemId.' AND fecha = "'.$fecha.'"');
-                $query->execute();
+                if($pedido > 0){
+
+                    //Update pedido
+                    $query = $connection->createCommand('INSERT INTO stock_pedido (idcomercio, idproducto, pedido, fecha) VALUES ('.$shopId.', '.$itemId.', '.$pedido.', "'.$fecha.'")');
+                    $query->execute();
+                }
             }
 
             echo 'OK';

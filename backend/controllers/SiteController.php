@@ -267,4 +267,16 @@ class SiteController extends Controller
             return $this->render('error', ['exception' => $exception]);
         }
     }*/
+
+    public function actionHistory()
+    {
+        //Get ordenes
+        $connection = \Yii::$app->db;
+        $query = $connection->createCommand('SELECT r.id as rutaId, r.fecha as fecha, c.nombre as nombreComercio, rr.idrelevador as relevadorId FROM ruta r JOIN ruta_relevador rr ON r.id = rr.idruta JOIN comercios c ON r.idcomercio = c.id WHERE r.relevado = 1');
+        $relevamientos = $query->queryAll();
+
+        return $this->render('history', [
+            'relevamientos' => $relevamientos
+        ]);
+    }
 }
