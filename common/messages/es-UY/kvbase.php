@@ -17,7 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Invalid login or password' => 'Usuario o contraseña invalido',
-    'The admin must confirm your account' => 'El administrador debe confirmar tu cuenta',
-    'Your account has been blocked' => 'Tu cuenta ha sido bloqueada',
+    'It is recommended you use an upgraded browser to display the {type} control properly.' => 'Es recomendado que uses un explorador actualizado para ver el {type} control apropiadamente.',
 ];
