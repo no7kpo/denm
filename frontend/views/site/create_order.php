@@ -78,7 +78,7 @@ if(!Yii::$app->user->getIsGuest()){
                             </table>
                         </div>
 
-                        <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/index"';?>><?= Yii::t('app','Cancel');?></a></p>
+                        <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" href=<?php echo Yii::$app->request->BaseUrl.'/site/index"';?>><?= Yii::t('app','Cancel');?></a></p>
                         <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" onclick="createNewOrder()"><?= Yii::t('app','Create');?></a></p>
                     </form>
                 </div>
@@ -106,7 +106,7 @@ if(!Yii::$app->user->getIsGuest()){
             count++;
         });
 
-        var url = "<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/createneworder'; ?>";
+        var url = "<?php echo Yii::$app->request->BaseUrl.'/site/createneworder'; ?>";
 
         $.ajax({
             type: "POST",

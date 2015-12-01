@@ -413,7 +413,9 @@ class SiteController extends Controller
         $connection = \Yii::$app->db;
 
         //Get comercios
-        $query = $connection->createCommand('SELECT c.id, c.nombre FROM comercios c');
+        $dw = (date("N") + 6) % 7;
+        $relevadorId = Yii::$app->user->identity->id;
+        $query = $connection->createCommand('SELECT c.id, c.nombre FROM comercios c JOIN ruta r ON c.id=r.idComercio WHERE r.activa=1 AND r.dia='.$dw.' AND r.id in (SELECT rr.idruta FROM ruta_relevador rr WHERE rr.idrelevador='.$relevadorId.') ');
         $comercios = $query->queryAll();
 
         return $this->render('new_order', [
