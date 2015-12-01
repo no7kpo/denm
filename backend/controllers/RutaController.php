@@ -78,7 +78,7 @@ class RutaController extends Controller
         $sql = 'SELECT * FROM comercios WHERE id in (Select idcomercio FROM ruta WHERE id='.$id.')';
         $comercios = Comercios::findBySql($sql)->all(); 
          $comerciosarray=ArrayHelper::toArray($comercios, ['id', 'nombre','latitud','longitud']);
-        $sql = 'SELECT * FROM User JOIN ruta_relevador ON id=idrelevador WHERE idruta='.$id;
+        $sql = 'SELECT * FROM user JOIN ruta_relevador ON id=idrelevador WHERE idruta='.$id;
         $user=User::findBySql($sql)->one(); 
         return $this->render('view', [
             'model' => $model, 'comercios' =>json_encode($comerciosarray), 'usuario' => $user
