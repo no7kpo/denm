@@ -17,6 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Clear field' => 'Limpiar campo',
-    'Select date' => 'Seleccionar fecha',
+    'It is recommended you use an upgraded browser to display the {type} control properly.' => 'Es recomendado que uses un explorador actualizado para ver el {type} control apropiadamente.',
 ];

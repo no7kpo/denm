@@ -3,24 +3,24 @@
    use yii\jui\DatePicker;
 /* @var $this yii\web\View */
 
-$this->title = 'Bienvenido a Relevadores APP';
+$this->title = 'Welcome to Relevadores APP';
 ?>
 <div class="site-index">
 <br>
-<h4> REPORTE DE PORCENTAJE DE EFECTIVIDAD EN RELEVADORES</h4><br>
+<h4> RELAYS PERCENTAGE OF EFFECTIVENESS REPORT</h4><br>
 <?php
 
 echo Highcharts::widget([
    'options' => [
-      'title' => ['text' => 'Efectividad de Relevadores'],
+      'title' => ['text' => 'Effectiveness Relays'],
       'xAxis' => [
          'categories' => $users
       ],
       'yAxis' => [
-         'title' => ['text' => 'Porcentaje']
+         'title' => ['text' => 'Percentage']
       ],
       'series' => [
-        ['type' => 'column', 'name' => 'Eficiencia', 'data' => $percent,
+        ['type' => 'column', 'name' => 'Efficiency', 'data' => $percent,
                 'dataLabels' => [
                 'enabled'=> true,
                 'rotation'=> -90,
@@ -28,6 +28,7 @@ echo Highcharts::widget([
                 'align'=> 'right',
                 'y'=> 10, 
                 ],
+                'color' => 'orange',
         ],
       ]
    ]
@@ -35,35 +36,29 @@ echo Highcharts::widget([
 
 ?>
 <br><br>
-<h4> REPORTE DE PEDIDOS DE COMERCIO EN EL TIEMPO</h4><br>
-<form>
+<h4> SHOPS REPORT ORDER IN TIME</h4><br>
+<form action="" method="GET">
     <table>
            <tr>
               <td>
-                <fieldset>
-                    <legend>Desde:</legend>
-                    <?= yii\jui\DatePicker::widget(['name' => 'startDate', 'language' => 'es-UY' , 'dateFormat' => 'dd-MM-yyyy']) ?>
-                </fieldset>
+                    <?= yii\jui\DatePicker::widget(['name' => 'startDate', 'language' => 'es-UY' , 'dateFormat' => 'dd-MM-yyyy','options' => ['placeholder' => 'Start Date ...']]) ?>
+
               </td>
               <td> &nbsp;&nbsp;&nbsp; </td>
               <td>
-                <fieldset>
-                    <legend>Hasta:</legend>
-                    <?= yii\jui\DatePicker::widget(['name' => 'endDate', 'language' => 'es-UY' , 'dateFormat' => 'dd-MM-yyyy']) ?>
-                </fieldset>
+                    <?= yii\jui\DatePicker::widget(['name' => 'endDate', 'language' => 'es-UY' , 'dateFormat' => 'dd-MM-yyyy','options' => ['placeholder' => 'End Date ...']]) ?>
+                
               </td>
               <td> &nbsp;&nbsp;&nbsp; </td>
-              <td> 
-                    <select id="store-picker">
-                      <option value="0" selected>Seleccione un comercio</option>
+              <td>
+                    <select id="store-picker" name="storePicker" class="btn btn-sm dropdown-toggle">
+                      <option value="0" selected>Choose Store...</option>
                       <?php echo $stores ?>
                     </select>
-
                 </td>
                 <td> &nbsp;&nbsp;&nbsp; </td>
-                <td> 
-                    <input type="button" value='Generar Gr&aacute;fica'/>
-
+                <td>
+                    <input class="btn btn-default btn-primary btn-sm" type='submit' value='Generate'/>
                 </td>
 
         </tr>
@@ -72,20 +67,20 @@ echo Highcharts::widget([
  <?php
 
 
-$comercio='Frutas Zarlanga';
+$comercio=$nomstor;
 /*$desde='2015-11-24';
 $hasta='2015-11-26';*/
 echo Highcharts::widget([
    'options' => [
-      'title' => ['text' => 'Productos pedidos por el comercio ' . $comercio . ' desde: '. $datei . ' hasta: ' . $datef],
+      'title' => ['text' => 'Products ordered by the shop ' . $comercio . ' from: '. $datei . ' to: ' . $datef],
       'xAxis' => [
          'categories' => $prods
       ],
       'yAxis' => [
-         'title' => ['text' => 'Cantidad pedida']
+         'title' => ['text' => 'Order amount']
       ],
       'series' => [
-         ['type' => 'column', 'name' => 'Cantidad', 'data' => $pedi,
+         ['type' => 'column', 'name' => 'Amount', 'data' => $pedi,
                 'dataLabels' => [
                 'enabled'=> true,
                 'rotation'=> -90,
@@ -93,6 +88,7 @@ echo Highcharts::widget([
                 'align'=> 'right',
                 'y'=> 10, 
                 ],
+                  'color' => 'green',
         ],
       ]
    ]

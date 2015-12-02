@@ -77,7 +77,7 @@ if(!Yii::$app->user->getIsGuest()){
 	                            <td><?php echo $item['nombre']; ?></td>
 	                            <td class="text-center"><?php if($item['imagen'] == ''){ echo '<span class="not-delivered glyphicon glyphicon-remove"></span>'; } else{ ?><span><img class="item img-responsive" src="<?=Yii::getAlias('@product_pictures')?><?php echo DIRECTORY_SEPARATOR.$item['imagen'];?>"></span><?php } ?></td>
 	                           	<td class="text-center">
-	                           		<input class="input-stock" onblur="saveThisItem(<?php echo $item['idproducto'];?>,this.value)" type="number" id="stock_<?php echo $item['idproducto'];?>" value="0" min="0" max="1000">
+	                           		<input class="input-stock" onblur="saveThisItem(<?php echo $item['idproducto'];?>,this.value)" type="number" id="stock_<?php echo $item['idproducto'];?>" value="<?php echo $item['stock'];?>" min="0" max="1000">
 	                           	</td>
 	                        </tr>
 	                        <?php } ?>

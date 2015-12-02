@@ -62,7 +62,6 @@ if(!Yii::$app->user->getIsGuest()){
                             <table class="table table-hover" id="delivery-table">
                                 <tr>
                                     <th><?= Yii::t('app','Name');?></th>
-                                    <th class="text-center"><?= Yii::t('app','Available stock');?></th>
                                     <th class="text-center"><?= Yii::t('app','Image');?></th>
                                     <th class="text-center"><?= Yii::t('app','Stock to deliver');?></th>
                                 </tr>
@@ -70,7 +69,6 @@ if(!Yii::$app->user->getIsGuest()){
                                 <?php foreach($items as $item){ ?>
                                 <tr>
                                     <td><?php echo $item['nombre']; ?></td>
-                                    <td class="text-center"><?php echo $item['stock']; ?></td>
                                     <td class="text-center"><?php if($item['Imagen'] == ''){ echo '<span class="not-delivered glyphicon glyphicon-remove"></span>'; } else{ ?><span><img class="item img-responsive" src="<?=Yii::getAlias('@product_pictures')?><?php echo DIRECTORY_SEPARATOR.$item['Imagen'];?>"></span><?php } ?></td>
                                     <td class="text-center">
                                         <input class="input-stock" type="number" id="<?php echo $item['id'];?>" value="0" min="0" max="1000">
@@ -80,7 +78,7 @@ if(!Yii::$app->user->getIsGuest()){
                             </table>
                         </div>
 
-                        <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/index"';?>><?= Yii::t('app','Cancel');?></a></p>
+                        <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" href=<?php echo Yii::$app->request->BaseUrl.'/site/index"';?>><?= Yii::t('app','Cancel');?></a></p>
                         <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" onclick="createNewOrder()"><?= Yii::t('app','Create');?></a></p>
                     </form>
                 </div>
@@ -108,7 +106,7 @@ if(!Yii::$app->user->getIsGuest()){
             count++;
         });
 
-        var url = "<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/createneworder'; ?>";
+        var url = "<?php echo Yii::$app->request->BaseUrl.'/site/createneworder'; ?>";
 
         $.ajax({
             type: "POST",

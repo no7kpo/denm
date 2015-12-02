@@ -63,6 +63,7 @@ use yii\helpers\Url;
                         <tr>
                             <th>#</th>
                             <th><?= Yii::t('app',"Shop");?></th>
+                            <th class="text-center"><?= Yii::t('app',"Date");?></th>
                             <th class="text-center"><?= Yii::t('app',"Hours");?></th>
                             <th class="text-center"><?= Yii::t('app',"Delivered");?></th>
                         </tr>
@@ -70,9 +71,13 @@ use yii\helpers\Url;
                         <?php if(count($orders) > 0){ 
 
                             foreach($orders as $order){ 
+                              $horaIni = explode(':', $order['horaAper']);
+                              $horaFin = explode(':', $order['horaCierr']);
+                              $local_hour = $horaIni[0].':'.$horaIni[1].' - '.$horaFin[0].':'.$horaFin[1];
                         ?>
                         <tr class="tr-data">
                             <td><?php echo $count; ?></td>
+                            
                             <td title="Delivery info">
                                 <?php if($order['relevado'] != 1){ ?>
                                     <a class="btn-default" href=<?= Url::to(Yii::$app->request->BaseUrl.'/site/order?id='.$order['idComercio']);?>><?php echo '<span class="info glyphicon glyphicon-info-sign"></span> ';?>
@@ -80,8 +85,9 @@ use yii\helpers\Url;
                                     </a>
                                 <?php } ?>
                             </td>
-
                             
+                            <td class="text-center"><?php if($order['fecha'] == '0000-00-00'){ echo '-'; } else{ echo $order['fecha']; } ?></td>
+                            <td class="text-center"><?php echo $local_hour; ?></td>
                             <td class="text-center"><?php if($order['relevado'] == 1){ echo '<span class="delivered glyphicon glyphicon-ok"></span>'; } else{ echo '<span class="not-delivered glyphicon glyphicon-remove"></span>'; } ?></td>
                         </tr>
                         <?php $count++; }}else{
@@ -122,10 +128,9 @@ use yii\helpers\Url;
             url: url,
             data: { "filter" :  value },
             success: function(response){
-                
+
                 $.each(JSON.parse(response), function(index, value) {
                     console.log(value);
-
                     $("#delivery-table").append(value);
                 });
             }

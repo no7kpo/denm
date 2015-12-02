@@ -94,26 +94,100 @@ class SiteController extends Controller
             }
         }
 
-        array_push($relevadores, "Piwi", "Nico", "Diego", "Matias");
-        array_push($porcentaje, 88, 20, 93, 81);
+        //array_push($relevadores, "Piwi", "Nico", "Diego", "Matias");
+        //array_push($porcentaje, 88, 20, 93, 81);
         // $productos = $query->queryAll();
 
 
 
-        $idstore='1';
-        $nomstore='La tienda de Juan';
+        $idstore='0';
+        $nomstore='';
         $nombrecomercio = '';
-        $query2 = $connection->createCommand("SELECT id as idstor, nombre as storename FROM comercios");
+        $query2 = $connection->createCommand("SELECT id as idstor, nombre as storename FROM comercios ORDER BY id");
         $result2 = $query2->queryAll();
         foreach ($result2 as $data2){
             if (!empty($data2)){
+                if($idstore=='0'){
+                    $idstore=$data2['idstor'];
+                }
                 $nombrecomercio=$nombrecomercio . "<option value='". $data2['idstor'] ."'>". $data2['storename'] ."</option>";
             }
         }
-        $nombrecomercio=$nombrecomercio . "<option value='". $idstore ."'>". $nomstore ."</option>";
+        //$nombrecomercio=$nombrecomercio . "<option value='". $idstore ."'>". $nomstore ."</option>";
+
+        if(isset($_GET['storePicker'])){
+            if($_GET['storePicker']!='' && $_GET['storePicker']!='0'){
+                $shopId=$_GET['storePicker'];
+            }else{
+                $shopId = $idstore; //Conseguir id de comercio segun order id!!
+            }   
+        }else{
+            $shopId = $idstore; //Conseguir id de comercio segun order id!!
+        }
+
+        $fecha = date('d-m-Y');
+        $dateStart = strtotime ( '-8 day' , strtotime ( $fecha ) ) ;
+        $dateStart = date ( 'd-m-Y' , $dateStart );
+        $dateEnd = strtotime ( '-1 day' , strtotime ( $fecha ) ) ;
+        $dateEnd = date ( 'd-m-Y' , $dateEnd );
+        $productos=array();
+        $pedidos=array();
+    if(isset($_GET['startDate']) && isset($_GET['endDate'])){
+        if($_GET['startDate']!='' && $_GET['endDate']!=''){
+            $dateStart=$_GET['startDate'];
+            $dateEnd=$_GET['endDate'];
+        }
+    }
 
 
+        //Get productos
+        $query3 = $connection->createCommand("SELECT p.nombre as nombre, count(sp.pedido) AS pedido FROM (comercios c JOIN stock_pedido sp ON c.id=sp.idcomercio) JOIN productos p ON sp.idproducto=p.id WHERE c.id=". $shopId ." AND fecha between str_to_date('".$dateStart ." 00:00:00','%d-%m-%Y %H:%i:%s') and str_to_date('". $dateEnd ." 23:59:59','%d-%m-%Y %H:%i:%s') group by p.nombre");
+        $result3 = $query3->queryAll();
+        foreach ($result3 as $data3){
+            if (!empty($data3)){
 
+                $intpedid=(int)$data3['pedido'];
+                array_push($productos, $data3['nombre']);
+                array_push($pedidos, $intpedid);
+            }
+        }
+
+        //array_push($productos, "Banana", "Manzana", "Pera", "Naranja");
+        //array_push($pedidos, 150, 100, 130, 80);
+
+
+        $query4 = $connection->createCommand("SELECT nombre FROM comercios WHERE id=". $shopId);
+        $result4 = $query4->queryAll();
+        foreach ($result4 as $data4){
+            if (!empty($data4)){
+                $nomstore=$data4['nombre'];
+            }
+        }
+
+    
+
+            return $this->render('index', [
+                'users' => $relevadores,
+                'percent' => $porcentaje,
+                'stores' => $nombrecomercio,
+                'datei' => $dateStart,
+                'datef' => $dateEnd,
+                'prods' => $productos,
+                'pedi' => $pedidos,
+                'nomstor'=>$nomstore,
+            ]);
+
+
+        
+    }
+/*
+    public function actionstoreReport($id, $startdate, $enddate){
+        
+        //Define connection
+        $connection = \Yii::$app->db;
+
+        //Get shop id
+        
         $shopId = '1'; //Conseguir id de comercio segun order id!!
 
 
@@ -141,48 +215,6 @@ class SiteController extends Controller
 
         array_push($productos, "Banana", "Manzana", "Pera", "Naranja");
         array_push($pedidos, 150, 100, 130, 80);
-
-
-
-
-            return $this->render('index', [
-                'users' => $relevadores,
-                'percent' => $porcentaje,
-                'stores' => $nombrecomercio,
-                'datei' => $dateStart,
-                'datef' => $dateEnd,
-                'prods' => $productos,
-                'pedi' => $pedidos,
-            ]);
-
-
-        
-    }
-/*
-    public function actionGetReportStore($id = 0){
-        
-        //Define connection
-        $connection = \Yii::$app->db;
-
-        //Get shop id
-        $shopId = '1'; //Conseguir id de comercio segun order id!!
-
-        $dateStart = '2015-11-25';
-        $dateEnd = '2015-11-25';
-        $productos=array();
-        $pedidos=array();
-
-        //Get productos
-        $query = $connection->createCommand("SELECT p.nombre as nombre, count(sp.pedido) AS pedido FROM (comercios c JOIN stock_pedido sp ON c.id=sp.idcomercio) JOIN productos p ON sp.idproducto=p.id WHERE c.id=". $shopId ." AND fecha between str_to_date('".$dateStart ." 00:00:00','%Y-%m-%d %H:%i:%s') and str_to_date('". $dateEnd ." 23:59:59','%Y-%m-%d %H:%i:%s') group by p.nombre");
-        $result = $query->queryAll();
-        foreach ($result as $data)
-            if (!empty($data)){
-                array_push($productos, $data['nombre']);
-                array_push($pedidos, $data['pedido']);
-            }
-        }
-
-        // $productos = $query->queryAll();
 
             return $this->render('reportStore', [
                 'products' => $productos,
@@ -235,4 +267,16 @@ class SiteController extends Controller
             return $this->render('error', ['exception' => $exception]);
         }
     }*/
+
+    public function actionHistory()
+    {
+        //Get ordenes
+        $connection = \Yii::$app->db;
+        $query = $connection->createCommand('SELECT r.id as rutaId, r.fecha as fecha, c.nombre as nombreComercio, rr.idrelevador as relevadorId FROM ruta r JOIN ruta_relevador rr ON r.id = rr.idruta JOIN comercios c ON r.idcomercio = c.id WHERE r.relevado = 1');
+        $relevamientos = $query->queryAll();
+
+        return $this->render('history', [
+            'relevamientos' => $relevamientos
+        ]);
+    }
 }
