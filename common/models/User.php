@@ -3,6 +3,7 @@
 namespace common\models;
 use dektrium\user\models\User as BaseUser;
 
+use dektrium\user\helpers\Password;
 use Yii;
 
 /**
@@ -29,7 +30,7 @@ use Yii;
  * @property SocialAccount[] $socialAccounts
  * @property Token[] $tokens
  */
-class User extends BaseUser
+class User extends BaseUser implements \OAuth2\Storage\UserCredentialsInterface
 {
     /**
      * @inheritdoc
@@ -76,8 +77,51 @@ class User extends BaseUser
         return $this->hasMany(Ruta::className(), ['id' => 'idruta'])->viaTable('ruta_relevador', ['idrelevador' => 'id']);
     }
     
+    // public static function findIdentityByAccessToken($token, $type = null)
+    // {
+    //     /** @var \filsh\yii2\oauth2server\Module $module */
+    //     $module = Yii::$app->getModule('oauth2');
+    //     $token = $module->getServer()->getResourceController()->getToken();
+
+    //     return !empty($token['user_id'])
+    //                 ? static::findIdentity($token['user_id'])
+    //                 : null;
+    // }
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::findOne(['auth_key' => $token]);
+        $storage = new \filsh\yii2\oauth2server\storage\Pdo(null,array());
+        $accessToken = $storage->getAccessToken($token);
+        if (($accessToken['expires'] - time()) > 0) {
+            $user_id = $accessToken['user_id'];
+            return static::findOne($user_id);
+        }
+        return static::findOne(["api_key" => $token]);
+    }
+
+    public function checkUserCredentials($username, $password)
+    {
+        $user = static::findByUsername($username);
+        if (empty($user)) {
+            return false;
+        }
+        return $user->validatePassword($password);
+    }
+
+    public function getUserDetails($username)
+    {
+        $user = static::findByUsername($username);
+        if ($user === null) {
+            return false;
+        }
+        return ['user_id' => $user->id];
+    }
+
+    public static function findByUsername($username){
+        return static::findOne(['username' => $username]);
+    }
+
+    public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
 }

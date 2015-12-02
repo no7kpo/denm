@@ -98,9 +98,61 @@ class SiteController extends Controller
         array_push($porcentaje, 88, 20, 93, 81);
         // $productos = $query->queryAll();
 
+
+
+        $idstore='1';
+        $nomstore='La tienda de Juan';
+        $nombrecomercio = '';
+        $query2 = $connection->createCommand("SELECT id as idstor, nombre as storename FROM comercios");
+        $result2 = $query2->queryAll();
+        foreach ($result2 as $data2){
+            if (!empty($data2)){
+                $nombrecomercio=$nombrecomercio . "<option value='". $data2['idstor'] ."'>". $data2['storename'] ."</option>";
+            }
+        }
+        $nombrecomercio=$nombrecomercio . "<option value='". $idstore ."'>". $nomstore ."</option>";
+
+
+
+        $shopId = '1'; //Conseguir id de comercio segun order id!!
+
+
+        $fecha = date('d-m-Y');
+        $dateStart = strtotime ( '-8 day' , strtotime ( $fecha ) ) ;
+        $dateStart = date ( 'd-m-Y' , $dateStart );
+        //$dateStart = '25/11/2015';
+        //$dateEnd = '25/11/2015';
+        $dateEnd = strtotime ( '-1 day' , strtotime ( $fecha ) ) ;
+        $dateEnd = date ( 'd-m-Y' , $dateEnd );
+        $productos=array();
+        $pedidos=array();
+
+        //Get productos
+        $query3 = $connection->createCommand("SELECT p.nombre as nombre, count(sp.pedido) AS pedido FROM (comercios c JOIN stock_pedido sp ON c.id=sp.idcomercio) JOIN productos p ON sp.idproducto=p.id WHERE c.id=". $shopId ." AND fecha between str_to_date('".$dateStart ." 00:00:00','%d-%m-%Y %H:%i:%s') and str_to_date('". $dateEnd ." 23:59:59','%d-%m-%Y %H:%i:%s') group by p.nombre");
+        $result3 = $query3->queryAll();
+        foreach ($result3 as $data3){
+            if (!empty($data3)){
+
+                $intpedid=(int)$data3['pedido'];
+                array_push($productos, $data3['nombre']);
+                array_push($pedidos, $intpedid);
+            }
+        }
+
+        array_push($productos, "Banana", "Manzana", "Pera", "Naranja");
+        array_push($pedidos, 150, 100, 130, 80);
+
+
+
+
             return $this->render('index', [
                 'users' => $relevadores,
                 'percent' => $porcentaje,
+                'stores' => $nombrecomercio,
+                'datei' => $dateStart,
+                'datef' => $dateEnd,
+                'prods' => $productos,
+                'pedi' => $pedidos,
             ]);
 
 

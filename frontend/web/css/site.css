@@ -1,6 +1,7 @@
 html,
 body {
     height: 100%;
+    min-width: 320px;
 }
 
 .wrap {
@@ -239,4 +240,31 @@ a.desc:after {
     background-image: none;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+.input-date {
+    width: 150px;
+    height: 30px;
+    padding-left: 10px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.input-date[type=text]{
+    font-weight: bold;
+}
+
+@media screen and (max-width: 1000px) {
+    .logo_banner {
+        display: none !important;
+    }
+    .site-page {
+        margin-top: -5%;
+    }
 }

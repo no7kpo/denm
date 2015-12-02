@@ -20,9 +20,19 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($rutarel, 'idrelevador')
-    ->dropDownList($user) ?>
+    ->dropDownList($user,[
+    	'onchange'=>'
+                        $.post( "'.Url::toRoute('/comercios/relevador').'", { id: $(this).val() } )
+                            .done(function( data ) {
+                            	
+                               	sessionStorage.setItem("relevador",data);
+                               	loadMap();
+                                }
+                        );
+                    '   
+                    ]) ?>
 
-    <?=   $form->field($model, 'fecha')->dropDownList( ['0' => Yii::t('app','Monday'), '1' => Yii::t('app','Tuesday'), '2' => Yii::t('app','Wednesday'), '3' => Yii::t('app','Thursday'), '4'=> Yii::t('app','Friday'), '5' => Yii::t('app','Saturday')],[
+    <?=   $form->field($model, 'dia')->dropDownList( ['0' => Yii::t('app','Monday'), '1' => Yii::t('app','Tuesday'), '2' => Yii::t('app','Wednesday'), '3' => Yii::t('app','Thursday'), '4'=> Yii::t('app','Friday'), '5' => Yii::t('app','Saturday')],[
     	'onchange'=>'
                         $.post( "'.Url::toRoute('/comercios/pordia').'", { id: $(this).val() } )
                             .done(function( data ) {
@@ -33,75 +43,72 @@ use yii\widgets\ActiveForm;
                         );
                     '   
     ]) ?>
-    <div id="map-canvas"></div>
+    
+    	<div id="map-canvas"></div>
+    	<div class="row">
+    	<div class="col-md-6">
+    	<div class='panel panel-default'>
+          <div class='panel-heading'>
+            <center><h2><?=Yii::t('app', 'Stores in route')?></h2></center>
+            <center class="help-block"><?=Yii::t('app','Choose from the list to remove a store')?></center>
+          </div>
+          <div class="assign-store panel-body">
+            <?php
+            /*  foreach ($productos->allModels as $key => $value) { ?>
+                <div class='row'>
+                  <div id="<?=$value['id']?>" class="btn removeProduct" data-toggle="tooltip" title="<?=Yii::t('app','Click to remove')?>" style="width:100%">
+                    <?=$nombreColumna($value)?> - <?=$value['Nombre']?>
+                  </div>
+                </div>
+            <?php
+            /*  }*/ ?>
+          </div>
+        </div>
+        </div>
+        <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <center><h2><?=Yii::t('app', 'Unassigned stores')?></h2></center>
+            <center class="help-block"><?=Yii::t('app','Choose from the list to add a store')?></center>
+          </div>
+          <div class="unassign-store panel-body">
+            <?php /*
+              foreach ($resto->allModels as $key => $value) { ?>
+              <div class="row">
+                <div id="<?=$value['id']?>" class="btn addProduct" data-toggle="tooltip" title="<?=Yii::t('app','Click to add')?>" style="width:100%">
+                  <?=$nombreColumna($value)?> - <?=$value['Nombre']?>
+                </div>
+              </div>
+              <?php
+              }*/
+            ?>
+          </div>
+        </div>
+        </div>
+    </div>
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    	<?= Html::button(Yii::t('app', 'Create'), [ 'class' => 'btn btn-primary', 'onclick' => '
+                        $.post( "'.Url::toRoute('/ruta/generarruta').'", { datos: orden, relevador: document.getElementById("rutarelevador-idrelevador").value,dia: document.getElementById("ruta-dia").value } )
+                            .done(function( data ) {
+                            	
+                               	
+                               	console.log(data);
+                               	
+                                }
+                        );
+                    '   
+    ]) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
-
+    
 </div>
 <script>
-function initialize() {
-    var mapCanvas = document.getElementById('map-canvas');
-    var mapOptions = {
-      center: new google.maps.LatLng(-34.8977714, -56.165),
-      zoom: 13,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    }
-    var map = new google.maps.Map(mapCanvas,mapOptions);
-    
-    var markers = [];
-    google.maps.event.addListener(map, 'click', function( event ){
-        
-        document.getElementById('comercios-latitud').value=event.latLng.lat();
-        document.getElementById('comercios-longitud').value=event.latLng.lng();
-        var marcador = new google.maps.LatLng(event.latLng.lat(),event.latLng.lng());
-        var marker = new google.maps.Marker({
-      position: marcador,
-      draggable:true,
-      animation: google.maps.Animation.DROP,
-      map: map,
-      title: ''
-  });
-  markers.push(marker);
-        
-    });
-     
-}
 
-function loadMap(){
-	var mapCanvas = document.getElementById('map-canvas');
-    var mapOptions = {
-      center: new google.maps.LatLng(-34.8977714, -56.165),
-      zoom: 13,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    }
-    var map = new google.maps.Map(mapCanvas,mapOptions);
-	var comercios=sessionStorage.comercios;
-	var markers = [];
-	var comer=JSON.parse(comercios);
-	for(comercio in comer){
-		var com=comer[comercio];
-		var marcador = new google.maps.LatLng(com.latitud,com.longitud);
-		var marker = new google.maps.Marker({
-      position: marcador,
-      draggable:true,
-      animation: google.maps.Animation.DROP,
-      map: map,
-      title: '',
-      
-  });
-  markers.push(marker);
-  var iw = new google.maps.InfoWindow({
-       content: com.nombre
-     });
-     google.maps.event.addListener(marker, "click", function (e) { iw.open(map, this); });
-	}
-	
-}
-   
 
-google.maps.event.addDomListener(window, 'load', initialize);
+
 
 </script>
+<?php
+  $this->registerJsFile(Yii::getAlias('@user_js') . '/route-to-store.js', ['depends' => [yii\web\JqueryAsset::className()]]);
+?>

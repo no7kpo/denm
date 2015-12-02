@@ -28,7 +28,9 @@
         "codeception/codeception": "^2.1",
         "codeception/specify": "*",
         "codeception/verify": "*",
-        "miloschuman/yii2-highcharts-widget": "dev-master"
+        "miloschuman/yii2-highcharts-widget": "dev-master",
+        "kartik-v/yii2-widget-datepicker": "@dev",
+        "filsh/yii2-oauth2-server": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
