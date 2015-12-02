@@ -63,7 +63,7 @@ return [
                     
                     'HEAD <apiv:v\d+>/<controller:\w+>'              => '<apiv>/<controller>/index',
                     'GET <apiv:v\d+>/<controller:\w+>'               => '<apiv>/<controller>/index',
-                    'HEAD <apiv:v\d+>/<controller:\w+>/<id:(.)+>'    => '<apiv>/<controller>/view',
+                    'HEAD <apiv:v\d+>/<controller:\w+>'    => '<apiv>/<controller>/view',
                     //'GET <apiv:v\d+>/<controller:\w+>/<action:\w+>/<id:(.)+>'     => '<apiv>/<controller>/view',
                     'GET <apiv:v\d+>/<controller:\w+>/<action:\w+>'  => '<apiv>/<controller>/<action>',
                     'POST <apiv:v\d+>/<controller:\w+>'    => '<apiv>/<controller>/create',
