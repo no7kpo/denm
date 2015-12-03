@@ -34,7 +34,7 @@ class Comercios extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'latitud', 'longitud', 'prioridad'], 'required'],
+            [['nombre', 'latitud', 'longitud', 'prioridad','hora_apertura','hora_cierre'], 'required'],
             [['prioridad', 'dia'], 'integer'],
             [['hora_apertura', 'hora_cierre'], 'safe'],
             [['nombre'], 'string', 'max' => 50],

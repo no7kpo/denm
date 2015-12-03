@@ -136,7 +136,7 @@ class ComerciosController extends Controller
             //Obtengo todos los productos y los separo en 2 arreglos
             $ProductosEnTienda = [];
             $RestoProductos = [];
-            $TodosLosProductos = Producto::find()->all();
+            $TodosLosProductos = Producto::find()->where('idcategoria = 1')->all();
             foreach ($TodosLosProductos as $key => $value) {
                 if(in_array($value['id'], $ProductosId)) {
                     array_push($ProductosEnTienda, $value);
@@ -154,8 +154,30 @@ class ComerciosController extends Controller
                 'model' => $model,
                 'productos' => $productos,
                 'resto' => $resto,
+                'categorias' => ArrayHelper::map(Categorias::find()->All(), 'id', 'nombre')
             ]);
         }
+    }
+
+    public function actionGetproductos(){
+        $request= Yii::$app->request;
+        $ProductosEnTienda = [];
+        $ProductoTiendaModel = new ProductoTienda();
+        $RestoProductos = [];
+        $Productos = $ProductoTiendaModel->getAllProductos($request->post('idcomercio'));
+            $ProductosId = [];
+            foreach ($Productos as $key => $value) {
+                array_push($ProductosId, $value['idproducto']);
+            }
+        $TodosLosProductos = Producto::find()->where('idcategoria ='.$request->post('id'))->all();
+        foreach ($TodosLosProductos as $key => $value) {
+            if(in_array($value['id'], $ProductosId)) {
+                array_push($ProductosEnTienda, $value);
+            } else {
+                array_push($RestoProductos, $value);
+            }
+        }
+        echo json_encode(array(ArrayHelper::toArray($ProductosEnTienda,['id', 'nombre','idcomercio']), ArrayHelper::toArray($RestoProductos,['id', 'nombre','idcomercio'])));
     }
 
     public function actionAdd_product(){

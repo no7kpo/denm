@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use backend\models\Categorias;
 use yii\helpers\ArrayHelper;
 use yii\grid\GridView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Comercios */
@@ -18,6 +19,22 @@ $nombreColumna = function ($data){ return Categorias::findOne($data->idcategoria
 <div class="comercios-view">
     <h1><?= Html::encode($this->title) ?></h1>
     </br>
+    <?php $form = ActiveForm::begin(); ?>
+
+   <?= $form->field($model, 'nombre')->dropDownList($categorias,[
+      'onchange'=>'
+                        $.post( "'.Url::toRoute('/comercios/getproductos').'", { id: $(this).val(),idcomercio:'.$model->id.' } )
+                            .done(function( data ) {
+                                
+                                sessionStorage.setItem("productos",data);
+                                loadElements();
+                                }
+                        );
+                    '   
+                    ]);
+
+    ActiveForm::end();
+ ?>
     <div class='row'> 
       <div class='col-md-6'>
         <div class='panel panel-default'>
