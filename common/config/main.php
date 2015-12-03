@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'language' =>'es-UY', 
+ 
 
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'modules' => [

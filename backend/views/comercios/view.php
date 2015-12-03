@@ -44,6 +44,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => $model->getdia()
 
               ],
+              'hora_apertura',
+            'hora_cierre',
         ],
     ]) ?>
     <div class="row">

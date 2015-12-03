@@ -22,7 +22,7 @@ $(document).ready(function(){
             //tabla de productos no asignado
 			var html_string = "<div class='row'><div id='" + $data['id'] + "' class='btn addProduct'" +
 					" data-toggle='tooltip' title='" + $data['tooltip'] + "' style='width:100%'>" +
-					$data['categoria'] + " - " + $data['nombre'] + "</div></div>";
+					 $data['nombre'] + "</div></div>";
 			//Se mueve gráficamente el producto de la lista de asignado a no asignado
 			$('#' + productoId).remove();
 			$('.tooltip').remove();
@@ -54,7 +54,7 @@ $(document).ready(function(){
             //tabla de productos no asignado
 			var html_string = "<div class='row'><div id='" + $data['id'] + "' class='btn removeProduct'" +
 					" data-toggle='tooltip' title='" + $data['tooltip'] + "' style='width:100%'>" +
-					$data['categoria'] + " - " + $data['nombre'] + "</div></div>";
+					 $data['nombre'] + "</div></div>";
 			//Se mueve gráficamente el producto de la lista de no asignado a asignado
 			$('#' + productoId).remove();
 			$('.tooltip').remove();
@@ -65,3 +65,29 @@ $(document).ready(function(){
 		})
 	})
 })
+
+
+function loadElements(){
+	var arreglo=JSON.parse(sessionStorage.productos);
+	sessionStorage.clear();
+	$('.assign-products').html('');
+	$('.unassign-products').html('');
+	var productostienda=arreglo[0];
+	var productosagregar=arreglo[1];
+	console.log(arreglo);
+	for(var producto in productostienda){
+			var com=productostienda[producto];			
+			var html_string = "<div class='row'><div id='" + com['id'] + "' class='btn removeProduct'" +
+					" data-toggle='tooltip' title='" + "' style='width:100%' name="+com['Nombre']+">"  
+					+ com['Nombre'] + "</div></div>";
+		$('.assign-products').append(html_string);
+		}
+	for(var producto in productosagregar){
+			var com=productosagregar[producto];			
+			var html_string = "<div class='row'><div id='" + com['id'] + "' class='btn addProduct'" +
+					" data-toggle='tooltip' title='" + "' style='width:100%' name="+com['nombre']+">" +
+					  com['Nombre'] + "</div></div>";
+		$('.unassign-products').append(html_string);
+		}
+		console.log(productosagregar);
+}
