@@ -2,6 +2,7 @@
 
 /* @var $this yii\web\View */
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 //Defino datos del comercio
 $local_name = $comercio['nombre'];
@@ -49,7 +50,7 @@ if(!Yii::$app->user->getIsGuest()){
 
         	<div class="row text-center">
         		<div>
-	                <h3><?= Yii::t('app','Best route from your location');?></h3>
+	                <h3><?= Yii::t('app','Location');?></h3>
 	                <div id="map-canvas" class="img-responsive map-center google-map"></div>
             	</div>
             	<br>
@@ -62,7 +63,7 @@ if(!Yii::$app->user->getIsGuest()){
         <div class="col-md-7">
         	<div class="row">
 	            <form role="form">        
-	                <h2><?= Yii::t('app','Delivery Items');?></h2>
+	                <h2><?= Yii::t('app','Register Stock Items');?></h2>
 
 	                <div class="table-responsive">
 	                    <table class="table table-hover" id="delivery-table">
@@ -75,7 +76,14 @@ if(!Yii::$app->user->getIsGuest()){
 	                        <?php foreach($productos as $item){ ?>
 	                        <tr>
 	                            <td><?php echo $item['nombre']; ?></td>
-	                            <td class="text-center"><?php if($item['imagen'] == ''){ echo '<span class="not-delivered glyphicon glyphicon-remove"></span>'; } else{ ?><span><img class="item img-responsive" src="<?=Yii::getAlias('@product_pictures')?><?php echo DIRECTORY_SEPARATOR.$item['imagen'];?>"></span><?php } ?></td>
+	                            <td class="text-center">
+                                <?php 
+                                    if($item['imagen'] == ''){ 
+                                        echo '<span class="not-delivered glyphicon glyphicon-remove"></span>'; 
+                                    } else{ 
+                                        ?><span><img class="item img-responsive" src="<?=Yii::getAlias('@product_pictures')?><?php echo DIRECTORY_SEPARATOR.$item['imagen'];?>"></span>
+                                <?php } ?>
+                                </td>
 	                           	<td class="text-center">
 	                           		<input class="input-stock" onblur="saveThisItem(<?php echo $item['idproducto'];?>,this.value)" type="number" id="stock_<?php echo $item['idproducto'];?>" value="<?php echo $item['stock'];?>" min="0" max="1000">
 	                           	</td>
@@ -84,8 +92,16 @@ if(!Yii::$app->user->getIsGuest()){
 	                    </table>
 	                </div>
                     
-                    <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" href=<?php echo '"http://'.$_SERVER['HTTP_HOST'].'/site/index"';?>><?= Yii::t('app','Cancel');?></a></p>
-                    <p class="text-center inline"><a class="btn btn-default btn-primary btn-sm big-btn" onclick=<?php echo '"deliveryDone('.$shopId.')"';?>><?= Yii::t('app','Done');?>!</a></p>
+                    <p class="text-center inline">
+                        <a class="btn btn-default btn-primary btn-sm big-btn" href=<?= Url::to('/site/index') ; ?> >
+                            <?= Yii::t('app','Cancel');?>
+                        </a>
+                    </p>
+                    <p class="text-center inline">
+                        <a class="btn btn-default btn-primary btn-sm big-btn" onclick=<?php echo '"deliveryDone('.$shopId.')"';?>>
+                            <?= Yii::t('app','Done');?>!
+                        </a>
+                    </p>
                 </form>
 		    </div>
         </div>
@@ -93,8 +109,10 @@ if(!Yii::$app->user->getIsGuest()){
     <?php }else{ ?>
     	<div class="col-md-12">
         	<div class="row text-center">
-        		<h2><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/site/index'?>><?= Yii::t('app','Please go back');?></a></h2>
-        		<h3><?= Yii::t('app','Theres no data to show');?>.</h3>
+        		<h2><a href=<?=Url::to('/site/index')?>>
+                    <?= Yii::t('app','Please go back');?></a>
+                </h2>
+        		<h3><?= Yii::t('app','Theres no data to show')?>.</h3>
         	</div>
         </div>
     <?php } ?>

@@ -48,8 +48,8 @@ use yii\helpers\Url;
 
             <div class="row">
                 <div class="dropdown datepicker-inline">
-                    <h2><?= Yii::t('app',"Deliveries");?></h2>
-                    <select class="btn btn-sm dropdown-toggle" id="datepicker-btn" onchange="changeDateRange(this.value)">
+                    <h2><span class="glyphicon glyphicon-list-alt"></span>
+                    <select class="btn btn-sm dropdown-toggle" id="datepicker-btn" onchange="changeDateRange(this.value)"></h2>
                       <option value="today" selected><?= Yii::t('app',"Today");?></option>
                       <option value="yesterday"><?= Yii::t('app',"Yesterday");?></option>
                       <option value="last7"><?= Yii::t('app',"Last 7 days");?></option>
@@ -98,11 +98,6 @@ use yii\helpers\Url;
                         ?>
                     </table>
                 </div>
-            </div>
-
-            <div class="text-center">
-                <h4 class="text-center"><?= Yii::t('app',"Change personal address!");?></h4>
-                <p class="text-center"><a class="btn btn-default btn-primary btn-sm" id="med-btn" href=<?php echo '"site/changedirection"';?>><?= Yii::t('app',"Update");?></a></p>
             </div>
 
         </div>

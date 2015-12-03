@@ -45,7 +45,7 @@ class RutasController extends ActiveController
                     ->from('ruta')
                     ->innerJoin('ruta_relevador', 'ruta_relevador.idruta = ruta.id')
                     ->innerJoin('user', 'idrelevador = user.id')
-                    ->where(['dia' => $day, 'idrelevador' => $id])
+                    ->where(['dia' => $day, 'idrelevador' => $id, 'activa' => 1])
                     ->all();
             return $rutas;
     	}else{

@@ -157,7 +157,7 @@ function loadMap(){
       zoom: 13,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     }
-   // var image = {url:"<?= Yii::getAlias('@map_icon'). '/store.png'?>",scaledSize: new google.maps.Size('50','50'),origin: new google.maps.Point(0,0),anchor:new google.maps.Point(0,0)};
+   
     var hogar = 'https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=O|FFFF00|000000';
     var map = new google.maps.Map(mapCanvas,mapOptions);
     directionsDisplay = new google.maps.DirectionsRenderer({map: map,draggable: false});

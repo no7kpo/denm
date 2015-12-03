@@ -60,6 +60,10 @@ if (Yii::$app->controller->action->id === 'login' ||
             $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
         } else {
             $menuItems[] = [
+                'label' => Yii::t('app', Yii::t('app',"Change your address!")),
+                'url' => ['/site/changedirection']
+            ];
+            $menuItems[] = [
                 'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
                 'url' => ['/site/logout'],
                 'linkOptions' => ['data-method' => 'post']

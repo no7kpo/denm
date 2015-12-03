@@ -81,6 +81,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        if(Yii::$app->user->identity->latitud == null){
+            return $this->actionChangedirection();
+        }
         //Define connection
         $connection = \Yii::$app->db;
 
