@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use dektrium\user\widgets\Connect;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
@@ -19,10 +20,11 @@ $fieldOptions2 = [
     'inputTemplate' => "{input}<span class='glyphicon glyphicon-lock form-control-feedback'></span>"
 ];
 ?>
-
-<div class="login-box">
+<link rel="stylesheet" href="/css/login.css" type="text/css"/>
+<div class="col-lg-6">
+<div class="login-box site-login">
     <div class="login-logo">
-        <a href="#"><b>Relevando</b>Backend</a>
+        <img src="<?=Url::to('/assets/images/logo-blanco.png')?>"/>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
@@ -65,19 +67,16 @@ $fieldOptions2 = [
                 in using Google+</a>
         </div>
         <!-- /.social-auth-links -->
-        
-        <a href="#">I forgot my password</a><br>
         <!--<a href="register" class="text-center">Register a new membership</a>-->
 
         <?php if ($module->enableRegistration): ?>
-            <p>
+            <br>
+            <center>
                 <?= Html::a(Yii::t('user', 'Don\'t have an account? Sign up!'), ['/user/registration/register']) ?>
-            </p>
+            </center>
         <?php endif ?>
-        <?= Connect::widget([
-            'baseAuthUrl' => ['/user/security/auth'],
-        ]) ?>
 
     </div>
     <!-- /.login-box-body -->
 </div><!-- /.login-box -->
+</div>
