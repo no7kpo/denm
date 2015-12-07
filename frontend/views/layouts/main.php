@@ -10,6 +10,7 @@ use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use yii\widgets\ActiveForm;
+use yii\bootstrap\BootstrapAsset;
 
 if (Yii::$app->controller->action->id === 'login' || 
     Yii::$app->controller->action->id === 'register') {
@@ -40,12 +41,17 @@ if (Yii::$app->controller->action->id === 'login' ||
         <?php $this->head() ?>
     </head>
     <body>
-    <?php $this->beginBody() ?>
+    <?php $this->beginBody();
+        $this->registerCssFile("/css/layout-main.css", [
+            'depends' => [BootstrapAsset::className()],
+            ], 'css-print-theme'
+        ); 
+    ?>
 
     <div class="wrap">
         <?php
         NavBar::begin([
-            'brandLabel' => 'Relevadores',
+            'brandLabel' => Html::img('/assets/images/logo-blanco.png', ['alt'=>Yii::$app->name, 'style' => 'max-height:100%;']),
             'brandUrl' => Yii::$app->homeUrl,
             'options' => [
                 'class' => 'navbar-inverse navbar-fixed-top',

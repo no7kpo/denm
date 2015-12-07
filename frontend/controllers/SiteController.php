@@ -428,11 +428,21 @@ class SiteController extends Controller
     
 
     public function actionCreateorder($id = 0){
-        //Define connection
-        $connection = \Yii::$app->db;
 
         $shopId = $_GET['id'];
         $fecha = date('Y-m-d');
+        $existe_pedido = (new \yii\db\Query())
+            ->select('1')
+            ->from('stock_pedido')
+            ->where(['fecha' => $fecha, 'idComercio' => $shopId])
+            ->exists();
+        if($existe_pedido){
+            return $this->actionOrder($shopId);
+        }
+        //Define connection
+        $connection = \Yii::$app->db;
+
+        
 
         //Get comercio
         $query = $connection->createCommand('SELECT c.id, c.nombre, c.hora_apertura, c.hora_cierre FROM comercios c WHERE c.id = '.$shopId);

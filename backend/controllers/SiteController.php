@@ -141,7 +141,7 @@ class SiteController extends Controller
 
 
         //Get productos
-        $query3 = $connection->createCommand("SELECT p.nombre as nombre, count(sp.pedido) AS pedido FROM (comercios c JOIN stock_pedido sp ON c.id=sp.idcomercio) JOIN productos p ON sp.idproducto=p.id WHERE c.id=". $shopId ." AND fecha between str_to_date('".$dateStart ." 00:00:00','%d-%m-%Y %H:%i:%s') and str_to_date('". $dateEnd ." 23:59:59','%d-%m-%Y %H:%i:%s') group by p.nombre");
+        $query3 = $connection->createCommand("SELECT p.nombre as nombre, sum(sp.pedido) AS pedido FROM (comercios c JOIN stock_pedido sp ON c.id=sp.idcomercio) JOIN productos p ON sp.idproducto=p.id WHERE c.id=". $shopId ." AND fecha between str_to_date('".$dateStart ." 00:00:00','%d-%m-%Y %H:%i:%s') and str_to_date('". $dateEnd ." 23:59:59','%d-%m-%Y %H:%i:%s') group by p.nombre");
         $result3 = $query3->queryAll();
         foreach ($result3 as $data3){
             if (!empty($data3)){

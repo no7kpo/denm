@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 //use yii\widgets\ActiveForm;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
 
 /**
  * @var yii\web\View              $this
@@ -28,17 +29,15 @@ $fieldOptions3 = [
     'inputTemplate' => "{input}<span class='glyphicon glyphicon-lock form-control-feedback'></span>"
 ];
 ?>
-
-<div class="row login-box">
-    <!--<div class="col-md-4 col-md-offset-4">-->
-        <div class="login-logo">
-            <a href="#"><b>Relevando</b>Frontend</a>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
+<link rel="stylesheet" href="/css/register.css" type="text/css"/>
+<div class="col-lg-6">
+    <div class="login-box site-register">
+        <!--<div class="col-md-4 col-md-offset-4">-->
+            <div class="login-logo">
+                <img src="<?=Url::to('/assets/images/logo.png')?>"/>
             </div>
-            <div class="panel-body">
+            <div class="login-box-body">
+                <p class="login-box-msg"><?= Html::encode($this->title) ?></p>
                 <?php $form = ActiveForm::begin([
                     'id'                     => 'registration-form',
                     'enableAjaxValidation'   => true,
@@ -65,13 +64,13 @@ $fieldOptions3 = [
 
               
                 <?= Html::submitButton(Yii::t('user', 'Sign up'), ['class' => 'btn btn-success btn-block']) ?>
-
+                </br>
                 <?php ActiveForm::end(); ?>
+                <p class="text-center">
+                    <?= Html::a(Yii::t('user', 'Already registered? Sign in!'), ['/user/security/login']) ?>
+                </p>
             </div>
-            <p class="text-center">
-                <?= Html::a(Yii::t('user', 'Already registered? Sign in!'), ['/user/security/login']) ?>
-            </p>
-        </div>
-        
-    <!--</div><-->
+            
+        <!--</div><-->
+    </div>
 </div>

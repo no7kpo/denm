@@ -1,0 +1,15 @@
+.login-page{
+    background : url(/assets/images/login-background.jpg) no-repeat left top fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.site-register .login-box-body{
+    background-color: rgba(255,255,255,0.1);
+}
+
+.login-logo{
+	margin-bottom: 0px;
+}

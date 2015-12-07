@@ -32,11 +32,11 @@ use yii\helpers\Url;
                     <h3><?= Yii::t('app',"Your best route for today");?></h3>
                     <div id="map-canvas" class="img-responsive map-center google-map"></div>
                 </div>
-                <br>
+                <!-- <br>
                 <div class="text-center" id="new-order">
                     <h3 class="text-center"><?= Yii::t('app',"Take new orders!");?></h3>
-                    <p class="text-center"><a class="btn btn-default btn-primary btn-sm" id="med-btn" href=<?= Url::to(Yii::$app->request->BaseUrl.'/site/neworder');?>><?= Yii::t('app',"New order");?></a></p>
-                </div>
+                    <p class="text-center"><a class="btn btn-default btn-primary btn-sm" id="med-btn" href=<?= Url::to('/site/neworder');?>><?= Yii::t('app',"New order");?></a></p>
+                </div> -->
 
             </div>
 
@@ -65,7 +65,7 @@ use yii\helpers\Url;
                             <th><?= Yii::t('app',"Shop");?></th>
                             <th class="text-center"><?= Yii::t('app',"Date");?></th>
                             <th class="text-center"><?= Yii::t('app',"Hours");?></th>
-                            <th class="text-center"><?= Yii::t('app',"Delivered");?></th>
+                            <th class="text-center"><?= Yii::t('app',"Visited");?></th>
                         </tr>
 
                         <?php if(count($orders) > 0){ 
@@ -80,7 +80,7 @@ use yii\helpers\Url;
                             
                             <td title="Delivery info">
                                 <?php if($order['relevado'] != 1){ ?>
-                                    <a class="btn-default" href=<?= Url::to(Yii::$app->request->BaseUrl.'/site/order?id='.$order['idComercio']);?>><?php echo '<span class="info glyphicon glyphicon-info-sign"></span> ';?>
+                                    <a class="btn-default" href=<?= Url::to('/site/createorder?id='.$order['idComercio']);?>><?php echo '<span class="info glyphicon glyphicon-info-sign"></span> ';?>
                                 <?php } echo $order['nombre']; if($order['relevado'] != 1){ ?>
                                     </a>
                                 <?php } ?>
