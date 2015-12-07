@@ -165,8 +165,7 @@ class RutaController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-
+      $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -174,6 +173,16 @@ class RutaController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+
+        public function actionActualizardist()
+    {
+        $connection = \Yii::$app->db;
+        $request= Yii::$app->request;
+        $valor=$request->post('datos');
+        $connection ->createCommand('UPDATE propiedades SET valor='.$valor.' WHERE id="distancia"')->execute();
+        
+        echo "Se ha actualizado el valor a ".$valor;
     }
 
     /**

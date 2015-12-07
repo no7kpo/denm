@@ -1,8 +1,9 @@
-<<<<<<< HEAD
+
 <?php
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -23,12 +24,21 @@ $this->params['breadcrumbs'][] = $this->title;
           <?php  $form = ActiveForm::begin(); ?>
           <div class="form-group">
         <?=    $form->field($valor, 'valor')->textInput(['maxlength' => true]) ?>
-            
-                <?= Html::submitButton($valor->isNewRecord ? Yii::t('app', 'Create') : 
-                    Yii::t('app', 'Update'), ['class' => $valor->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-                <div id="result"></div>
-            </div>
-        <?php    ActiveForm::end(); ?>
+            <?php    ActiveForm::end(); ?>
+            <?= Html::button(Yii::t('app', 'Update distance'), [ 'class' => 'btn btn-primary', 'onclick' => '
+                        $.post( "'.Url::toRoute('/ruta/actualizardist').'", { datos: document.getElementById("propiedades-valor").value } )
+                            .done(function( data ) {
+                                
+                                
+                                document.getElementById("result").html=data;
+                                alert(data);
+                                }
+                        );
+                    '   
+    ]) ?>
+    <div id="result"></div>
+    </div>
+        
        
     </p>
     <?= GridView::widget([
@@ -43,36 +53,3 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
 
 </div>
-=======
-<?php
-
-use yii\helpers\Html;
-use yii\grid\GridView;
-
-/* @var $this yii\web\View */
-/* @var $dataProvider yii\data\ActiveDataProvider */
-
-$this->title = Yii::t('app', 'Routes');
-$this->params['breadcrumbs'][] = $this->title;
-?>
-<div class="ruta-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a(Yii::t('app', 'Create Route'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-                'id',
-                'dia',
-                'relevador',
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-
-</div>
->>>>>>> 96b760f587bf51f576bd82c105cb873d05b56d29
