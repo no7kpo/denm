@@ -9,6 +9,9 @@ var directionsDisplay;
 var directionsService;	
 var removidos=[];
 var firstTime=1;
+var distanciatotal=0;
+var distanciaprop;
+var unassigned=[];
 
 function initialize() {
 	sessionStorage.clear();
@@ -29,6 +32,11 @@ function initialize() {
            	sessionStorage.setItem("relevador",data);
         }
     );
+        $.post( "propiedad", { __csrf : csrfToken, } )
+        .done(function( data ) {
+           	sessionStorage.setItem("distancia",data);
+        }
+    );
     $.post( "pordia", { id: document.getElementById("ruta-dia").value,__csrf : csrfToken, } )
 	    .done(function( data ) {
 	       	sessionStorage.setItem("comercios",data);
@@ -36,9 +44,6 @@ function initialize() {
         }
 	);
  };
-    	
-     
-
 
 function calculateDistances(origen,dest) {
   var service = new google.maps.DistanceMatrixService();
@@ -68,13 +73,11 @@ function callbackMostrarDistancias(response, status) {
 //	deleteOverlays();
 //	rutafinal[0]=origins[0];
 //	console.log(origins);
-
-
-
 //	for (var i = 0; i < origins.length; i++) {
 	  var results = response.rows[0].elements;
 	//  addMarker(origins[i], false);
 	  var distanciachica=0;
+	  
 	  var mascerca;
 	  //Muestra el resultado con el detalle de las distancias a cada punto, en kilometros y en metros
 
@@ -83,26 +86,34 @@ function callbackMostrarDistancias(response, status) {
 		var dist=results[j].distance.value;
 		if(distanciachica==0 || dist<distanciachica){
 			distanciachica=dist;
+			
 			mascerca=destinations[j];
+			
 		}
 
 	  }
-	var indexofcerca= destinations.indexOf(mascerca);
-	  
-	  
-	//  results.splice(indexofcerca,1);
-	  orden.push(comercios[indexofcerca]);
-	  comercios.splice(indexofcerca,1);
-	  var nuevoorigen=destinos[indexofcerca];
-	  rutafinal.push(nuevoorigen);
-	  destinos.splice(indexofcerca,1);
+	  distanciatotal=distanciachica+distanciatotal;
+			console.log(distanciatotal);
+		var indexofcerca= destinations.indexOf(mascerca);
+	  if(distanciatotal<=distanciaprop){
+		  	orden.push(comercios[indexofcerca]);
+		  comercios.splice(indexofcerca,1);
+		  var nuevoorigen=destinos[indexofcerca];
+		  rutafinal.push(nuevoorigen);
+		  destinos.splice(indexofcerca,1);
 
-	//}
-	if(destinos.length>0){
-		calculateDistances(nuevoorigen,destinos);
-	}else{
-		calcular_ruta();
-	}
+		//}
+		if(destinos.length>0){
+			calculateDistances(nuevoorigen,destinos);
+		}else{
+			calcular_ruta();
+		}
+	  }else{
+
+	  	calcular_ruta();
+	  }
+	//  results.splice(indexofcerca,1);
+	  
 	
 
   }
@@ -110,12 +121,15 @@ function callbackMostrarDistancias(response, status) {
 
 
 function loadMap(){
+    orden=[];
+    firstTime=1;
 	var mapCanvas = document.getElementById('map-canvas');
     var mapOptions = {
       center: new google.maps.LatLng(-34.8977714, -56.165),
       zoom: 13,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     }
+
    // var image = {url:"<?= Yii::getAlias('@map_icon'). '/store.png'?>",scaledSize: new google.maps.Size('50','50'),origin: new google.maps.Point(0,0),anchor:new google.maps.Point(0,0)};
     var hogar = 'https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=O|FFFF00|000000';
     var map = new google.maps.Map(mapCanvas,mapOptions);
@@ -131,8 +145,9 @@ function loadMap(){
 		map:map,
 		icon:hogar
 	})
+	rutafinal=[];
 	markers.push(marca);
-	
+	distanciaprop=JSON.parse(sessionStorage.distancia);
 	for(comercio in comer){
 		var com=comer[comercio];
 		var marcador = new google.maps.LatLng(com.latitud,com.longitud);
@@ -177,7 +192,8 @@ google.maps.event.addDomListener(window, 'load', initialize);
 	function calcular_ruta() {
 		  		  
 		  // Retrieve the start and end locations and create a DirectionsRequest using DRIVING, BICYCLE OR WALKING directions.		  
-		  
+		  	distanciatotal=0;
+		  	
 			var origen  = rutafinal[0];
 			var destino = rutafinal[rutafinal.length-1];
 			var puntosmedios=[];
@@ -214,7 +230,10 @@ google.maps.event.addDomListener(window, 'load', initialize);
 					directionsDisplay.setPanel();
 					directionsDisplay.setDirections(response);	
 					if(firstTime==1){
-						loadStores();	
+						$('.assign-store').html('');
+    					$('.unassign-store').html('');
+						loadStores();
+						loadUnassigned();
 						firstTime=0;
 					}
 						
@@ -227,12 +246,25 @@ google.maps.event.addDomListener(window, 'load', initialize);
 	}
 
 	function loadStores(){
+
 		for(var comercio in orden){
 			var com=orden[comercio];			
 			var html_string = "<div class='row'><div id='" + com['id'] + "' class='btn removeRoute'" +
 					" data-toggle='tooltip' title='" + "' style='width:100%' name="+com['nombre']+">" +
 					 com['nombre'] + "</div></div>";
 		$('.assign-store').append(html_string);
+		}
+
+	}
+
+	function loadUnassigned(){
+
+		for(var comercio in comercios){
+			var com=comercios[comercio];			
+			var html_string = "<div class='row'><div id='" + com['id'] + "' class='btn addRoute'" +
+					" data-toggle='tooltip' title='" + "' style='width:100%' name="+com['nombre']+">" +
+					 com['nombre'] + "</div></div>";
+		$('.unassign-store').append(html_string);
 		}
 	}
 

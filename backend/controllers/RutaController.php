@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\Ruta;
 use common\models\RutaRelevador;
+use backend\models\Propiedades;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 use yii\web\Controller;
@@ -58,12 +59,15 @@ class RutaController extends Controller
             'attributes' => ['id', 'dia', 'relevador'],
         ],
 ]);    
+            $sql= 'SELECT * FROM propiedades WHERE id="distancia"';
+            $valor= Propiedades::findBySql($sql)->one();
+            $connection = \Yii::$app->db;
      /*   $dataProvider = new ActiveDataProvider([
             'query' => Ruta::find(),
         ]);*/
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
+            'dataProvider' => $dataProvider,'valor' =>$valor
         ]);
     }
 
@@ -100,6 +104,7 @@ class RutaController extends Controller
             $connection = \Yii::$app->db;
             $sql = 'SELECT * FROM user WHERE id in (Select user_id FROM auth_assignment WHERE item_name = "relevador")';
             $modelo = \common\models\User::findBySql($sql)->all(); 
+
             $dataUsuarios=ArrayHelper::map($modelo, 'id', 'username');
             $rutarel= new RutaRelevador();
             return $this->render('create', [
@@ -204,6 +209,21 @@ class RutaController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionPropiedad(){
+     //   $comercios=Comercios::find()->where(['dia'=>$dia])->all();
+        $sql = 'SELECT * FROM propiedades WHERE id="distancia"';
+        $modelo = Propiedades::findBySql($sql)->one(); 
+        
+     //   $comerciosarray=ArrayHelper::toArray($comercios, ['id', 'nombre','latitud','longitud']);
+     //   if(isset($comerciosrecorridos) && !empty($comerciosrecorridos) ){
+      //      $return = array_diff_key($comerciosarray,$comerciosrecorridos);
+            echo json_encode($modelo->valor);
+     //   }else{
+     //       echo json_encode($comerciosarray);
+     //   }
+       
     }
 
     public function actionPordia(){
