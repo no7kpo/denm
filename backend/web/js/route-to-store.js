@@ -109,7 +109,6 @@ function callbackMostrarDistancias(response, status) {
 			calcular_ruta();
 		}
 	  }else{
-
 	  	calcular_ruta();
 	  }
 	//  results.splice(indexofcerca,1);
@@ -122,6 +121,8 @@ function callbackMostrarDistancias(response, status) {
 
 function loadMap(){
     orden=[];
+    comercios=[];
+    destinos=[]
     firstTime=1;
 	var mapCanvas = document.getElementById('map-canvas');
     var mapOptions = {
