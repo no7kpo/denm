@@ -88,6 +88,14 @@ class LoginFormTest extends DbTestCase
                 'class' => UserFixture::className(),
                 'dataFile' => '@tests/codeception/common/unit/fixtures/data/models/user.php'
             ],
+            'auth_item' => [
+                'class' => Auth_itemFixture::className(),
+                'dataFile' => '@tests/codeception/common/unit/fixtures/data/models/auth_item'
+            ],
+            'auth_assignment' => [
+                'class' => Auth_assignmentFixture::className(),
+                'dataFile' => '@tests/codeception/common/unit/fixtures/data/models/auth_assigment'
+            ],
         ];
     }
 }

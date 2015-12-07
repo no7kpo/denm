@@ -82,8 +82,9 @@ $fieldOptions2 = [
                         - <?=Yii::t('app','Or you can')?> -
                     </center>
                     </br>
-                    <a href="/user/security/auth?authclient=google" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus">
-                    </i> <?=Yii::t('app', 'Sign in using Google+')?></a>
+                    <a href="/user/security/auth?authclient=google" class="btn btn-block btn-social btn-google btn-flat">
+                        <i class="fa fa-google-plus"></i> <?=Yii::t('app', 'Sign in using Google+')?>
+                    </a>
 
                 </div>  
             <?php endif ?>

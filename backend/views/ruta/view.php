@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model backend\models\Ruta */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Rutas'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Routes'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style>

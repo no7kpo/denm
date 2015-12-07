@@ -12,6 +12,7 @@
 use yii\helpers\Html;
 //use yii\widgets\ActiveForm;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
 
 /**
  * @var yii\web\View              $this
@@ -37,48 +38,46 @@ $fieldOptions3 = [
     'inputTemplate' => "{input}<span class='glyphicon glyphicon-lock form-control-feedback'></span>"
 ];
 ?>
-<div class="row login-box">
-    <!--<div class="col-md-4 col-md-offset-4">-->
+<link rel="stylesheet" href="/css/login.css" type="text/css"/>
+<div class="col-lg-6">
+    <div class="login-box site-login">
         <div class="login-logo">
-            <a href="#"><b>Relevando</b>Backend</a>
+            <img src="<?=Url::to('/assets/images/logo-blanco.png')?>"/>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
-            </div>
-            <div class="panel-body">
-                <?php $form = ActiveForm::begin([
-                    'id'                     => 'registration-form',
-                    'enableAjaxValidation'   => true,
-                    'enableClientValidation' => false,
-                ]); ?>
+        <div class="login-box-body">
+            <p class="panel-title"><?= Html::encode($this->title) ?></p>
+            
+            <?php $form = ActiveForm::begin([
+                'id'                     => 'registration-form',
+                'enableAjaxValidation'   => true,
+                'enableClientValidation' => false,
+            ]); ?>
 
+            <?= $form
+                ->field($model, 'username', $fieldOptions1)
+                ->label(false)
+                ->textInput(['placeholder' => $model->getAttributeLabel('username')]) ?>
+
+            <?= $form
+                ->field($model, 'email', $fieldOptions2)
+                ->label(false)
+                ->textInput(['placeholder' => $model->getAttributeLabel('email')]) ?>
+
+            <?php if ($module->enableGeneratingPassword == false): ?>
                 <?= $form
-                    ->field($model, 'username', $fieldOptions1)
+                    ->field($model, 'password', $fieldOptions3)
                     ->label(false)
-                    ->textInput(['placeholder' => $model->getAttributeLabel('username')]) ?>
+                    ->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
 
-                <?= $form
-                    ->field($model, 'email', $fieldOptions2)
-                    ->label(false)
-                    ->textInput(['placeholder' => $model->getAttributeLabel('email')]) ?>
+            <?php endif ?>
 
-                <?php if ($module->enableGeneratingPassword == false): ?>
-                    <?= $form
-                        ->field($model, 'password', $fieldOptions3)
-                        ->label(false)
-                        ->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
+            <?= Html::submitButton(Yii::t('user', 'Sign up'), ['class' => 'btn btn-success btn-block']) ?>
 
-                <?php endif ?>
-
-                <?= Html::submitButton(Yii::t('user', 'Sign up'), ['class' => 'btn btn-success btn-block']) ?>
-
-                <?php ActiveForm::end(); ?>
-            </div>
+            <?php ActiveForm::end(); ?>
+            <br>
             <p class="text-center">
                 <?= Html::a(Yii::t('user', 'Already registered? Sign in!'), ['/user/security/login']) ?>
             </p>
         </div>
-        
-    <!--</div><-->
+    </div>
 </div>
